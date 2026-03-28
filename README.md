@@ -1,4 +1,3 @@
-# ♾️ Basis
+# ♾️ Abstract Nonsense
 
-Principled and efficient linear algebra for Scala.
-
+A collection of inheritance-based category-theoretic base traits in Scala, including various types of Functor.
