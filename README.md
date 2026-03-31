@@ -1,3 +1,3 @@
-# ♾️ Abstract Nonsense
+<h1 align="center">♾️ Abstract Nonsense</h1>
 
-A collection of inheritance-based category-theoretic base traits in Scala, including various kinds of functor.
+<p align="center">A collection of category-theoretic base traits in Scala.</p>
