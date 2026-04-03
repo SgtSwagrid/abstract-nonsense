@@ -3,6 +3,8 @@
   <component name="ScalaProjectSettings">
     <option name="customBasePackages">
       <map>
+        <entry key="abstract-nonsense.main" value="io.github.sgtswagrid.nonsense" />
+        <entry key="abstract-nonsense.test" value="io.github.sgtswagrid.nonsense" />
         <entry key="abstractnonsense.main" value="io.github.sgtswagrid.abstractnonsense" />
         <entry key="abstractnonsense.test" value="io.github.sgtswagrid.abstractnonsense" />
         <entry key="basis.main" value="io.github.sgtswagrid.abstractnonsense" />
@@ -13,6 +15,8 @@
     <option name="migrateConfigurationsNotificationShown" value="true" />
     <option name="INHERIT_BASE_PACKAGES" value="false" />
     <option name="CUSTOM_BASE_PACKAGES">
+      <module name="abstract-nonsense.main" basePackage="io.github.sgtswagrid.nonsense" />
+      <module name="abstract-nonsense.test" basePackage="io.github.sgtswagrid.nonsense" />
       <module name="abstractnonsense.main" basePackage="io.github.sgtswagrid.abstractnonsense" />
       <module name="abstractnonsense.test" basePackage="io.github.sgtswagrid.abstractnonsense" />
       <module name="basis.main" basePackage="io.github.sgtswagrid.abstractnonsense" />

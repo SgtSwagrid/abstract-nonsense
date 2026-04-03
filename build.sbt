@@ -45,9 +45,8 @@ scalacOptions ++= Seq(
   "-explain-cyclic",
 )
 
-lazy val abstractnonsense = (project in file(".")).settings(
-  packagePrefix := "io.github.sgtswagrid.abstractnonsense",
-  libraryDependencies += "org.scalameta" %% "munit" % "1.2.4" % Test,
+lazy val `abstract-nonsense` = (project in file(".")).settings(
+  packagePrefix := "io.github.sgtswagrid.nonsense",
   scalacOptions ++= Seq(
     "-language:experimental.subCases",
     "-language:experimental.relaxedLambdaSyntax",

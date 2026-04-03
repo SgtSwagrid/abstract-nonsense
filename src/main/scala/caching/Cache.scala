@@ -1,4 +1,4 @@
-package io.github.sgtswagrid.abstractnonsense
+package io.github.sgtswagrid.nonsense
 package caching
 
 import scala.collection.mutable

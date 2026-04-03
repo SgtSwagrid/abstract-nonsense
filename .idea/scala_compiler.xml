@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ScalaCompilerConfiguration">
     <option name="separateProdTestSources" value="true" />
-    <profile name="sbt 1" modules="abstract-nonsense_1088,abstract-nonsense_1088.main,abstract-nonsense_1088.test,abstractnonsense,basis" />
-    <profile name="sbt 2" modules="abstractnonsense.main,abstractnonsense.test">
+    <profile name="sbt 1" modules="abstract-nonsense,abstract-nonsense_1088,abstract-nonsense_1088.main,abstract-nonsense_1088.test,abstractnonsense,basis" />
+    <profile name="sbt 2" modules="abstract-nonsense.main,abstract-nonsense.test,abstractnonsense.main,abstractnonsense.test">
       <parameters>
         <parameter value="-language:experimental.subCases" />
         <parameter value="-language:experimental.relaxedLambdaSyntax" />

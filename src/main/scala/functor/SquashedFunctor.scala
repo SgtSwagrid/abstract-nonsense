@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor
 
-final class DeepFunctor[
+final class SquashedFunctor[
   +Outer[+X] <: BoundedFunctorOps[Outer, X, Inner[Codomain]],
   +Inner[+X] <: BoundedFunctorOps[Inner, X, Codomain],
   +Content,
@@ -9,15 +9,20 @@ final class DeepFunctor[
 ]
   (base: Outer[Inner[Content]])
   extends BoundedFunctorOps[
-    [X] =>> Outer[Inner[X]],
+    [X] =>> SquashedFunctor[Outer, Inner, X, Codomain],
     Content,
     Codomain,
   ]:
 
   override def map[Result <: Codomain]
     (transform: Content => Result)
-    : Outer[Inner[Result]] = base.map(_.map(transform))
+    : SquashedFunctor[Outer, Inner, Result, Codomain] =
+    SquashedFunctor(base.map(_.map(transform)))
 
+  /**
+    * Separates the two outermost layers of this mappable object, returning the
+    * structure to its original form.
+    */
   def unsquash: Outer[Inner[Content]] = base
 
   override def toString = base.toString

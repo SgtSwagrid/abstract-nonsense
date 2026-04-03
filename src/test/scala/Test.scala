@@ -1,10 +1,10 @@
-package io.github.sgtswagrid.abstractnonsense
+package io.github.sgtswagrid.nonsense
 
-import io.github.sgtswagrid.abstractnonsense.functor.Functor
+import io.github.sgtswagrid.nonsense.functor.{BoundedFunctorOps, FunctorOps}
 
-class TestSeq[+X](val underlying: X*) extends Functor.Proper[TestSeq, X]:
+class TestSeq[+X](val underlying: X*) extends FunctorOps[TestSeq, X]:
 
-  def map[Y](transform: X => Y): TestSeq[Y] =
+  override def map[Y](transform: X => Y): TestSeq[Y] =
     new TestSeq(underlying.map(transform)*)
 
   override def toString = underlying.mkString("[", ", ", "]")
@@ -22,4 +22,6 @@ object Test extends App:
     TestSeq(TestSeq(5, 6), TestSeq(7, 8)),
   )
 
-  println(test.squash)
+  val x = test.deep.when(_ % 2 == 1).map(_ + 100)
+
+  println(test.deep.when(_ % 2 == 1).map(_ + 100))
