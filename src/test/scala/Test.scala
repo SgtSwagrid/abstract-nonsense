@@ -2,6 +2,11 @@ package io.github.sgtswagrid.nonsense
 
 import io.github.sgtswagrid.nonsense.functor.{BoundedFunctorOps, FunctorOps}
 
+sealed trait AorB
+
+case class A(x: Int, y: Int) extends AorB
+case class B(name: String)   extends AorB
+
 class TestSeq[+X](val underlying: X*) extends FunctorOps[TestSeq, X]:
 
   override def map[Y](transform: X => Y): TestSeq[Y] =
@@ -17,11 +22,23 @@ object Test extends App:
     TestSeq(10, 11, 12),
   )
 
-  val test2 = TestSeq(
-    TestSeq(TestSeq(1, 2), TestSeq(3, 4)),
-    TestSeq(TestSeq(5, 6), TestSeq(7, 8)),
+  val test2 = TestSeq[TestSeq[TestSeq[AorB]]](
+    TestSeq(
+      TestSeq(A(0, 0), A(1, 2)),
+      TestSeq(A(1, 2), B("Hello, World!")),
+    ),
+    TestSeq(
+      TestSeq(B("Weird"), A(6, 7)),
+      TestSeq(A(-1, -1), A(100, 200)),
+    ),
   )
 
-  val x = test.deep.when(_ % 2 == 1).map(_ + 100)
+  val test3 = TestSeq(A(0, 1), B("Hello, World!"), A(10, 100))
 
-  println(test.deep.when(_ % 2 == 1).map(_ + 100))
+  val x = test.deep.when(_ % 2 == 1).when(x => x >= 10).map(_ + 100)
+
+  println(test2.map(_.deep.whenType[A].map(_.copy(x = -69))))
+
+  val a = test3.whenType[A].when(_.x >= 10).mapTo(true).whenType[B].map(_.name)
+
+  println(a)

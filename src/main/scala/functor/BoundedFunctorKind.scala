@@ -7,9 +7,7 @@ package functor
   * @tparam Self
   *   The kind of structure that this describes (e.g. [[List]]).
   * @tparam Codomain
-  *   The upper bound on types that may be produced by `map`.
+  *   The upper bound on `Content` following any [[BoundedFunctorOps.map]]-like
+  *   operation.
   */
-trait BoundedFunctorKind[
-  +Self[+X], // <: BoundedFunctorOps[Self, X, Codomain],
-  -Codomain,
-]
+trait BoundedFunctorKind[+Self[+_], -Codomain]
