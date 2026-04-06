@@ -12,3 +12,13 @@
 
 1. Many varieties of [functor](https://en.wikipedia.org/wiki/Functor) (covariant, contravariant, bivariant, bounded).
 2. An assortment of operators for functors, including [transformers](https://en.wikipedia.org/wiki/Monad_transformer), conditionals, numeric transformations, caching, etc.
+
+## ⬇️ Installation
+
+Add the following dependency to your `build.sbt`:
+
+```scala
+libraryDependencies += "io.github.sgtswagrid" %% "abstract-nonsense" % "0.1.0"
+```
+
+Compiled with Scala `3.8.3`, with no intention to explicitly support older versions.
