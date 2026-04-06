@@ -1,5 +1,8 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
+
+import io.github.sgtswagrid.nonsense.functor.*
+import io.github.sgtswagrid.nonsense.functor.wrapped.*
 
 import scala.reflect.ClassTag
 

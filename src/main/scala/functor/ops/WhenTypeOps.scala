@@ -1,5 +1,7 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
+
+import io.github.sgtswagrid.nonsense.functor.wrapped.{ConditionalNegatedTypeFunctor, ConditionalTypeFunctor}
 
 import scala.reflect.ClassTag
 

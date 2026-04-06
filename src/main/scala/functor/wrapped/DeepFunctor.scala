@@ -1,5 +1,7 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.wrapped
+
+import io.github.sgtswagrid.nonsense.functor.ops.BoundedFunctorOps
 
 /**
   * A functor that maps over two layers of a structure at once. Obtained by
@@ -7,12 +9,16 @@ package functor
   *
   * @param base
   *   The underlying structure.
+  *
   * @tparam Outer
   *   The outer layer of the structure.
+  *
   * @tparam Inner
   *   The inner layer of the structure.
+  *
   * @tparam Content
   *   The type of value contained within the inner layer of the structure.
+  *
   * @tparam Codomain
   *   The upper bound on types that may be produced by `map`.
   */

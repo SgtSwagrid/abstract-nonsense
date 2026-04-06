@@ -1,5 +1,7 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
+
+import io.github.sgtswagrid.nonsense.functor.wrapped.ConditionalFunctor
 
 /** The [[when]] operator for [[BoundedFunctorOps]], and its derivatives. */
 trait WhenOps[+Self[+_], +Content, -Codomain]

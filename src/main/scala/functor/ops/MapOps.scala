@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
 
 import io.github.sgtswagrid.nonsense.caching.Cache
 

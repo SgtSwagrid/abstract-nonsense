@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
 
 /** The [[mapTo]] operator for [[BoundedFunctorOps]], and its derivatives. */
 trait MapToOps[+Self[+_], +Content, -Codomain]

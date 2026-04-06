@@ -1,9 +1,10 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
 
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success}
 
+/** Type-specific variants of [[mapTo]]. */
 trait MapToXOps[+Self[+_], +Content, -Codomain]
   extends MapToOps[Self, Content, Codomain]:
 

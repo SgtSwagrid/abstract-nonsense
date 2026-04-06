@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.ops
 
 /**
   * A functor is something that can be mapped over.

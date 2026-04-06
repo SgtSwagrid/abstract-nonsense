@@ -1,9 +1,10 @@
 package io.github.sgtswagrid.nonsense
-package functor
+package functor.wrapped
 
-import javax.swing.UIDefaults.ActiveValue
+import io.github.sgtswagrid.nonsense.functor.ops.BoundedFunctorOps
 import scala.compiletime.ops.boolean.!
 import scala.reflect.ClassTag
+import javax.swing.UIDefaults.ActiveValue
 
 /**
   * A functor that only maps values that satisfy a given condition. Obtained by
