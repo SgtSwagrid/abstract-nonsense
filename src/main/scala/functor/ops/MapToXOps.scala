@@ -66,14 +66,12 @@ trait MapToXOps[+Self[+_], +Content, -Codomain]
     mapToWithEvidence(false)
 
   /** Alias for `this.mapTo(0)`. */
-  final inline def mapToZero[Result >: Content <: Codomain]
-    (using Result: Numeric[Result])
-    : Self[Result] = mapToWithEvidence(Result.zero)
+  final inline def mapToZero[Number >: Content <: Codomain : Numeric as Number]
+    : Self[Number] = mapToWithEvidence(Number.zero)
 
   /** Alias for `this.mapTo(1)`. */
-  final inline def mapToOne[Result >: Content <: Codomain]
-    (using Result: Numeric[Result])
-    : Self[Result] = mapToWithEvidence(Result.one)
+  final inline def mapToOne[Number >: Content <: Codomain : Numeric as Number]
+    : Self[Number] = mapToWithEvidence(Number.one)
 
   private inline def mapWithEvidence[Result]
     (using Result <:< Codomain)

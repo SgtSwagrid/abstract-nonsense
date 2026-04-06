@@ -3,7 +3,6 @@ package functor.ops
 
 import io.github.sgtswagrid.nonsense.functor.*
 import io.github.sgtswagrid.nonsense.functor.wrapped.*
-
 import scala.reflect.ClassTag
 
 /**
@@ -21,7 +20,8 @@ trait BoundedFunctorOps[+Self[+_], +Content, -Codomain]
           MapToXOps[Self, Content, Codomain],
           DeepOps[Self, Content, Codomain],
           WhenOps[Self, Content, Codomain],
-          WhenTypeOps[Self, Content, Codomain]:
+          WhenTypeOps[Self, Content, Codomain],
+          NumericFunctorOps[Self, Content, Codomain]:
 
   override final inline def deep[
     Outer[+X] <: BoundedFunctorOps[Outer, X, Inner[SubCodomain]],

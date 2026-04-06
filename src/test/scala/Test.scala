@@ -45,3 +45,5 @@ object Test extends App:
 
   val asdadw = test3.mapToOption[A]
   println(asdadw)
+
+  println(-TestSeq(2.0F, 3.0F, 4.0F).reciprocal)
