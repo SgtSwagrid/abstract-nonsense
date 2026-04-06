@@ -40,6 +40,6 @@ trait BoundedFunctorOps[+Self[+_], +Content, -Codomain]
     ConditionalFunctor[Self, Content, Codomain](this, condition)
 
   override final inline def whenType[Type : ClassTag]
-                                    (using Content <:< Codomain)
+    (using Content <:< Codomain)
     : ConditionalTypeFunctor[Self, Content, Type, Codomain] =
     new ConditionalTypeFunctor[Self, Content, Type, Codomain](this)
