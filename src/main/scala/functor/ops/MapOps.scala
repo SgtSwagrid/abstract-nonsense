@@ -52,3 +52,13 @@ trait MapOps[+Self[+_], +Content, -Codomain]:
     */
   final inline def eachAsInstanceOf[Result <: Codomain]: Self[Result] =
     asInstanceOf[Self[Result]]
+
+  protected inline def mapWithEvidence[Result]
+    (using Result <:< Codomain)
+    (transform: Content => Result)
+    : Self[Result] = map(transform(_).asInstanceOf[Result & Codomain])
+
+  protected inline def mapToWithEvidence[Result]
+    (using Result <:< Codomain)
+    (value: => Result)
+    : Self[Result] = mapWithEvidence(_ => value)

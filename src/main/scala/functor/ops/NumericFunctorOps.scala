@@ -64,3 +64,19 @@ trait NumericFunctorOps[+Self[+_], +Content, -Codomain]
   final inline def reciprocal[
     Number >: Content <: Codomain : Fractional as Number,
   ]: Self[Number] = map(Number.div(Number.one, _))
+
+  /**
+    * Replace each non-zero element with `true` and each zero element with
+    * `false`.
+    */
+  final inline def support[Number >: Content : Numeric as Number]
+    (using Boolean <:< Codomain)
+    : Self[Boolean] = mapWithEvidence(_ != Number.zero)
+
+  /** Replace each element with its logical negation. */
+  final inline def invert
+    (
+      using Content <:< Boolean,
+      Boolean <:< Codomain,
+    )
+    : Self[Boolean] = mapWithEvidence(value => !value)

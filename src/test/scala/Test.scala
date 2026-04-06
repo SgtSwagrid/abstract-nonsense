@@ -46,4 +46,6 @@ object Test extends App:
   val asdadw = test3.mapToOption[A]
   println(asdadw)
 
-  println(-TestSeq(2.0F, 3.0F, 4.0F).reciprocal)
+  println(-TestSeq(2.0F, 3.0F, 4.0F) * 19.0F)
+
+  println(TestSeq(1, 6, -2, 0, 43).support.invert)
