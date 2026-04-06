@@ -1,4 +1,8 @@
 <div align="center">
   <h1>🌀 Abstract Nonsense</h1>
   <p>A collection of category-theoretic base traits in Scala.</p>
+    <span>
+    <a href="https://github.com/SgtSwagrid/abstract-nonsense/actions/workflows/ci.yml"><img src="https://github.com/SgtSwagrid/abstract-nonsense/actions/workflows/build-integrity.yml/badge.svg" alt="Build status" /></a>
+    <a href="https://search.maven.org/artifact/io.github.sgtswagrid/abstract-nonsense_3"><img src="https://img.shields.io/maven-central/v/io.github.sgtswagrid/abstract-nonsense_3.svg" alt="Maven Central" /></a>
+  </span>
 </div>
