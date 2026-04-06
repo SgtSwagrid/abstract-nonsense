@@ -20,7 +20,7 @@ import scala.reflect.ClassTag
   * @tparam Codomain
   *   The upper bound on [[Content]] following any [[map]]-like operation.
   */
-class ConditionalFunctor[+Self[+X], +Content, -Codomain]
+final class ConditionalFunctor[+Self[+X], +Content, -Codomain]
   (using cast: Content <:< Codomain)
   (
     base: BoundedFunctorOps[Self, Content, Codomain],

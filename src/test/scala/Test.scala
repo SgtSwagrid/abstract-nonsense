@@ -1,6 +1,6 @@
 package io.github.sgtswagrid.nonsense
 
-import io.github.sgtswagrid.nonsense.functor.{BoundedFunctorOps, FunctorOps}
+import io.github.sgtswagrid.nonsense.functor.FunctorOps
 
 sealed trait AorB
 
@@ -37,8 +37,11 @@ object Test extends App:
 
   val x = test.deep.when(_ % 2 == 1).when(x => x >= 10).map(_ + 100)
 
-  println(test2.map(_.deep.whenType[A].map(_.copy(x = -69))))
+  println(test2.map(_.deep.when[A].map(_.copy(x = -69))))
 
-  val a = test3.whenType[A].when(_.x >= 10).mapTo(true).whenType[B].map(_.name)
+  val a = test3.when[A].when(_.x >= 10).mapTo(true).when[B].map(_.name)
 
   println(a)
+
+  val asdadw = test3.mapToOption[A]
+  println(asdadw)

@@ -4,7 +4,7 @@ package functor
 import scala.reflect.ClassTag
 
 /**
-  * A functor that only maps values that have a certain type. Obtained by
+  * A functor that only maps values that don't have a certain type. Obtained by
   * calling [[BoundedFunctorOps.when]].
   *
   * @param base
@@ -13,24 +13,28 @@ import scala.reflect.ClassTag
   *   The kind of structure that this is (e.g. [[List]]).
   * @tparam Content
   *   The type of value contained in this structure (e.g. [[Int]]).
-  * @tparam Active
-  *   The subtype of [[Content]] that is being modified.
+  * @tparam Inactive
+  *   The subtype of [[Content]] that is left unmodified.
   * @tparam Codomain
   *   The upper bound on [[Content]] following any [[map]]-like operation.
   */
-final class ConditionalTypeFunctor[
+final class ConditionalNegatedTypeFunctor[
   +Self[+X],
   +Content,
-  +Active : ClassTag,
+  +Inactive : ClassTag,
   -Codomain,
 ]
   (base: BoundedFunctorOps[Self, Content, Codomain])
-  extends BoundedFunctorOps[[X] =>> Self[X | Content], Active, Codomain]:
+  extends BoundedFunctorOps[
+    [X] =>> Self[X | Inactive],
+    Content,
+    Codomain,
+  ]:
 
   override def map[Result <: Codomain]
-    (transform: Active => Result)
-    : Self[Result | Content] = base.map:
-    case value: Active => transform(value)
-    case value         => value.asInstanceOf[Content & Codomain]
+    (transform: Content => Result)
+    : Self[Result | Inactive] = base.map:
+    case value: Inactive => value.asInstanceOf[Inactive & Codomain]
+    case value           => transform(value)
 
   override def toString = base.toString

@@ -3,7 +3,7 @@ package functor
 
 import scala.reflect.ClassTag
 
-/** The [[whenType]] operator for [[BoundedFunctorOps]], and its derivatives. */
+/** The [[when]] operator for [[BoundedFunctorOps]], and its derivatives. */
 trait WhenTypeOps[+Self[+_], +Content, -Codomain]:
 
   /**
@@ -16,16 +16,29 @@ trait WhenTypeOps[+Self[+_], +Content, -Codomain]:
     * @see
     *   [[BoundedFunctorOps.when]] to filter by predicate rather than type.
     */
-  def whenType[Type : ClassTag](using Content <:< Codomain)
+  def when[Type : ClassTag]
     : ConditionalTypeFunctor[Self, Content, Type, Codomain]
+
+  /**
+    * Provides a view of this structure that prevents elements of a certain
+    * [[Type]] from being modified.
+    *
+    * @tparam Type
+    *   The type of element to not modify.
+    *
+    * @see
+    *   [[BoundedFunctorOps.when]] to filter by predicate rather than type.
+    */
+  def whenNot[Type : ClassTag]
+    : ConditionalNegatedTypeFunctor[Self, Content, Type, Codomain]
 
   /**
     * Alias for `this.whenType[Type].map(transform)`.
     *
     * @see
-    *   [[whenType]]
+    *   [[when]]
     */
   final inline def mapType[Type : ClassTag, Result <: Codomain]
     (using Content <:< Codomain)
     (transform: Type => Result)
-    : Self[Result | Content] = whenType[Type].map(transform)
+    : Self[Result | Content] = when[Type].map(transform)

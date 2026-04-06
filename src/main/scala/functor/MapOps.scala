@@ -14,7 +14,7 @@ trait MapOps[+Self[+_], +Content, -Codomain]:
     * implicitly as
     * [context](https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html).
     */
-  final def mapCtx[Result <: Codomain]
+  final inline def mapCtx[Result <: Codomain]
     (transform: Content ?=> Result)
     : Self[Result] = map(value => transform(using value))
 

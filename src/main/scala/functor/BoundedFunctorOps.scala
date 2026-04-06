@@ -15,7 +15,7 @@ import scala.reflect.ClassTag
   */
 trait BoundedFunctorOps[+Self[+_], +Content, -Codomain]
   extends BoundedFunctorKind[Self, Codomain],
-          MapToOps[Self, Content, Codomain],
+          MapToXOps[Self, Content, Codomain],
           DeepOps[Self, Content, Codomain],
           WhenOps[Self, Content, Codomain],
           WhenTypeOps[Self, Content, Codomain]:
@@ -39,7 +39,10 @@ trait BoundedFunctorOps[+Self[+_], +Content, -Codomain]
     : ConditionalFunctor[Self, Content, Codomain] =
     ConditionalFunctor[Self, Content, Codomain](this, condition)
 
-  override final inline def whenType[Type : ClassTag]
-    (using Content <:< Codomain)
+  override final inline def when[Type : ClassTag]
     : ConditionalTypeFunctor[Self, Content, Type, Codomain] =
     new ConditionalTypeFunctor[Self, Content, Type, Codomain](this)
+
+  override final inline def whenNot[Type : ClassTag]
+    : ConditionalNegatedTypeFunctor[Self, Content, Type, Codomain] =
+    new ConditionalNegatedTypeFunctor[Self, Content, Type, Codomain](this)

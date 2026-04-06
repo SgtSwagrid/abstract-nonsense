@@ -2,7 +2,8 @@ package io.github.sgtswagrid.nonsense
 package functor
 
 /** The [[when]] operator for [[BoundedFunctorOps]], and its derivatives. */
-trait WhenOps[+Self[+_], +Content, -Codomain]:
+trait WhenOps[+Self[+_], +Content, -Codomain]
+  extends MapOps[Self, Content, Codomain]:
 
   /**
     * Provides a view of this structure that only allows elements matching a
@@ -30,7 +31,7 @@ trait WhenOps[+Self[+_], +Content, -Codomain]:
     *   }}}
     *
     * @see
-    *   [[BoundedFunctorOps.whenType]] to filter by type rather than predicate.
+    * [[BoundedFunctorOps.when]] to filter by type rather than predicate.
     */
   def when(using Content <:< Codomain)(condition: Content => Boolean)
     : ConditionalFunctor[Self, Content, Codomain]
@@ -77,3 +78,17 @@ trait WhenOps[+Self[+_], +Content, -Codomain]:
   final inline def mapPartial[Result >: Content <: Codomain]
     (transform: PartialFunction[Content, Result])
     : Self[Result] = when(transform.isDefinedAt).map(transform)
+
+  /**
+    * Alias for
+    * `this.when(transform(transform(_).isDefined).map(transform(_).get)`.
+    *
+    * @see
+    *   [[when]]
+    */
+  final inline def mapWhenSome[Result >: Content <: Codomain]
+    (transform: Content => Option[Result])
+    : Self[Result] = map: value =>
+    transform(value) match
+      case Some(transformed) => transformed
+      case None              => value
