@@ -2,9 +2,6 @@ package io.github.sgtswagrid.nonsense
 package functor.covariant.wrapped
 
 import io.github.sgtswagrid.nonsense.functor.covariant.ops.BoundedFunctorOps
-import scala.compiletime.ops.boolean.!
-import scala.reflect.ClassTag
-import javax.swing.UIDefaults.ActiveValue
 
 /**
   * A functor that only maps values that satisfy a given condition. Obtained by
