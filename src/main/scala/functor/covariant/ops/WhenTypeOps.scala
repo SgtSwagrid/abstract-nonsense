@@ -1,8 +1,9 @@
 package io.github.sgtswagrid.nonsense
-package functor.ops
+package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.wrapped.{ConditionalNegatedTypeFunctor, ConditionalTypeFunctor}
-
+import io.github.sgtswagrid.nonsense.functor.covariant.wrapped.{
+  ConditionalNegatedTypeFunctor, ConditionalTypeFunctor,
+}
 import scala.reflect.ClassTag
 
 /** The [[when]] operator for [[BoundedFunctorOps]], and its derivatives. */

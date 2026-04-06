@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor.ops
+package functor.covariant.ops
 
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success}

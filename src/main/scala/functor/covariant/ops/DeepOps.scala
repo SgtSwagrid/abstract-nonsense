@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
-package functor.ops
+package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.wrapped.DeepFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.wrapped.DeepFunctor
 
 /** The [[deep]] operator for [[BoundedFunctorOps]], and its derivatives. */
 trait DeepOps[+Self[+_], +Content, -Codomain]:

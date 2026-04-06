@@ -1,8 +1,8 @@
 package io.github.sgtswagrid.nonsense
-package functor.ops
+package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.*
-import io.github.sgtswagrid.nonsense.functor.wrapped.*
+import io.github.sgtswagrid.nonsense.functor.covariant.*
+import io.github.sgtswagrid.nonsense.functor.covariant.wrapped.*
 import scala.reflect.ClassTag
 
 /**

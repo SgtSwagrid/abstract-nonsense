@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
-package functor.ops
+package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.wrapped.ConditionalFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.wrapped.ConditionalFunctor
 
 /** The [[when]] operator for [[BoundedFunctorOps]], and its derivatives. */
 trait WhenOps[+Self[+_], +Content, -Codomain]
@@ -33,7 +33,7 @@ trait WhenOps[+Self[+_], +Content, -Codomain]
     *   }}}
     *
     * @see
-    * [[BoundedFunctorOps.when]] to filter by type rather than predicate.
+    *   [[BoundedFunctorOps.when]] to filter by type rather than predicate.
     */
   def when(using Content <:< Codomain)(condition: Content => Boolean)
     : ConditionalFunctor[Self, Content, Codomain]

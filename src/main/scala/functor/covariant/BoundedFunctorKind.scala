@@ -1,14 +1,12 @@
 package io.github.sgtswagrid.nonsense
-package functor
-
-import io.github.sgtswagrid.nonsense.functor.ops.BoundedFunctorOps
+package functor.covariant
 
 /**
-  * A shape for [[BoundedFunctorOps]].
+  * A shape for [[ops.BoundedFunctorOps]].
   *
   * @tparam Self
   *   The kind of structure that this describes (e.g. [[List]]).
- *
+  *
   * @tparam Codomain
   *   The upper bound on `Content` following any [[BoundedFunctorOps.map]]-like
   *   operation.

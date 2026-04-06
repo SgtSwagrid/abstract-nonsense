@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
-package functor.wrapped
+package functor.covariant.wrapped
 
-import io.github.sgtswagrid.nonsense.functor.ops.BoundedFunctorOps
+import io.github.sgtswagrid.nonsense.functor.covariant.ops.BoundedFunctorOps
 import scala.reflect.ClassTag
 
 /**

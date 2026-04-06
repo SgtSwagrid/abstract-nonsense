@@ -1,6 +1,6 @@
 package io.github.sgtswagrid.nonsense
 
-import io.github.sgtswagrid.nonsense.functor.ops.FunctorOps
+import io.github.sgtswagrid.nonsense.functor.covariant.ops.FunctorOps
 
 sealed trait AorB
 

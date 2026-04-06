@@ -1,10 +1,10 @@
 package io.github.sgtswagrid.nonsense
-package functor.ops
+package functor.covariant.ops
 
 trait NumericFunctorOps[+Self[+_], +Content, -Codomain]
   extends MapOps[Self, Content, Codomain]:
 
-  /** Replace each element with a version scaled by [[scale]]. */
+  /** Replace each element with a version scaled by [[factor]]. */
   final inline def scale[Number >: Content <: Codomain : Numeric as Number]
     (factor: Number)
     : Self[Number] = map(Number.times(_, factor))
@@ -41,8 +41,8 @@ trait NumericFunctorOps[+Self[+_], +Content, -Codomain]
 
   /** Alias for [[mod]]. */
   final inline infix def % [Number >: Content <: Codomain : Integral as Number]
-    (divisor: Number)
-    : Self[Number] = mod(divisor)
+    (base: Number)
+    : Self[Number] = mod(base)
 
   /** Replace each element with its additive inverse. */
   final inline def negate[Number >: Content <: Codomain : Numeric as Number]
