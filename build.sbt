@@ -31,7 +31,7 @@ ThisBuild / developers := List(Developer(
   url = url("https://github.com/SgtSwagrid"),
 ))
 
-ThisBuild / scalaVersion := "3.8.2"
+ThisBuild / scalaVersion := "3.8.3"
 
 // Target the Sonatype Central Portal (https://central.sonatype.com).
 // Set SONATYPE_USERNAME and SONATYPE_PASSWORD as GitHub secrets.
