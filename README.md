@@ -6,3 +6,9 @@
     <a href="https://search.maven.org/artifact/io.github.sgtswagrid/abstract-nonsense_3"><img src="https://img.shields.io/maven-central/v/io.github.sgtswagrid/abstract-nonsense_3.svg" alt="Maven Central" /></a>
   </span>
 </div>
+
+## 📋 What's included?
+(This list will be continually expanded.)
+
+1. Many varieties of [functor](https://en.wikipedia.org/wiki/Functor) (covariant, contravariant, bivariant, bounded).
+2. An assortment of operators for functors, including [transformers](https://en.wikipedia.org/wiki/Monad_transformer), conditionals, numeric transformations, caching, etc.
