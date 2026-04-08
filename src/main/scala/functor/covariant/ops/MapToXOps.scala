@@ -5,8 +5,8 @@ import scala.reflect.ClassTag
 import scala.util.{Failure, Success}
 
 /** Type-specific variants of [[mapTo]]. */
-trait MapToXOps[+Self[+_], +Output, -Codomain]
-  extends MapToOps[Self, Output, Codomain]:
+trait MapToXOps[+Self[+_], -Codomain, +Output]
+  extends MapToOps[Self, Codomain, Output]:
 
   /** Alias for `this.mapTo(None)`. */
   final inline def mapToNone(using None.type <:< Codomain): Self[None.type] =

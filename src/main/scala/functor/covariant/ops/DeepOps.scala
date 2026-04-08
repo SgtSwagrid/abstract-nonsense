@@ -5,7 +5,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
 
 /** The [[deep]] operator for [[BoundedFunctor]], and its derivatives. */
-trait DeepOps[+Self[+_], +Output, -Codomain]:
+trait DeepOps[+Self[+_], -Codomain, +Output]:
 
   /**
     * Provides a view of this structure that combines the two outermost layers

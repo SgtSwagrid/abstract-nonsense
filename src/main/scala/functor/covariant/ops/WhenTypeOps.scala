@@ -7,7 +7,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.views.{
 import scala.reflect.ClassTag
 
 /** The [[when]] operator for [[BoundedFunctor]], and its derivatives. */
-trait WhenTypeOps[+Self[+_], +Output, -Codomain]:
+trait WhenTypeOps[+Self[+_], -Codomain, +Output]:
 
   /**
     * Provides a view of this structure that only allows elements of a certain

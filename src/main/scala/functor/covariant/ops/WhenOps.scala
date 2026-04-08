@@ -5,8 +5,8 @@ import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.views.ConditionalFunctorView
 
 /** The [[when]] operator for [[BoundedFunctor]], and its derivatives. */
-trait WhenOps[+Self[+_], +Output, -Codomain]
-  extends MapOps[Self, Output, Codomain]:
+trait WhenOps[+Self[+_], -Codomain, +Output]
+  extends MapOps[Self, Codomain, Output]:
 
   /**
     * Provides a view of this structure that only allows elements matching a

@@ -19,11 +19,11 @@ import scala.reflect.ClassTag
   *   The type of value contained in this structure (e.g. [[Int]]).
   */
 trait BoundedFunctor[+Self[+_], -Codomain, +Output]
-  extends MapToXOps[Self, Output, Codomain],
-          WhenOps[Self, Output, Codomain],
-          WhenTypeOps[Self, Output, Codomain],
-          DeepOps[Self, Output, Codomain],
-          NumericFunctorOps[Self, Output, Codomain]:
+  extends MapToXOps[Self, Codomain, Output],
+          WhenOps[Self, Codomain, Output],
+          WhenTypeOps[Self, Codomain, Output],
+          DeepOps[Self, Codomain, Output],
+          NumericFunctorOps[Self, Codomain, Output]:
 
   override final inline def when
     (using Output <:< Codomain)

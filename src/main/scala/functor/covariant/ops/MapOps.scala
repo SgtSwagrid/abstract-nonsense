@@ -4,7 +4,7 @@ package functor.covariant.ops
 import io.github.sgtswagrid.nonsense.caching.Cache
 
 /** The [[map]] operator for [[BoundedFunctor]], and its derivatives. */
-trait MapOps[+Self[+_], +Output, -Codomain]:
+trait MapOps[+Self[+_], -Codomain, +Output]:
 
   /** Transform the contents arbitrarily. */
   def map[Post <: Codomain](transform: Output => Post): Self[Post]
