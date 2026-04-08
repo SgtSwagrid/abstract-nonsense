@@ -1,0 +1,42 @@
+package io.github.sgtswagrid.nonsense
+package functor.covariant.views
+
+import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+import scala.reflect.ClassTag
+
+/**
+  * A functor that only maps values that have a certain type. Obtained by
+  * calling [[BoundedFunctor.when]].
+  *
+  * @param base
+  *   The underlying structure.
+  *
+  * @tparam Self
+  *   The kind of structure that this is (e.g. [[List]]).
+  *
+  * @tparam Codomain
+  *   The upper bound on [[Output]] following any [[BoundedFunctor.map]]-like
+  *   operation.
+  *
+  * @tparam Output
+  *   The type of value contained in this structure (e.g. [[Int]]).
+  *
+  * @tparam Active
+  *   The subtype of [[Output]] that is being modified.
+  */
+final class TypeFunctorView[
+  +Self[+X],
+  -Codomain,
+  +Output,
+  +Active : ClassTag,
+]
+  (base: BoundedFunctor[Self, Codomain, Output])
+  extends BoundedFunctor[[X] =>> Self[X | Output], Codomain, Active]:
+
+  override def map[Post <: Codomain]
+    (transform: Active => Post)
+    : Self[Post | Output] = base.map:
+    case value: Active => transform(value)
+    case value         => value.asInstanceOf[Output & Codomain]
+
+  override def toString = base.toString

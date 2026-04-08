@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor.contravariant.ops
+package functor.contravariant
 
 /**
   * A contravariant functor is something that can be contra-mapped over.
@@ -9,10 +9,11 @@ package functor.contravariant.ops
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. `Sink`).
-  * @tparam Content
+  *
+  * @tparam Input
   *   The type of value that can be handled by this structure (e.g. `Event`).
   */
-trait ContraFunctorOps[
-  +Self[-X] <: ContraFunctorOps[Self, X],
-  -Content,
-] extends BoundedContraFunctorOps[Self, Content, Nothing]
+trait ContraFunctor[
+  +Self[-X] <: ContraFunctor[Self, X],
+  -Input,
+] extends BoundedContraFunctor[Self, Nothing, Input]

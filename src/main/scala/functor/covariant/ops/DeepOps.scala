@@ -1,24 +1,23 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.covariant.wrapped.DeepFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
 
-/** The [[deep]] operator for [[BoundedFunctorOps]], and its derivatives. */
-trait DeepOps[+Self[+_], +Content, -Codomain]:
+/** The [[deep]] operator for [[BoundedFunctor]], and its derivatives. */
+trait DeepOps[+Self[+_], +Output, -Codomain]:
 
   /**
     * Provides a view of this structure that combines the two outermost layers
     * into one, allowing them to be mapped over together.
     *
     * @note
-    *   Following any [[BoundedFunctorOps.map]]-like operation, the structure
-    *   will be returned to its original form. The merger will thereafter be
+    *   Following any [[BoundedFunctor.map]]-like operation, the structure will
+    *   be returned to its original form. The merger will thereafter be
     *   forgotten.
-    *
     * @note
     *   Consecutive calls to [[deep]] will merge more layers together, allowing
     *   for mapping over deeper structures.
-    *
     * @example
     *   {{{
     * val a = List(List(1, 2), List(3))
@@ -29,16 +28,16 @@ trait DeepOps[+Self[+_], +Content, -Codomain]:
     *   }}}
     */
   def deep[
-    Outer[+X] <: BoundedFunctorOps[Outer, X, Inner[SubCodomain]],
-    Inner[+X] <: BoundedFunctorOps[Inner, X, SubCodomain],
-    SubContent <: SubCodomain,
-    SubCodomain,
+    Outer[+X] <: BoundedFunctor[Outer, Inner[InnerCodomain], X],
+    Inner[+X] <: BoundedFunctor[Inner, InnerCodomain, X],
+    InnerCodomain,
+    InnerOutput <: InnerCodomain,
   ]
     (
-      using Content <:< (Codomain & Inner[SubContent]),
-      Self[Inner[SubContent]] <:< Outer[Inner[SubContent]],
+      using Output <:< (Codomain & Inner[InnerOutput]),
+      Self[Inner[InnerOutput]] <:< Outer[Inner[InnerOutput]],
     )
-    : DeepFunctor[Outer, Inner, SubContent, SubCodomain]
+    : DeepFunctorView[Outer, Inner, InnerCodomain, InnerOutput]
 
   /**
     * Alias for `this.deep.map(transform)`.
@@ -46,15 +45,15 @@ trait DeepOps[+Self[+_], +Content, -Codomain]:
     *   [[deep]]
     */
   final inline def deepMap[
-    Outer[+X] <: BoundedFunctorOps[Outer, X, Inner[SubCodomain]],
-    Inner[+X] <: BoundedFunctorOps[Inner, X, SubCodomain],
-    SubContent <: SubCodomain,
-    SubCodomain,
-    Result <: SubCodomain,
+    Outer[+X] <: BoundedFunctor[Outer, Inner[InnerCodomain], X],
+    Inner[+X] <: BoundedFunctor[Inner, InnerCodomain, X],
+    InnerCodomain,
+    InnerOutput <: InnerCodomain,
+    InnerResult <: InnerCodomain,
   ]
     (
-      using Content <:< (Codomain & Inner[SubContent]),
-      Self[Inner[SubContent]] <:< Outer[Inner[SubContent]],
+      using Output <:< (Codomain & Inner[InnerOutput]),
+      Self[Inner[InnerOutput]] <:< Outer[Inner[InnerOutput]],
     )
-    (transform: SubContent => Result)
-    : Outer[Inner[Result]] = deep.map(transform)
+    (transform: InnerOutput => InnerResult)
+    : Outer[Inner[InnerResult]] = deep.map(transform)

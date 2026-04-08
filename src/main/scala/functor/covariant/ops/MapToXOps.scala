@@ -5,8 +5,8 @@ import scala.reflect.ClassTag
 import scala.util.{Failure, Success}
 
 /** Type-specific variants of [[mapTo]]. */
-trait MapToXOps[+Self[+_], +Content, -Codomain]
-  extends MapToOps[Self, Content, Codomain]:
+trait MapToXOps[+Self[+_], +Output, -Codomain]
+  extends MapToOps[Self, Output, Codomain]:
 
   /** Alias for `this.mapTo(None)`. */
   final inline def mapToNone(using None.type <:< Codomain): Self[None.type] =
@@ -14,14 +14,14 @@ trait MapToXOps[+Self[+_], +Content, -Codomain]
 
   /** Alias for `this.map(Some.apply)`. */
   final inline def mapToSome
-    (using Some[Content] <:< Codomain)
-    : Self[Some[Content]] = mapWithEvidence(Some.apply)
+    (using Some[Output] <:< Codomain)
+    : Self[Some[Output]] = mapWithEvidence(Some.apply)
 
   /** Alias for `this.map(value => Option.when(condition(value))(value))`. */
   final inline def mapToOption
-    (using Option[Content] <:< Codomain)
-    (condition: Content => Boolean)
-    : Self[Option[Content]] =
+    (using Option[Output] <:< Codomain)
+    (condition: Output => Boolean)
+    : Self[Option[Output]] =
     mapWithEvidence(value => Option.when(condition(value))(value))
 
   final inline def mapToOption[Type <: Codomain : ClassTag]
@@ -32,24 +32,24 @@ trait MapToXOps[+Self[+_], +Content, -Codomain]
 
   /** Alias for `this.map(Left.apply)`. */
   final inline def mapToLeft
-    (using Left[Content, Nothing] <:< Codomain)
-    : Self[Left[Content, Nothing]] = mapWithEvidence(Left.apply)
+    (using Left[Output, Nothing] <:< Codomain)
+    : Self[Left[Output, Nothing]] = mapWithEvidence(Left.apply)
 
   /** Alias for `this.map(Right.apply)`. */
   final inline def mapToRight
-    (using Right[Nothing, Content] <:< Codomain)
-    : Self[Right[Nothing, Content]] = mapWithEvidence(Right.apply)
+    (using Right[Nothing, Output] <:< Codomain)
+    : Self[Right[Nothing, Output]] = mapWithEvidence(Right.apply)
 
   /** Alias for `this.map(Success.apply)`. */
   final inline def mapToSuccess
-    (using Success[Content] <:< Codomain)
-    : Self[Success[Content]] = mapWithEvidence(Success.apply)
+    (using Success[Output] <:< Codomain)
+    : Self[Success[Output]] = mapWithEvidence(Success.apply)
 
   /** Alias for `this.map(Failure.apply)`. */
-  final inline def mapToFailure[Error >: Content]
+  final inline def mapToFailure[Error >: Output]
     (
       using Failure[Error] <:< Codomain,
-      Content <:< Throwable,
+      Output <:< Throwable,
     )
     : Self[Failure[Error]] = mapWithEvidence(Failure.apply)
 
@@ -66,9 +66,9 @@ trait MapToXOps[+Self[+_], +Content, -Codomain]
     mapToWithEvidence(false)
 
   /** Alias for `this.mapTo(0)`. */
-  final inline def mapToZero[Number >: Content <: Codomain : Numeric as Number]
+  final inline def mapToZero[Number >: Output <: Codomain : Numeric as Number]
     : Self[Number] = mapToWithEvidence(Number.zero)
 
   /** Alias for `this.mapTo(1)`. */
-  final inline def mapToOne[Number >: Content <: Codomain : Numeric as Number]
+  final inline def mapToOne[Number >: Output <: Codomain : Numeric as Number]
     : Self[Number] = mapToWithEvidence(Number.one)

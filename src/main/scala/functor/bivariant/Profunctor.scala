@@ -1,9 +1,8 @@
 package io.github.sgtswagrid.nonsense
-package functor.bivariant.ops
+package functor.bivariant
 
 /**
-  * A bivariant functor is something that can be both mapped and contra-mapped
-  * over.
+  * A profunctor is something that can be both mapped and contra-mapped over.
   *
   * Any implementation need only define [[map]] and [[contraMap]], and
   * everything else will be derived from those.
@@ -17,5 +16,8 @@ package functor.bivariant.ops
   * @tparam Output
   *   The type of value that this structure can produce (e.g. `Action`).
   */
-trait BiFunctorOps[+Self[-_, +_], -Input, +Output]
-  extends BoundedBiFunctorOps[Self, Input, Output, Nothing, Any]
+trait Profunctor[
+  +Self[-I, +O] <: Profunctor[Self, I, O],
+  -Input,
+  +Output,
+] extends BoundedProfunctor[Self, Nothing, Any, Input, Output]

@@ -3,20 +3,20 @@ package functor.covariant.ops
 
 import io.github.sgtswagrid.nonsense.caching.Cache
 
-/** The [[map]] operator for [[BoundedFunctorOps]], and its derivatives. */
-trait MapOps[+Self[+_], +Content, -Codomain]:
+/** The [[map]] operator for [[BoundedFunctor]], and its derivatives. */
+trait MapOps[+Self[+_], +Output, -Codomain]:
 
   /** Transform the contents arbitrarily. */
-  def map[Result <: Codomain](transform: Content => Result): Self[Result]
+  def map[Post <: Codomain](transform: Output => Post): Self[Post]
 
   /**
     * A version of [[map]] where the input to [[transform]] is provided
     * implicitly as
     * [context](https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html).
     */
-  final inline def mapCtx[Result <: Codomain]
-    (transform: Content ?=> Result)
-    : Self[Result] = map(value => transform(using value))
+  final inline def mapCtx[Post <: Codomain]
+    (transform: Output ?=> Post)
+    : Self[Post] = map(value => transform(using value))
 
   /**
     * A version of [[map]] where [[transform]] is cached so as to prevent
@@ -26,9 +26,9 @@ trait MapOps[+Self[+_], +Content, -Codomain]:
     *   All outputs of [[transform]] will be kept in memory until the returned
     *   structure is garbage-collected.
     */
-  final inline def mapWithCache[Result <: Codomain]
-    (transform: Content => Result)
-    : Self[Result] = map(Cache.memoise(transform))
+  final inline def mapWithCache[Post <: Codomain]
+    (transform: Output => Post)
+    : Self[Post] = map(Cache.memoise(transform))
 
   /**
     * Performs a side effect for each contained value.
@@ -37,28 +37,32 @@ trait MapOps[+Self[+_], +Content, -Codomain]:
     *   Equivalent to `this.map{ value => effect(value); value }`.
     */
   final inline def forEach
-    (using Content <:< Codomain)
-    (effect: Content => Any)
-    : Self[Content] = map: value =>
+    (using Output <:< Codomain)
+    (effect: Output => Any)
+    : Self[Output] = mapWithEvidence: value =>
     effect(value)
-    value.asInstanceOf[Content & Codomain]
+    value
 
   /**
-    * Casts each element of this structure to type [[Result]].
+    * Casts each element of this structure to type [[Post]].
     *
     * @note
-    *   Equivalent to, but more efficient than
-    *   `this.map(_.asInstanceOf[Result])`.
+    *   Equivalent to, but more efficient than `this.map(_.asInstanceOf[Post])`.
     */
-  final inline def eachAsInstanceOf[Result <: Codomain]: Self[Result] =
-    asInstanceOf[Self[Result]]
+  final inline def eachAsInstanceOf[Post <: Codomain]: Self[Post] =
+    asInstanceOf[Self[Post]]
 
-  protected inline def mapWithEvidence[Result]
-    (using Result <:< Codomain)
-    (transform: Content => Result)
-    : Self[Result] = map(transform(_).asInstanceOf[Result & Codomain])
+  /** Split a structure of pairs into a pair of structures. */
+  final inline def unzip[Left <: Codomain, Right <: Codomain]
+    (using split: Output <:< (Left, Right))
+    : (Self[Left], Self[Right]) = (map(split(_)(0)), map(split(_)(1)))
 
-  protected inline def mapToWithEvidence[Result]
-    (using Result <:< Codomain)
-    (value: => Result)
-    : Self[Result] = mapWithEvidence(_ => value)
+  protected inline def mapWithEvidence[Post]
+    (using Post <:< Codomain)
+    (transform: Output => Post)
+    : Self[Post] = map(transform(_).asInstanceOf[Post & Codomain])
+
+  protected inline def mapToWithEvidence[Post]
+    (using Post <:< Codomain)
+    (value: => Post)
+    : Self[Post] = mapWithEvidence(_ => value)

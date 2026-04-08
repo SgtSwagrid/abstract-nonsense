@@ -1,13 +1,14 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
-/** The [[mapTo]] operator for [[BoundedFunctorOps]], and its derivatives. */
-trait MapToOps[+Self[+_], +Content, -Codomain]
-  extends MapOps[Self, Content, Codomain]:
+import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+
+/** The [[mapTo]] operator for [[BoundedFunctor]], and its derivatives. */
+trait MapToOps[+Self[+_], +Output, -Codomain]
+  extends MapOps[Self, Output, Codomain]:
 
   /** Ignore the existing value and take a new [[value]] instead. */
-  final def mapTo[Result <: Codomain](value: Result): Self[Result] =
-    map(_ => value)
+  final def mapTo[Post <: Codomain](value: Post): Self[Post] = map(_ => value)
 
   /**
     * Ignore the existing value and take a new [[value]] instead.
@@ -15,7 +16,7 @@ trait MapToOps[+Self[+_], +Content, -Codomain]
     * @note
     *   [[value]] is evaluated at most once, upon first use.
     */
-  final def mapToLazy[Result <: Codomain](value: => Result): Self[Result] =
+  final def mapToLazy[Post <: Codomain](value: => Post): Self[Post] =
     lazy val cache = value
     map(_ => cache)
 
@@ -25,5 +26,5 @@ trait MapToOps[+Self[+_], +Content, -Codomain]
     * @note
     *   [[value]] is re-evaluated upon every use.
     */
-  final def mapToGenerator[Result <: Codomain](value: => Result): Self[Result] =
+  final def mapToGenerator[Post <: Codomain](value: => Post): Self[Post] =
     map(_ => value)

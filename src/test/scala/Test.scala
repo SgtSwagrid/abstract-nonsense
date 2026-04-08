@@ -1,13 +1,13 @@
 package io.github.sgtswagrid.nonsense
 
-import io.github.sgtswagrid.nonsense.functor.covariant.ops.FunctorOps
+import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 
 sealed trait AorB
 
 case class A(x: Int, y: Int) extends AorB
 case class B(name: String)   extends AorB
 
-class TestSeq[+X](val underlying: X*) extends FunctorOps[TestSeq, X]:
+class TestSeq[+X](val underlying: X*) extends Functor[TestSeq, X]:
 
   override def map[Y](transform: X => Y): TestSeq[Y] =
     new TestSeq(underlying.map(transform)*)
@@ -49,3 +49,5 @@ object Test extends App:
   println(-TestSeq(2.0F, 3.0F, 4.0F) * 19.0F)
 
   println(TestSeq(1, 6, -2, 0, 43).support.invert)
+
+  println(TestSeq((1, "A"), (2, "B"), (3, "C")).unzip)

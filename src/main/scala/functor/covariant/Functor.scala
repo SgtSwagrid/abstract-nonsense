@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor.covariant.ops
+package functor.covariant
 
 /**
   * A functor is something that can be mapped over.
@@ -14,10 +14,8 @@ package functor.covariant.ops
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[List]]).
-  * @tparam Content
+  *
+  * @tparam Output
   *   The type of value contained in this structure (e.g. [[Int]]).
   */
-trait FunctorOps[
-  +Self[+X] <: FunctorOps[Self, X],
-  +Content,
-] extends BoundedFunctorOps[Self, Content, Any]
+trait Functor[+Self[+_], +Output] extends BoundedFunctor[Self, Any, Output]
