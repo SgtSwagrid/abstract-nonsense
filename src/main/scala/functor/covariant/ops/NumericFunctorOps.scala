@@ -5,7 +5,7 @@ trait NumericFunctorOps[+Self[+_], -Codomain, +Output <: Codomain]
   extends MapOps[Self, Codomain, Output]:
 
   /** Replace each element with a version scaled by [[factor]]. */
-  final inline def scale[Number >: Output <: Codomain : Numeric as Number]
+  inline def scale[Number >: Output <: Codomain : Numeric as Number]
     (factor: Number)
     : Self[Number] = map(Number.times(_, factor))
 
@@ -45,7 +45,7 @@ trait NumericFunctorOps[+Self[+_], -Codomain, +Output <: Codomain]
     : Self[Number] = mod(base)
 
   /** Replace each element with its additive inverse. */
-  final inline def negate[Number >: Output <: Codomain : Numeric as Number]
+  inline def negate[Number >: Output <: Codomain : Numeric as Number]
     : Self[Number] = map(Number.negate)
 
   /** Alias for [[negate]]. */
