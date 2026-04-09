@@ -10,7 +10,7 @@ import io.github.sgtswagrid.nonsense.function.Bijection.<=>
   *   - Injective: `∀ i₁, i₂ ∈ In . i₁ ≠ i₂ ⇒ f(i₁) ≠ f(i₂)`
   *   - Surjective: `∀ o ∈ Out ∃ i ∈ In . f(i) = o`
   *
-  * Can be used as an ordinary function `A => B`, or otherwise call [[invert]]
+  * Can be used as an ordinary function `A => B`, or otherwise call [[inverse]]
   * to obtain the inverse bijection.
   *
   * @tparam In
@@ -36,7 +36,35 @@ trait Bijection[In, Out] extends (In => Out):
     *   Whether the inverse is computed by this operator, or is simply known in
     *   advance and returned as-is, depends on the underlying type.
     */
-  def invert: Out <=> In
+  def inverse: Out <=> In
+
+  /**
+    * Composes two instances of [[Bijection]] into a new [[Bijection]], with
+    * this one applied last.
+    *
+    * @note
+    *   Specialises [[Function.compose]] for the case where both operands are
+    *   invertible, in which case the composition is also invertible.
+    */
+  inline infix def compose[Pre](that: Pre <=> In): Bijection[Pre, Out] =
+    Bijection.Explicit(
+      x => this(that(x)),
+      x => that.inverse(this.inverse(x)),
+    )
+
+  /**
+    * Composes two instances of [[Bijection]] into a new [[Bijection]], with
+    * this one applied first.
+    *
+    * @note
+    *   Specialises [[Function.andThen]] for the case where both operands are
+    *   invertible, in which case the composition is also invertible.
+    */
+  inline infix def andThen[Post](that: Out <=> Post): Bijection[In, Post] =
+    Bijection.Explicit(
+      x => that(this(x)),
+      x => this.inverse(that.inverse(x)),
+    )
 
 object Bijection:
 
@@ -70,4 +98,4 @@ object Bijection:
 
     override final inline def apply(value: In): Out = forward(value)
 
-    override final inline def invert: Out <=> In = Explicit(backward, forward)
+    override final inline def inverse: Out <=> In = Explicit(backward, forward)
