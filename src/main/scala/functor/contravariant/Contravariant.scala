@@ -13,7 +13,5 @@ package functor.contravariant
   * @tparam Input
   *   The type of value that can be handled by this structure (e.g. `Event`).
   */
-trait Contravariant[
-  +Self[-X] <: Contravariant[Self, X],
-  -Input,
-] extends BoundedContravariant[Self, Nothing, Input]
+trait Contravariant[+Self[-_], -Input]
+  extends BoundedContravariant[Self, Nothing, Input]

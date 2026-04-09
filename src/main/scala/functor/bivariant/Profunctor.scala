@@ -20,8 +20,5 @@ package functor.bivariant
   *   [[io.github.sgtswagrid.nonsense.functor.covariant.Bifunctor]] for a
   *   variant that is covariant in both of the type parameters.
   */
-trait Profunctor[
-  +Self[-I, +O] <: Profunctor[Self, I, O],
-  -Input,
-  +Output,
-] extends BoundedProfunctor[Self, Nothing, Any, Input, Output]
+trait Profunctor[+Self[-_, +_], -Input, +Output]
+  extends BoundedProfunctor[Self, Nothing, Any, Input, Output]
