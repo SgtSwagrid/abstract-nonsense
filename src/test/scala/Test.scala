@@ -18,10 +18,8 @@ class TestSeq[+X](val underlying: X*) extends Functor[TestSeq, X]:
 case class AB[+A, +B](first: A, second: B) extends Bifunctor[AB, A, B]:
 
   override def bimap[PostLeft, PostRight]
-    (
-      transformLeft: A => PostLeft,
-      transformRight: B => PostRight,
-    )
+    (transformLeft: A => PostLeft)
+    (transformRight: B => PostRight)
     : AB[PostLeft, PostRight] = AB(
     transformLeft(first),
     transformRight(second),
