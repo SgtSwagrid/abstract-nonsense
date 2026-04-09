@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
-trait NumericFunctorOps[+Self[+_], -Codomain, +Output]
+trait NumericFunctorOps[+Self[+_], -Codomain, +Output <: Codomain]
   extends MapOps[Self, Codomain, Output]:
 
   /** Replace each element with a version scaled by [[factor]]. */

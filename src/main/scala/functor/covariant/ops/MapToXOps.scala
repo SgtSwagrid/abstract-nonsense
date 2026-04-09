@@ -5,7 +5,7 @@ import scala.reflect.ClassTag
 import scala.util.{Failure, Success}
 
 /** Type-specific variants of [[mapTo]]. */
-trait MapToXOps[+Self[+_], -Codomain, +Output]
+trait MapToXOps[+Self[+_], -Codomain, +Output <: Codomain]
   extends MapToOps[Self, Codomain, Output]:
 
   /** Alias for `this.mapTo(None)`. */
@@ -24,11 +24,11 @@ trait MapToXOps[+Self[+_], -Codomain, +Output]
     : Self[Option[Output]] =
     mapWithEvidence(value => Option.when(condition(value))(value))
 
-  final inline def mapToOption[Type <: Codomain : ClassTag]
-    (using Option[Type] <:< Codomain)
-    : Self[Option[Type]] = mapWithEvidence:
-    case value: Type => Some(value)
-    case value       => None
+  final inline def mapToOption[Active <: Codomain : ClassTag]
+    (using Option[Active] <:< Codomain)
+    : Self[Option[Active]] = mapWithEvidence:
+    case value: Active => Some(value)
+    case value         => None
 
   /** Alias for `this.map(Left.apply)`. */
   final inline def mapToLeft

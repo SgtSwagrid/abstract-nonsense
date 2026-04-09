@@ -1,5 +1,6 @@
 package io.github.sgtswagrid.nonsense
 
+import io.github.sgtswagrid.nonsense.functor.bifunctor.Bifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 
 sealed trait AorB
@@ -13,6 +14,18 @@ class TestSeq[+X](val underlying: X*) extends Functor[TestSeq, X]:
     new TestSeq(underlying.map(transform)*)
 
   override def toString = underlying.mkString("[", ", ", "]")
+
+case class AB[+A, +B](first: A, second: B) extends Bifunctor[AB, A, B]:
+
+  override def bimap[PostLeft, PostRight]
+    (
+      transformLeft: A => PostLeft,
+      transformRight: B => PostRight,
+    )
+    : AB[PostLeft, PostRight] = AB(
+    transformLeft(first),
+    transformRight(second),
+  )
 
 object Test extends App:
 
@@ -39,6 +52,8 @@ object Test extends App:
 
   println(test2.map(_.deep.when[A].map(_.copy(x = -69))))
 
+  println(test2.deep.deep.mapTo(6))
+
   val a = test3.when[A].when(_.x >= 10).mapTo(true).when[B].map(_.name)
 
   println(a)
@@ -51,3 +66,5 @@ object Test extends App:
   println(TestSeq(1, 6, -2, 0, 43).support.invert)
 
   println(TestSeq((1, "A"), (2, "B"), (3, "C")).unzip)
+
+  println(AB(5, "Hello").left.map(_ + 12))

@@ -2,9 +2,9 @@ package io.github.sgtswagrid.nonsense
 package functor.contravariant
 
 /**
-  * A contravariant functor is something that can be contra-mapped over.
+  * A contravariant functor is something that can be contramapped over.
   *
-  * Any implementation need only define [[contraMap]], and everything else will
+  * Any implementation need only define [[contramap]], and everything else will
   * be derived from it.
   *
   * @tparam Self
@@ -13,7 +13,7 @@ package functor.contravariant
   * @tparam Input
   *   The type of value that can be handled by this structure (e.g. `Event`).
   */
-trait ContraFunctor[
-  +Self[-X] <: ContraFunctor[Self, X],
+trait Contravariant[
+  +Self[-X] <: Contravariant[Self, X],
   -Input,
-] extends BoundedContraFunctor[Self, Nothing, Input]
+] extends BoundedContravariant[Self, Nothing, Input]

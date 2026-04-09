@@ -4,7 +4,7 @@ package functor.covariant.ops
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 
 /** The [[mapTo]] operator for [[BoundedFunctor]], and its derivatives. */
-trait MapToOps[+Self[+_], -Codomain, +Output]
+trait MapToOps[+Self[+_], -Codomain, +Output <: Codomain]
   extends MapOps[Self, Codomain, Output]:
 
   /** Ignore the existing value and take a new [[value]] instead. */

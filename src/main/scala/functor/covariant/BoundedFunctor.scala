@@ -18,36 +18,22 @@ import scala.reflect.ClassTag
   * @tparam Output
   *   The type of value contained in this structure (e.g. [[Int]]).
   */
-trait BoundedFunctor[+Self[+_], -Codomain, +Output]
+trait BoundedFunctor[+Self[+_], -Codomain, +Output <: Codomain]
   extends MapToXOps[Self, Codomain, Output],
           WhenOps[Self, Codomain, Output],
           WhenTypeOps[Self, Codomain, Output],
-          DeepOps[Self, Codomain, Output],
           NumericFunctorOps[Self, Codomain, Output]:
 
   override final inline def when
     (using Output <:< Codomain)
     (condition: Output => Boolean)
     : ConditionalFunctorView[Self, Codomain, Output] =
-    ConditionalFunctorView[Self, Codomain, Output](this, condition)
+    ConditionalFunctorView(this, condition)
 
-  override final inline def when[Type : ClassTag]
-    : TypeFunctorView[Self, Codomain, Output, Type] =
-    new TypeFunctorView[Self, Codomain, Output, Type](this)
+  override final inline def when[Active <: Codomain : ClassTag]
+    : TypeFunctorView[Self, Codomain, Output, Active] =
+    new TypeFunctorView[Self, Codomain, Output, Active](this)
 
-  override final inline def whenNot[Type : ClassTag]
-    : NegatedTypeFunctorView[Self, Codomain, Output, Type] =
-    new NegatedTypeFunctorView[Self, Codomain, Output, Type](this)
-
-  override final inline def deep[
-    Outer[+X] <: BoundedFunctor[Outer, Inner[InnerCodomain], X],
-    Inner[+X] <: BoundedFunctor[Inner, InnerCodomain, X],
-    InnerCodomain,
-    InnerOutput <: InnerCodomain,
-  ]
-    (
-      using f: Output <:< (Codomain & Inner[InnerOutput]),
-      g: Self[Inner[InnerOutput]] <:< Outer[Inner[InnerOutput]],
-    )
-    : DeepFunctorView[Outer, Inner, InnerCodomain, InnerOutput] =
-    DeepFunctorView(g(map(f)))
+  override final inline def whenNot[Inactive <: Codomain : ClassTag]
+    : NegatedTypeFunctorView[Self, Codomain, Output, Inactive] =
+    new NegatedTypeFunctorView[Self, Codomain, Output, Inactive](this)

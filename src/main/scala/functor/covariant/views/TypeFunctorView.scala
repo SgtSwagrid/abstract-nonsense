@@ -15,8 +15,7 @@ import scala.reflect.ClassTag
   *   The kind of structure that this is (e.g. [[List]]).
   *
   * @tparam Codomain
-  *   The upper bound on [[Output]] following any [[BoundedFunctor.map]]-like
-  *   operation.
+  *   The upper bound on [[Output]] following any [[map]]-like operation.
   *
   * @tparam Output
   *   The type of value contained in this structure (e.g. [[Int]]).
@@ -25,15 +24,15 @@ import scala.reflect.ClassTag
   *   The subtype of [[Output]] that is being modified.
   */
 final class TypeFunctorView[
-  +Self[+X],
+  +Self[+_],
   -Codomain,
-  +Output,
-  +Active : ClassTag,
+  +Output <: Codomain,
+  +Active <: Codomain : ClassTag,
 ]
   (base: BoundedFunctor[Self, Codomain, Output])
   extends BoundedFunctor[[X] =>> Self[X | Output], Codomain, Active]:
 
-  override def map[Post <: Codomain]
+  override inline def map[Post <: Codomain]
     (transform: Active => Post)
     : Self[Post | Output] = base.map:
     case value: Active => transform(value)

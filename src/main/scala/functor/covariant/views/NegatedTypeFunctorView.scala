@@ -15,8 +15,7 @@ import scala.reflect.ClassTag
   *   The kind of structure that this is (e.g. [[List]]).
   *
   * @tparam Codomain
-  *   The upper bound on [[Output]] following any [[BoundedFunctor.map]]-like *
-  *   operation.
+  *   The upper bound on [[Output]] following any [[map]]-like * operation.
   *
   * @tparam Output
   *   The type of value contained in this structure (e.g. [[Int]]).
@@ -25,10 +24,10 @@ import scala.reflect.ClassTag
   *   The subtype of [[Output]] that is left unmodified.
   */
 final class NegatedTypeFunctorView[
-  +Self[+X],
+  +Self[+_],
   -Codomain,
-  +Output,
-  +Inactive : ClassTag,
+  +Output <: Codomain,
+  +Inactive <: Codomain : ClassTag,
 ]
   (base: BoundedFunctor[Self, Codomain, Output])
   extends BoundedFunctor[
@@ -37,7 +36,7 @@ final class NegatedTypeFunctorView[
     Output,
   ]:
 
-  override def map[Post <: Codomain]
+  override inline def map[Post <: Codomain]
     (transform: Output => Post)
     : Self[Post | Inactive] = base.map:
     case value: Inactive => value.asInstanceOf[Post | (Inactive & Codomain)]

@@ -5,7 +5,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 
 /**
   * A functor that only maps values that satisfy a given condition. Obtained by
-  * calling [[BoundedFunctor.when]].
+  * calling [[when]].
   *
   * @param base
   *   The underlying structure.
@@ -17,24 +17,22 @@ import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
   *   The kind of structure that this is (e.g. [[List]]).
   *
   * @tparam Codomain
-  *   The upper bound on [[Output]] following any [[BoundedFunctor.map]]-like
-  *   operation.
+  *   The upper bound on [[Output]] following any [[map]]-like operation.
   *
   * @tparam Output
   *   The type of value contained in this structure (e.g. [[Int]]).
   */
-final class ConditionalFunctorView[+Self[+X], -Codomain, +Output]
-  (using Output <:< Codomain)
+final class ConditionalFunctorView[+Self[+_], -Codomain, +Output <: Codomain]
   (
     base: BoundedFunctor[Self, Codomain, Output],
     condition: Output => Boolean,
   )
   extends BoundedFunctor[[X] =>> Self[X | Output], Codomain, Output]:
 
-  override def map[Post <: Codomain]
+  override inline def map[Post <: Codomain]
     (transform: Output => Post)
     : Self[Post | Output] = base.map:
     case value if condition(value) => transform(value)
-    case value                     => value.asInstanceOf[Output & Codomain]
+    case value                     => value
 
   override def toString = base.toString

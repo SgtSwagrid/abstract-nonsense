@@ -7,7 +7,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.views.{
 import scala.reflect.ClassTag
 
 /** The [[when]] operator for [[BoundedFunctor]], and its derivatives. */
-trait WhenTypeOps[+Self[+_], -Codomain, +Output]:
+trait WhenTypeOps[+Self[+_], -Codomain, +Output <: Codomain]:
 
   /**
     * Provides a view of this structure that only allows elements of a certain
@@ -17,7 +17,8 @@ trait WhenTypeOps[+Self[+_], -Codomain, +Output]:
     * @see
     *   [[BoundedFunctor.when]] to filter by predicate rather than type.
     */
-  def when[Active : ClassTag]: TypeFunctorView[Self, Codomain, Output, Active]
+  def when[Active <: Codomain : ClassTag]
+    : TypeFunctorView[Self, Codomain, Output, Active]
 
   /**
     * Provides a view of this structure that prevents elements of a certain
@@ -29,7 +30,7 @@ trait WhenTypeOps[+Self[+_], -Codomain, +Output]:
     * @see
     *   [[BoundedFunctor.when]] to filter by predicate rather than type.
     */
-  def whenNot[Inactive : ClassTag]
+  def whenNot[Inactive <: Codomain : ClassTag]
     : NegatedTypeFunctorView[Self, Codomain, Output, Inactive]
 
   /**
@@ -38,7 +39,8 @@ trait WhenTypeOps[+Self[+_], -Codomain, +Output]:
     * @see
     *   [[when]]
     */
-  final inline def mapType[Active : ClassTag, Post <: Codomain]
-    (using Output <:< Codomain)
-    (transform: Active => Post)
-    : Self[Post | Output] = when[Active].map(transform)
+  final inline def mapType[
+    Active <: Codomain : ClassTag,
+    Post <: Codomain,
+  ](using Output <:< Codomain)(transform: Active => Post): Self[Post | Output] =
+    when[Active].map(transform)
