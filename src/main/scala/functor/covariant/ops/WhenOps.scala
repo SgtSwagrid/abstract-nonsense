@@ -16,12 +16,13 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     *   The condition that determines which elements are to be modified.
     *
     * @note
-    *   Following any [[BoundedFunctor.map]]-like operation, the structure will
-    *   be returned to its original form. The [[condition]] will thereafter be
-    *   forgotten.
+    *   Following any [[map]]-like operation, the structure will be returned to
+    *   its original form. The [[condition]] will thereafter be forgotten.
+    *
     * @note
     *   Consecutive calls to [[when]] will stack conditions, only allowing
     *   elements to be modified when they match all of them.
+    *
     * @example
     *   {{{
     * val a = List(1, 2, 3, 4)
@@ -30,9 +31,6 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * val c = b.map(_ + 100)
     * // c == List(101, 112, 103, 114)
     *   }}}
-    *
-    * @see
-    *   [[BoundedFunctor.when]] to filter by type rather than predicate.
     */
   def when(using Output <:< Codomain)(condition: Output => Boolean)
     : ConditionalFunctorView[Self, Codomain, Output]
@@ -87,7 +85,7 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * @see
     *   [[when]]
     */
-  final inline def mapWhenSome[Post >: Output <: Codomain]
+  final inline def mapPartial[Post >: Output <: Codomain]
     (transform: Output => Option[Post])
     : Self[Post] = map: value =>
     transform(value) match

@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.covariant.{BoundedFunctor, Functor}
+import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
 
 /** The [[deep]] operator for [[BoundedFunctor]], and its derivatives. */
@@ -12,12 +12,14 @@ trait DeepOps[+Self[+_], +Output]:
     * into one, allowing them to be mapped over together.
     *
     * @note
-    *   Following any [[BoundedFunctor.map]]-like operation, the structure will
-    *   be returned to its original form. The merger will thereafter be
-    *   forgotten.
+    *   Following any [[Functor.map]]-like operation, the structure will be
+    *   returned to its original form. The merger will thereafter be forgotten.
+    *
     * @note
     *   Consecutive calls to [[deep]] will merge more layers together, allowing
-    *   for mapping over deeper structures.
+    *   for mapping over even deeper structures. A chain of `n` calls to
+    *   [[deep]] will merge the outermost `n + 1` layers.
+    *
     * @example
     *   {{{
     * val a = List(List(1, 2), List(3))

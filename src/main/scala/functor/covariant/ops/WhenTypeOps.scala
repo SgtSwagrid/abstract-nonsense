@@ -11,11 +11,10 @@ trait WhenTypeOps[+Self[+_], -Codomain, +Output <: Codomain]:
 
   /**
     * Provides a view of this structure that only allows elements of a certain
-    * [[Active] type to be modified. All other elements are left as-is. @tparam Active The subtype of [[Output]]
-    * that is being modified.
+    * [[Active]] type to be modified. All other elements are left as-is.
     *
-    * @see
-    *   [[BoundedFunctor.when]] to filter by predicate rather than type.
+    * @tparam Active
+    *   The subtype of [[Output]] that is being modified.
     */
   def when[Active <: Codomain : ClassTag]
     : TypeFunctorView[Self, Codomain, Output, Active]
@@ -26,15 +25,12 @@ trait WhenTypeOps[+Self[+_], -Codomain, +Output <: Codomain]:
     *
     * @tparam Inactive
     *   The subtype of [[Output]] that is left unmodified.
-    *
-    * @see
-    *   [[BoundedFunctor.when]] to filter by predicate rather than type.
     */
   def whenNot[Inactive <: Codomain : ClassTag]
     : NegatedTypeFunctorView[Self, Codomain, Output, Inactive]
 
   /**
-    * Alias for `this.whenType[Type].map(transform)`.
+    * Alias for `this.whenType[Active].map(transform)`.
     *
     * @see
     *   [[when]]

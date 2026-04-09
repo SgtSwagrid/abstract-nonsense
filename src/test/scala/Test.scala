@@ -48,13 +48,15 @@ object Test extends App:
 
   val test3 = TestSeq(A(0, 1), B("Hello, World!"), A(10, 100))
 
+  println(test2.deep.deep.when[A].mapToLeft.deep.deep.when[B].mapToRight)
+
   val x = test.deep.when(_ % 2 == 1).when(x => x >= 10).map(_ + 100)
 
   println(test2.map(_.deep.when[A].map(_.copy(x = -69))))
 
   println(test2.deep.deep.mapTo(6))
 
-  val a = test3.when[A].when(_.x >= 10).mapTo(true).when[B].map(_.name)
+  val a = test3.when[A].when(_.x >= 10).mapToTrue.when[B].map(_.name)
 
   println(a)
 

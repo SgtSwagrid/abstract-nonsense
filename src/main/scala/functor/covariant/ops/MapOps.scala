@@ -6,7 +6,26 @@ import io.github.sgtswagrid.nonsense.caching.Cache
 /** The [[map]] operator for [[BoundedFunctor]], and its derivatives. */
 trait MapOps[+Self[+_], -Codomain, +Output <: Codomain]:
 
-  /** Transform the contents arbitrarily. */
+  /**
+    * Produce an equivalent version of this structure whereby the contents have
+    * been modified arbitrarily by [[transform]].
+    *
+    * @param transform
+    *   The mapping to apply to each individual element in the structure.
+    *
+    * @note
+    *   This original structure is left unmodified by the operation.
+    *
+    * @note
+    *   The exact semantics depend on the kind of structure being transformed.
+    *
+    * @example
+    *   {{{
+    * val a = List(1, 2, 3, 4)
+    * val b = a.map(_ * 2)
+    * // b == List(2, 4, 6, 8)
+    *   }}}
+    */
   def map[Post <: Codomain](transform: Output => Post): Self[Post]
 
   /**
