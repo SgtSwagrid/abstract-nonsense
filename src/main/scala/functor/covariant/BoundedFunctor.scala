@@ -28,7 +28,7 @@ trait BoundedFunctor[+Self[+_], -Codomain, +Output <: Codomain]
           WhenOps[Self, Codomain, Output],
           WhenTypeOps[Self, Codomain, Output]:
 
-  override final inline def map[Post <: Codomain : ([_] =>> DummyImplicit)]
+  override final inline def map[Post <: Codomain : [_] =>> DummyImplicit]
     (transform: Output => Post)
     : Self[Post] = mapImpl[Post](transform)
 

@@ -7,6 +7,5 @@ import io.github.sgtswagrid.nonsense.functor.applicative.ops.{
 import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 
 trait Applicative[Self[+X] <: Applicative[Self, X], +Output]
-  extends Functor[Self, Output],
-          ZipOps[Self, Output],
-          NumericApplicativeOps[Self, Output]
+  extends Functor[Self, Output], ZipOps[Self, Output]
+//NumericApplicativeOps[Self, Output]

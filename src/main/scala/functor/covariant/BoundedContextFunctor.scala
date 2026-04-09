@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant
 
-import io.github.sgtswagrid.nonsense.functor.covariant.ops.*
+import io.github.sgtswagrid.nonsense.functor.covariant.ops.MapToXOps
 
 /**
   * A restricted [[Functor]] that can only contain particular values,
@@ -25,5 +25,4 @@ trait BoundedContextFunctor[
   -Codomain,
   -Context[_],
   +Output <: Codomain,
-] extends MapToXOps[Self, Codomain, Context, Output],
-          NumericFunctorOps[Self, Codomain, Context, Output]
+] extends MapToXOps[Self, Codomain, Context, Output]

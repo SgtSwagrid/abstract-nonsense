@@ -62,10 +62,6 @@ object Test extends App:
 
   println(a)
 
-  println(-TestSeq(2.0F, 3.0F, 4.0F) * 19.0F)
-
-  println(TestSeq(1, 6, -2, 0, 43).support.invert)
-
   println(TestSeq((1, "A"), (2, "B"), (3, "C")).unzip)
 
   println(AB(5, "Hello").left.map(_ + 12))
