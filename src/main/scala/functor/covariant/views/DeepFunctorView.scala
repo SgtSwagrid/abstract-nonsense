@@ -23,7 +23,8 @@ final class DeepFunctorView[+Outer[+_], +Inner[+_], +Output]
   (base: Functor[Outer, Functor[Inner, Output]])
   extends Functor[[X] =>> Outer[Inner[X]], Output]:
 
-  override inline def map[Post](transform: Output => Post): Outer[Inner[Post]] =
-    base.map(_.map(transform))
+  override protected inline def mapImpl[Post]
+    (transform: Output => Post)
+    : Outer[Inner[Post]] = base.map(_.map(transform))
 
   override def toString = base.toString

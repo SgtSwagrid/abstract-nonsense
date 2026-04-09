@@ -29,7 +29,7 @@ final class ConditionalFunctorView[+Self[+_], -Codomain, +Output <: Codomain]
   )
   extends BoundedFunctor[[X] =>> Self[X | Output], Codomain, Output]:
 
-  override inline def map[Post <: Codomain]
+  override protected inline def mapImpl[Post <: Codomain]
     (transform: Output => Post)
     : Self[Post | Output] = base.map:
     case value if condition(value) => transform(value)

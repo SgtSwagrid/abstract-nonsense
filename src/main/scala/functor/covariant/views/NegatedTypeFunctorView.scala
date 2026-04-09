@@ -6,7 +6,7 @@ import scala.reflect.ClassTag
 
 /**
   * A functor that only maps values that don't have a certain type. Obtained by
-  * calling [[BoundedFunctor.when]].
+  * calling [[when]].
   *
   * @param base
   *   The underlying structure.
@@ -36,7 +36,7 @@ final class NegatedTypeFunctorView[
     Output,
   ]:
 
-  override inline def map[Post <: Codomain]
+  override protected inline def mapImpl[Post <: Codomain]
     (transform: Output => Post)
     : Self[Post | Inactive] = base.map:
     case value: Inactive => value.asInstanceOf[Post | (Inactive & Codomain)]

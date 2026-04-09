@@ -9,5 +9,6 @@ package functor.covariant
   */
 trait EmptyFunctor[+Self : ValueOf] extends Functor[[_] =>> Self, Nothing]:
 
-  override final inline def map[Post](transform: Nothing => Post): Self =
-    valueOf[Self]
+  override protected inline def mapImpl[Post]
+    (transform: Nothing => Post)
+    : Self = valueOf[Self]

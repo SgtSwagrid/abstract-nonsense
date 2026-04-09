@@ -1,13 +1,13 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant
 
-import io.github.sgtswagrid.nonsense.functor.covariant.*
 import io.github.sgtswagrid.nonsense.functor.covariant.ops.*
 import io.github.sgtswagrid.nonsense.functor.covariant.views.*
 import scala.reflect.ClassTag
 
 /**
-  * A restricted [[Functor]] that can only contain particular values.
+  * A restricted [[Functor]] that can only contain particular values,
+  * constrained by type bounds.
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[List]]).
@@ -19,13 +19,22 @@ import scala.reflect.ClassTag
   *   The type of value contained in this structure (e.g. [[Int]]).
   */
 trait BoundedFunctor[+Self[+_], -Codomain, +Output <: Codomain]
-  extends MapToXOps[Self, Codomain, Output],
+  extends BoundedContextFunctor[
+    Self,
+    Codomain,
+    [_] =>> DummyImplicit,
+    Output,
+  ],
           WhenOps[Self, Codomain, Output],
-          WhenTypeOps[Self, Codomain, Output],
-          NumericFunctorOps[Self, Codomain, Output]:
+          WhenTypeOps[Self, Codomain, Output]:
+
+  override final inline def map[Post <: Codomain : ([_] =>> DummyImplicit)]
+    (transform: Output => Post)
+    : Self[Post] = mapImpl[Post](transform)
+
+  protected def mapImpl[Post <: Codomain](transform: Output => Post): Self[Post]
 
   override final inline def when
-    (using Output <:< Codomain)
     (condition: Output => Boolean)
     : ConditionalFunctorView[Self, Codomain, Output] =
     ConditionalFunctorView(this, condition)

@@ -42,7 +42,7 @@ If we start from an implementation of `Functor` that defines `map`:
 
 ```scala
 class List[+X](values: X*) extends Functor[List, X]:
-  override def map[Y](f: X => Y): List[Y] = // ...
+  override def mapImpl[Y](f: X => Y): List[Y] = // ...
 ```
 
 Then many other operators come for free:

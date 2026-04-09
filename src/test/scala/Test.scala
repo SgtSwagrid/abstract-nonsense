@@ -10,7 +10,7 @@ case class B(name: String)   extends AorB
 
 class TestSeq[+X](val underlying: X*) extends Functor[TestSeq, X]:
 
-  override def map[Y](transform: X => Y): TestSeq[Y] =
+  override protected def mapImpl[Y](transform: X => Y): TestSeq[Y] =
     new TestSeq(underlying.map(transform)*)
 
   override def toString = underlying.mkString("[", ", ", "]")
@@ -46,6 +46,10 @@ object Test extends App:
 
   val test3 = TestSeq(A(0, 1), B("Hello, World!"), A(10, 100))
 
+  val test4 = AB(TestSeq(1, 2, 3), "Hello")
+
+  println(test4.left.deep.map(_ + 1))
+
   println(test2.deep.deep.when[A].mapToLeft.deep.deep.when[B].mapToRight)
 
   val x = test.deep.when(_ % 2 == 1).when(x => x >= 10).map(_ + 100)
@@ -57,9 +61,6 @@ object Test extends App:
   val a = test3.when[A].when(_.x >= 10).mapToTrue.when[B].map(_.name)
 
   println(a)
-
-  val asdadw = test3.mapToOption[A]
-  println(asdadw)
 
   println(-TestSeq(2.0F, 3.0F, 4.0F) * 19.0F)
 

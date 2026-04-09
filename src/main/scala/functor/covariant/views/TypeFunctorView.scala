@@ -6,7 +6,7 @@ import scala.reflect.ClassTag
 
 /**
   * A functor that only maps values that have a certain type. Obtained by
-  * calling [[BoundedFunctor.when]].
+  * calling [[when]].
   *
   * @param base
   *   The underlying structure.
@@ -32,7 +32,7 @@ final class TypeFunctorView[
   (base: BoundedFunctor[Self, Codomain, Output])
   extends BoundedFunctor[[X] =>> Self[X | Output], Codomain, Active]:
 
-  override inline def map[Post <: Codomain]
+  override inline def mapImpl[Post <: Codomain]
     (transform: Active => Post)
     : Self[Post | Output] = base.map:
     case value: Active => transform(value)

@@ -37,12 +37,16 @@ object Endpoint:
   case class After[+X]
     (value: X)
     extends LowerBound[X], FiniteOpen[X], Functor[After, X]:
-    override def map[Y](f: X => Y): After[Y] = After(f(value))
+
+    override protected inline def mapImpl[Y](f: X => Y): After[Y] =
+      After(f(value))
 
   case class Before[+X]
     (value: X)
     extends UpperBound[X], FiniteOpen[X], Functor[Before, X]:
-    override def map[Y](f: X => Y): Before[Y] = Before(f(value))
+
+    override protected inline def mapImpl[Y](f: X => Y): Before[Y] =
+      Before(f(value))
 
   case class Closed[+X]
     (value: X)
@@ -51,4 +55,6 @@ object Endpoint:
             Discrete[X],
             Finite[X],
             Functor[Closed, X]:
-    override def map[Y](f: X => Y): Closed[Y] = Closed(f(value))
+
+    override protected inline def mapImpl[Y](f: X => Y): Closed[Y] =
+      Closed(f(value))

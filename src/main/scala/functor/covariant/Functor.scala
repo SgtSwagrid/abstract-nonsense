@@ -22,7 +22,9 @@ import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
   *   The type of value contained in this structure (e.g. [[Int]]).
   */
 trait Functor[+Self[+_], +Output]
-  extends BoundedFunctor[Self, Any, Output], DeepOps[Self, Output]:
+  extends BoundedFunctor[Self, Any, Output],
+          ContextFunctor[Self, [_] =>> DummyImplicit, Output],
+          DeepOps[Self, Output]:
 
   override final inline def deep[Inner[+_], InnerOutput]
     (using Output <:< Functor[Inner, InnerOutput])

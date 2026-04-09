@@ -1,12 +1,17 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
-import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.ContextFunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.views.ConditionalFunctorView
 
-/** The [[when]] operator for [[BoundedFunctor]], and its derivatives. */
+/** The [[when]] operator for [[ContextFunctor]], and its derivatives. */
 trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
-  extends MapOps[Self, Codomain, Output]:
+  extends MapOps[
+    Self,
+    Codomain,
+    [_] =>> DummyImplicit,
+    Output,
+  ]:
 
   /**
     * Provides a view of this structure that only allows elements matching a
@@ -32,7 +37,7 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * // c == List(101, 112, 103, 114)
     *   }}}
     */
-  def when(using Output <:< Codomain)(condition: Output => Boolean)
+  def when(condition: Output => Boolean)
     : ConditionalFunctorView[Self, Codomain, Output]
 
   /**
@@ -41,7 +46,6 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * [context](https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html).
     */
   final inline def whenCtx
-    (using Output <:< Codomain)
     (condition: Output ?=> Boolean)
     : ConditionalFunctorView[Self, Codomain, Output] =
     when(value => condition(using value))
@@ -53,7 +57,6 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     *   [[when]]
     */
   final inline def whenEqualTo
-    (using Output <:< Codomain)
     (value: Codomain)
     : ConditionalFunctorView[Self, Codomain, Output] = when(_ == value)
 

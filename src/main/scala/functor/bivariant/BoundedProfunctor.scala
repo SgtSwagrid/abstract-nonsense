@@ -37,7 +37,7 @@ trait BoundedProfunctor[
     (transformOutput: Output => Post)
     : Self[Pre, Post]
 
-  override final inline def map[Post <: Codomain]
+  override protected final inline def mapImpl[Post <: Codomain]
     (transform: Output => Post)
     : Self[Input, Post] = dimap[Input, Post](identity)(transform)
 

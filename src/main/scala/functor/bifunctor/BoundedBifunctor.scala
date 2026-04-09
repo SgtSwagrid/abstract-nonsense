@@ -2,22 +2,23 @@ package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
 import io.github.sgtswagrid.nonsense.functor.bifunctor.views.{
-  BifunctorLeftView, BifunctorRightView,
+  BoundedBifunctorLeftView, BoundedBifunctorRightView,
 }
 
 /**
-  * A restricted [[Bifunctor]] that can only contain particular values.
+  * A doubly-restricted [[Bifunctor]] that can only contain particular values on
+  * both sides.
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[Either]]).
   *
   * @tparam LeftCodomain
-  *   The upper bound on [[Left]] following any [[BifunctorLeftView.map]]-like
-  *   operation.
+  *   The upper bound on [[Left]] following any
+  *   [[BoundedBifunctorLeftView.map]]-like operation.
   *
   * @tparam RightCodomain
-  *   The upper bound on [[Right]] following any [[BifunctorRightView.map]]-like
-  *   operation.
+  *   The upper bound on [[Right]] following any
+  *   [[BoundedBifunctorRightView.map]]-like operation.
   *
   * @tparam Left
   *   The type of value contained on the left-hand side of this structure (e.g.
@@ -39,10 +40,10 @@ trait BoundedBifunctor[
     * Simultaneously transform both the left-hand and right-hand parts of this
     * structure.
     */
-  def bimap[PostLeft, PostRight]
-    (transformLeft: Left => PostLeft)
-    (transformRight: Right => PostRight)
-    : Self[PostLeft, PostRight]
+  def bimap[LeftPost, RightPost]
+    (transformLeft: Left => LeftPost)
+    (transformRight: Right => RightPost)
+    : Self[LeftPost, RightPost]
 
   /**
     * Provides a view of this structure that only maps over the left-hand side.
@@ -52,14 +53,8 @@ trait BoundedBifunctor[
     *   be returned to its original form. The projection will thereafter be
     *   forgotten.
     */
-  final inline def left
-    : BifunctorLeftView[
-      Self,
-      LeftCodomain,
-      RightCodomain,
-      Left,
-      Right,
-    ] = BifunctorLeftView(this)
+  def left: BoundedBifunctorLeftView[Self, LeftCodomain, Left, Right] =
+    BoundedBifunctorLeftView(this)
 
   /**
     * Provides a view of this structure that only maps over the right-hand side.
@@ -69,11 +64,5 @@ trait BoundedBifunctor[
     *   be returned to its original form. The projection will thereafter be
     *   forgotten.
     */
-  final inline def right
-    : BifunctorRightView[
-      Self,
-      LeftCodomain,
-      RightCodomain,
-      Left,
-      Right,
-    ] = BifunctorRightView(this)
+  def right: BoundedBifunctorRightView[Self, RightCodomain, Left, Right] =
+    BoundedBifunctorRightView(this)

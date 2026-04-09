@@ -23,4 +23,5 @@ package functor.bifunctor
   *   variant that is contravariant in one of the type parameters.
   */
 trait Bifunctor[+Self[+_, +_], +Left, +Right]
-  extends BoundedBifunctor[Self, Any, Any, Left, Right]
+  extends LeftBoundedBifunctor[Self, Any, Left, Right],
+          RightBoundedBifunctor[Self, Any, Left, Right]
