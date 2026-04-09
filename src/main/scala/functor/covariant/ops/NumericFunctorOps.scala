@@ -8,16 +8,6 @@ trait NumericFunctorOps[
   +Output <: Codomain,
 ] extends MapOps[Self, Codomain, Context, Output]:
 
-  /** Replace each element with a version scaled by [[factor]]. */
-  inline def scale[Number >: Output <: Codomain : {Numeric as Number, Context}]
-    (factor: Number)
-    : Self[Number] = map(Number.times(_, factor))
-
-  /** Alias for [[scale]]. */
-  final inline infix def * [Number >: Output <: Codomain : {Numeric, Context}]
-    (factor: Number)
-    : Self[Number] = scale(factor)
-
   /** Replace each element with a version divided by [[divisor]]. */
   final inline def divide[
     Number >: Output <: Codomain : {Fractional as Number, Context},
