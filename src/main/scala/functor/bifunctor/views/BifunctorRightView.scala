@@ -52,4 +52,4 @@ class BifunctorRightView[
 
   override inline def map[RightPost <: RightCodomain]
     (transform: Right => RightPost)
-    : Self[Left, RightPost] = base.bimap(identity, transform)
+    : Self[Left, RightPost] = base.bimap(identity)(transform)

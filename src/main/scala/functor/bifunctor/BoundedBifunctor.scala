@@ -40,10 +40,8 @@ trait BoundedBifunctor[
     * structure.
     */
   def bimap[PostLeft, PostRight]
-    (
-      transformLeft: Left => PostLeft,
-      transformRight: Right => PostRight,
-    )
+    (transformLeft: Left => PostLeft)
+    (transformRight: Right => PostRight)
     : Self[PostLeft, PostRight]
 
   /**
