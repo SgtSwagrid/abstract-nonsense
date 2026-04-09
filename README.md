@@ -66,7 +66,7 @@ See [functor.covariant.ops](src/main/scala/functor/covariant/ops) for some more 
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "io.github.sgtswagrid" %% "abstract-nonsense" % "0.1.2"
+libraryDependencies += "io.github.sgtswagrid" %% "abstract-nonsense" % "0.1.4"
 ```
 
 Compiled with Scala `3.8.3`, with no intention to explicitly support older versions.
