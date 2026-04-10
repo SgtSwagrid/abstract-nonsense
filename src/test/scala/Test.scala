@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 
-import io.github.sgtswagrid.nonsense.functor.bifunctor.Bifunctor
-import io.github.sgtswagrid.nonsense.functor.covariant.Functor
+import io.github.sgtswagrid.nonsense.functors.bifunctor.Bifunctor
+import io.github.sgtswagrid.nonsense.functors.covariant.Functor
 
 sealed trait AorB
 
@@ -65,3 +65,10 @@ object Test extends App:
   println(TestSeq((1, "A"), (2, "B"), (3, "C")).unzip)
 
   println(AB(5, "Hello").left.map(_ + 12))
+
+  object HHmmm:
+
+    import io.github.sgtswagrid.nonsense.groups.AdditiveSemigroup
+    def f[X : AdditiveSemigroup](x: X): Unit = println("Hello, World!")
+
+  HHmmm.f(3)

@@ -22,11 +22,11 @@ Common examples include lists, options, futures, streams, signals, etc.
 
 | Kind                      | Implementation                                                                  | Purpose                                         |
 | ------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- |
-| **Covariant Functor**     | [Functor.scala](src/main/scala/functor/covariant/Functor.scala)                 | For structures with `map`.                      |
-| **Contravariant Functor** | [Contravariant.scala](src/main/scala/functor/contravariant/Contravariant.scala) | For structures with `contramap`.                |
-| **Profunctor**            | [Profunctor.scala](src/main/scala/functor/bivariant/Profunctor.scala)           | For structures with both `map` and `contramap`. |
-| **Bifunctor**             | [Bifunctor.scala](src/main/scala/functor/bifunctor/Bifunctor.scala)             | For structures with two kinds of `map`.         |
-| **Applicative Functor**   | [Applicative.scala](src/main/scala/functor/applicative/Applicative.scala)       | For structures with `map` and `zip`.            |
+| **Covariant Functor**     | [Functor.scala](src/main/scala/functors/covariant/Functor.scala)                 | For structures with `map`.                      |
+| **Contravariant Functor** | [Contravariant.scala](src/main/scala/functors/contravariant/Contravariant.scala) | For structures with `contramap`.                |
+| **Profunctor**            | [Profunctor.scala](src/main/scala/functors/bivariant/Profunctor.scala)           | For structures with both `map` and `contramap`. |
+| **Bifunctor**             | [Bifunctor.scala](src/main/scala/functors/bifunctor/Bifunctor.scala)             | For structures with two kinds of `map`.         |
+| **Applicative Functor**   | [Applicative.scala](src/main/scala/functors/applicative/Applicative.scala)       | For structures with `map` and `zip`.            |
 
 ### 2. An assortment of operators for functors:
 
@@ -59,7 +59,7 @@ val mapped = mixed.when[Int].map(_ + 1)
 // mapped == List(17, "Hello, World!", 43)
 ```
 
-See [functor.covariant.ops](src/main/scala/functor/covariant/ops) for some more examples.
+See [functor.covariant.ops](src/main/scala/functors/covariant/ops) for some more examples.
 
 ## ⬇️ Installation
 
