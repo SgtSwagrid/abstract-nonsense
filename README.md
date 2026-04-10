@@ -42,7 +42,7 @@ If we start from an implementation of `Functor` that defines `map`:
 
 ```scala
 class List[+X](values: X*) extends Functor[List, X]:
-  override def mapImpl[Y](f: X => Y): List[Y] = // ...
+  override protected def mapImpl[Y](f: X => Y): List[Y] = // ...
 ```
 
 Then many other operators come for free:
@@ -66,7 +66,7 @@ See [functor.covariant.ops](src/main/scala/functors/covariant/ops) for some more
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "io.github.sgtswagrid" %% "abstract-nonsense" % "0.1.2"
+libraryDependencies += "io.github.sgtswagrid" %% "abstract-nonsense" % "0.1.4"
 ```
 
 Compiled with Scala `3.8.3`, with no intention to explicitly support older versions.
