@@ -7,6 +7,23 @@ sealed trait Interval[+Start, +End] extends Bifunctor[Interval, Start, End]
 
 object Interval:
 
+  type Uniform[X] = Interval[X, X]
+
+  type Rich[+X] = Interval[
+    Endpoint.LowerBound[X],
+    Endpoint.UpperBound[X],
+  ]
+
+  type Finite[+X] = Interval[
+    Endpoint.LowerBound[X] & Endpoint.Finite[X],
+    Endpoint.UpperBound[X] & Endpoint.Finite[X],
+  ]
+
+  type Discrete[+X] = Interval[
+    Endpoint.LowerBound[X] & Endpoint.Discrete[X],
+    Endpoint.UpperBound[X] & Endpoint.Discrete[X],
+  ]
+
   case class NonEmpty[+Start, +End]
     (start: Start, end: End)
     extends Interval[Start, End], Bifunctor[NonEmpty, Start, End]:
