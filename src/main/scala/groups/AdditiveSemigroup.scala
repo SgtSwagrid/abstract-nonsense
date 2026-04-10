@@ -11,4 +11,5 @@ trait AdditiveSemigroup[X]:
   def sumOption(xs: Iterable[X]): Option[X] = xs.reduceOption(add)
   def sum(x: X, xs: X*): X                  = sumOption(x +: xs).get
 
-object AdditiveSemigroup extends AdditiveSemigroupBuilder, AdditiveSemigroupOps
+object AdditiveSemigroup extends AdditiveSemigroupBuilder, AdditiveSemigroupOps:
+  export io.github.sgtswagrid.nonsense.groups.AdditiveSemigroup

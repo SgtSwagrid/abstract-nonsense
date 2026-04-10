@@ -6,4 +6,5 @@ import io.github.sgtswagrid.nonsense.groups.ops.EuclideanRingOps
 
 trait EuclideanRing[X] extends Ring[X], EuclideanMonoid[X]
 
-object EuclideanRing extends EuclideanRingBuilder, EuclideanRingOps
+object EuclideanRing extends EuclideanRingBuilder, EuclideanRingOps:
+  export io.github.sgtswagrid.nonsense.groups.EuclideanRing

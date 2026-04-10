@@ -9,4 +9,5 @@ trait Ring[X] extends AdditiveGroup[X], MultiplicativeMonoid[X]:
   def two: X         = add(one, one)
   def negativeOne: X = negate(one)
 
-object Ring extends RingBuilder, RingOps
+object Ring extends RingBuilder, RingOps:
+  export io.github.sgtswagrid.nonsense.groups.Ring

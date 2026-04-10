@@ -14,4 +14,5 @@ trait OrderedMultiplicativeMonoid[X]
 object OrderedMultiplicativeMonoid
   extends OrderedMultiplicativeMonoidBuilder,
           MultiplicativeMonoidOps,
-          OrderingOps
+          OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedMultiplicativeMonoid

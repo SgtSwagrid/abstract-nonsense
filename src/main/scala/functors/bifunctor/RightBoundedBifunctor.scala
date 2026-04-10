@@ -30,3 +30,23 @@ trait RightBoundedBifunctor[
 
   override final inline def left: BifunctorLeftView[Self, Left, Right] =
     BifunctorLeftView(this)
+
+object RightBoundedBifunctor:
+
+  /**
+    * A [[RightBoundedBifunctor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[RightBoundedBifunctor.bimap]]-like
+    *   operations.
+    *
+    * @tparam RightCodomain
+    *   The upper bound on the right output of all
+    *   [[RightBoundedBifunctor.bimap]]-like operations.
+    */
+  trait Empty[+Self : ValueOf, -RightCodomain]
+    extends RightBoundedBifunctor[[_, _] =>> Self, RightCodomain, Nothing, Nothing]:
+    override protected def bimapImpl[LeftPost, RightPost <: RightCodomain]
+      (transformLeft: Nothing => LeftPost)
+      (transformRight: Nothing => RightPost)
+      : Self = valueOf[Self]

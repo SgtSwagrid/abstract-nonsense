@@ -26,3 +26,26 @@ trait BoundedContextFunctor[
   -Context[_],
   +Output <: Codomain,
 ] extends MapToXOps[Self, Codomain, Context, Output]
+
+object BoundedContextFunctor:
+
+  /**
+    * A [[BoundedContextFunctor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[BoundedContextFunctor.map]]-like
+    *   operations.
+    *
+    * @tparam Codomain
+    *   The upper bound on the output of all [[BoundedContextFunctor.map]]-like
+    *   operations.
+    *
+    * @tparam Context
+    *   The context bound required on the output of all
+    *   [[BoundedContextFunctor.map]]-like operations.
+    */
+  trait Empty[+Self : ValueOf, -Codomain, -Context[_]]
+    extends BoundedContextFunctor[[_] =>> Self, Codomain, Context, Nothing]:
+    override def map[Post <: Codomain : Context]
+      (transform: Nothing => Post)
+      : Self = valueOf[Self]

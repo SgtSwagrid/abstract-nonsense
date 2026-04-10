@@ -46,3 +46,21 @@ trait BoundedFunctor[+Self[+_], -Codomain, +Output <: Codomain]
   override final inline def whenNot[Inactive <: Codomain : ClassTag]
     : NegatedTypeFunctorView[Self, Codomain, Output, Inactive] =
     new NegatedTypeFunctorView[Self, Codomain, Output, Inactive](this)
+
+object BoundedFunctor:
+
+  /**
+    * A [[BoundedFunctor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[BoundedFunctor.map]]-like operations.
+    *
+    * @tparam Codomain
+    *   The upper bound on the output of all [[BoundedFunctor.map]]-like
+    *   operations.
+    */
+  trait Empty[+Self : ValueOf, -Codomain]
+    extends BoundedFunctor[[_] =>> Self, Codomain, Nothing]:
+    override protected inline def mapImpl[Post <: Codomain]
+      (transform: Nothing => Post)
+      : Self = valueOf[Self]

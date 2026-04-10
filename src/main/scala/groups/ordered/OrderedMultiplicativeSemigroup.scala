@@ -12,4 +12,5 @@ trait OrderedMultiplicativeSemigroup[X]
 object OrderedMultiplicativeSemigroup
   extends OrderedMultiplicativeSemigroupBuilder,
           MultiplicativeSemigroupOps,
-          OrderingOps
+          OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedMultiplicativeSemigroup

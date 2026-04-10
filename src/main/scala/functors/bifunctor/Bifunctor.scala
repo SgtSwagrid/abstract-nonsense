@@ -21,7 +21,31 @@ package functors.bifunctor
   * @see
   *   [[io.github.sgtswagrid.nonsense.functor.bivariant.Profunctor]] for a
   *   variant that is contravariant in one of the type parameters.
+  *
+  * Any implementation need only define [[bimapImpl]], and everything else will
+  * be derived from it.
   */
 trait Bifunctor[+Self[+_, +_], +Left, +Right]
   extends LeftBoundedBifunctor[Self, Any, Left, Right],
-          RightBoundedBifunctor[Self, Any, Left, Right]
+          RightBoundedBifunctor[Self, Any, Left, Right],
+          ContextBifunctor[
+            Self,
+            [_] =>> DummyImplicit,
+            [_] =>> DummyImplicit,
+            Left,
+            Right,
+          ]
+
+object Bifunctor:
+
+  /**
+    * A [[Bifunctor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[Bifunctor.bimap]]-like operations.
+    */
+  trait Empty[+Self : ValueOf] extends Bifunctor[[_, _] =>> Self, Nothing, Nothing]:
+    override protected def bimapImpl[LeftPost, RightPost]
+      (transformLeft: Nothing => LeftPost)
+      (transformRight: Nothing => RightPost)
+      : Self = valueOf[Self]

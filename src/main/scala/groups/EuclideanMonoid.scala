@@ -8,4 +8,5 @@ trait EuclideanMonoid[X] extends MultiplicativeMonoid[X]:
 
   def divide(x: X, y: X): X
 
-object EuclideanMonoid extends EuclideanMonoidBuilder, EuclideanMonoidOps
+object EuclideanMonoid extends EuclideanMonoidBuilder, EuclideanMonoidOps:
+  export io.github.sgtswagrid.nonsense.groups.EuclideanMonoid

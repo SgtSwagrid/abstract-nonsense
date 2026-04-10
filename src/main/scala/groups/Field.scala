@@ -6,4 +6,5 @@ import io.github.sgtswagrid.nonsense.groups.ops.FieldOps
 
 trait Field[X] extends EuclideanRing[X], MultiplicativeGroup[X]
 
-object Field extends FieldBuilder, FieldOps
+object Field extends FieldBuilder, FieldOps:
+  export io.github.sgtswagrid.nonsense.groups.Field

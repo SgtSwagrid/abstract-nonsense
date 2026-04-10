@@ -19,3 +19,19 @@ import io.github.sgtswagrid.nonsense.functors.covariant.ops.*
   */
 trait ContextFunctor[+Self[+_], -Context[_], +Output]
   extends BoundedContextFunctor[Self, Any, Context, Output]
+
+object ContextFunctor:
+
+  /**
+    * A [[ContextFunctor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[ContextFunctor.map]]-like operations.
+    *
+    * @tparam Context
+    *   The context bound required on the output of all
+    *   [[ContextFunctor.map]]-like operations.
+    */
+  trait Empty[+Self : ValueOf, -Context[_]]
+    extends ContextFunctor[[_] =>> Self, Context, Nothing]:
+    override def map[Post : Context](transform: Nothing => Post): Self = valueOf[Self]

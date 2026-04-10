@@ -30,3 +30,16 @@ trait Functor[+Self[+_], +Output]
     (using Output <:< Functor[Inner, InnerOutput])
     : DeepFunctorView[Self, Inner, InnerOutput] =
     DeepFunctorView(asInstanceOf[Functor[Self, Functor[Inner, InnerOutput]]])
+
+object Functor:
+
+  /**
+    * A [[Functor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[Functor.map]]-like operations.
+    */
+  trait Empty[+Self : ValueOf] extends Functor[[_] =>> Self, Nothing]:
+    override protected inline def mapImpl[Post]
+      (transform: Nothing => Post)
+      : Self = valueOf[Self]

@@ -9,4 +9,5 @@ import io.github.sgtswagrid.nonsense.groups.ordered.ops.OrderingOps
 trait OrderedField[X]
   extends Field[X], OrderedEuclideanRing[X], OrderedMultiplicativeGroup[X]
 
-object OrderedField extends OrderedFieldBuilder, FieldOps, OrderingOps
+object OrderedField extends OrderedFieldBuilder, FieldOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedField

@@ -9,4 +9,5 @@ trait MultiplicativeGroup[X] extends EuclideanMonoid[X]:
   def reciprocate(x: X): X
   override def divide(x: X, y: X): X = multiply(x, reciprocate(y))
 
-object MultiplicativeGroup extends MultiplicativeGroupBuilder, MultiplicativeGroupOps
+object MultiplicativeGroup extends MultiplicativeGroupBuilder, MultiplicativeGroupOps:
+  export io.github.sgtswagrid.nonsense.groups.MultiplicativeGroup

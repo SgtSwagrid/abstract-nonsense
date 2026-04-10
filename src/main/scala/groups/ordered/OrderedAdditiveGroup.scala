@@ -9,4 +9,5 @@ import io.github.sgtswagrid.nonsense.groups.ordered.ops.OrderingOps
 trait OrderedAdditiveGroup[X] extends AdditiveGroup[X], OrderedAdditiveMonoid[X]
 
 object OrderedAdditiveGroup
-  extends OrderedAdditiveGroupBuilder, AdditiveGroupOps, OrderingOps
+  extends OrderedAdditiveGroupBuilder, AdditiveGroupOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedAdditiveGroup

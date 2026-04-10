@@ -9,4 +9,5 @@ import io.github.sgtswagrid.nonsense.groups.ordered.ops.OrderingOps
 trait OrderedAdditiveSemigroup[X] extends AdditiveSemigroup[X], Ordering[X]
 
 object OrderedAdditiveSemigroup
-  extends OrderedAdditiveSemigroupBuilder, AdditiveSemigroupOps, OrderingOps
+  extends OrderedAdditiveSemigroupBuilder, AdditiveSemigroupOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedAdditiveSemigroup

@@ -10,4 +10,5 @@ trait AdditiveGroup[X] extends AdditiveMonoid[X]:
   def negate(x: X): X
   def subtract(x: X, y: X): X = add(x, negate(y))
 
-object AdditiveGroup extends AdditiveGroupBuilder, AdditiveGroupOps
+object AdditiveGroup extends AdditiveGroupBuilder, AdditiveGroupOps:
+  export io.github.sgtswagrid.nonsense.groups.AdditiveGroup

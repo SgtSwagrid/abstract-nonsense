@@ -7,7 +7,7 @@ import io.github.sgtswagrid.nonsense.functors.bifunctor.views.{
 
 /**
   * A doubly-restricted [[Bifunctor]] that can only contain particular values on
-  * both sides.
+  * both sides, constrained by type bounds.
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[Either]]).
@@ -34,15 +34,29 @@ trait BoundedBifunctor[
   -RightCodomain,
   +Left <: LeftCodomain,
   +Right <: RightCodomain,
-]:
+] extends BoundedContextBifunctor[
+    Self,
+    LeftCodomain,
+    RightCodomain,
+    [_] =>> DummyImplicit,
+    [_] =>> DummyImplicit,
+    Left,
+    Right,
+  ]:
 
-  /**
-    * Simultaneously transform both the left-hand and right-hand parts of this
-    * structure.
-    */
-  def bimap[LeftPost, RightPost]
+  override final inline def bimap[
+    LeftPost <: LeftCodomain : [_] =>> DummyImplicit,
+    RightPost <: RightCodomain : [_] =>> DummyImplicit,
+  ]
     (transformLeft: Left => LeftPost)
     (transformRight: Right => RightPost)
+    : Self[LeftPost, RightPost] = bimapImpl(transformLeft)(transformRight)
+
+  /** @see [[bimap]] */
+  protected def bimapImpl[
+    LeftPost <: LeftCodomain,
+    RightPost <: RightCodomain,
+  ](transformLeft: Left => LeftPost)(transformRight: Right => RightPost)
     : Self[LeftPost, RightPost]
 
   /**
@@ -66,3 +80,38 @@ trait BoundedBifunctor[
     */
   def right: BoundedBifunctorRightView[Self, RightCodomain, Left, Right] =
     BoundedBifunctorRightView(this)
+
+object BoundedBifunctor:
+
+  /**
+    * A [[BoundedBifunctor]] with symmetric constraints. That is, both sides
+    * have the same requirements.
+    */
+  type Symmetric[
+    +Self[+_, +_],
+    -Codomain,
+    +Left <: Codomain,
+    +Right <: Codomain,
+  ] = BoundedBifunctor[Self, Codomain, Codomain, Left, Right]
+
+  /**
+    * A [[BoundedBifunctor]] that contains no values.
+    *
+    * @tparam Self
+    *   The singleton produced by all [[BoundedBifunctor.bimap]]-like
+    *   operations.
+    *
+    * @tparam LeftCodomain
+    *   The upper bound on the left output of all
+    *   [[BoundedBifunctor.bimap]]-like operations.
+    *
+    * @tparam RightCodomain
+    *   The upper bound on the right output of all
+    *   [[BoundedBifunctor.bimap]]-like operations.
+    */
+  trait Empty[+Self : ValueOf, -LeftCodomain, -RightCodomain]
+    extends BoundedBifunctor[[_, _] =>> Self, LeftCodomain, RightCodomain, Nothing, Nothing]:
+    override protected def bimapImpl[LeftPost <: LeftCodomain, RightPost <: RightCodomain]
+      (transformLeft: Nothing => LeftPost)
+      (transformRight: Nothing => RightPost)
+      : Self = valueOf[Self]

@@ -8,4 +8,5 @@ trait One[+X]:
 
   def one: X
 
-object One extends OneBuilder, OneOps
+object One extends OneBuilder, OneOps:
+  export io.github.sgtswagrid.nonsense.groups.One

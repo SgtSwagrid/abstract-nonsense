@@ -10,4 +10,5 @@ trait OrderedMultiplicativeGroup[X]
   extends MultiplicativeGroup[X], OrderedEuclideanMonoid[X]
 
 object OrderedMultiplicativeGroup
-  extends OrderedMultiplicativeGroupBuilder, MultiplicativeGroupOps, OrderingOps
+  extends OrderedMultiplicativeGroupBuilder, MultiplicativeGroupOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedMultiplicativeGroup

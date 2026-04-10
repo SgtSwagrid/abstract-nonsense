@@ -10,4 +10,5 @@ trait OrderedEuclideanRing[X]
   extends EuclideanRing[X], OrderedRing[X], OrderedEuclideanMonoid[X]
 
 object OrderedEuclideanRing
-  extends OrderedEuclideanRingBuilder, EuclideanRingOps, OrderingOps
+  extends OrderedEuclideanRingBuilder, EuclideanRingOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedEuclideanRing

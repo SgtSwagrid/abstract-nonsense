@@ -8,4 +8,5 @@ trait Zero[+X]:
 
   def zero: X
 
-object Zero extends ZeroBuilder, ZeroOps
+object Zero extends ZeroBuilder, ZeroOps:
+  export io.github.sgtswagrid.nonsense.groups.Zero

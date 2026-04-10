@@ -8,4 +8,5 @@ import io.github.sgtswagrid.nonsense.groups.ordered.ops.OrderingOps
 
 trait OrderedZero[X] extends Zero[X], Ordering[X]
 
-object OrderedZero extends OrderedZeroBuilder, ZeroOps, OrderingOps
+object OrderedZero extends OrderedZeroBuilder, ZeroOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedZero

@@ -8,4 +8,5 @@ import io.github.sgtswagrid.nonsense.groups.ordered.ops.OrderingOps
 
 trait OrderedOne[X] extends One[X], Ordering[X]
 
-object OrderedOne extends OrderedOneBuilder, OneOps, OrderingOps
+object OrderedOne extends OrderedOneBuilder, OneOps, OrderingOps:
+  export io.github.sgtswagrid.nonsense.groups.ordered.OrderedOne

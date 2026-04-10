@@ -8,4 +8,5 @@ trait MultiplicativeMonoid[X] extends MultiplicativeSemigroup[X], One[X]:
 
   def product(xs: Iterable[X]): X = productOption(xs).getOrElse(one)
 
-object MultiplicativeMonoid extends MultiplicativeMonoidBuilder, MultiplicativeMonoidOps
+object MultiplicativeMonoid extends MultiplicativeMonoidBuilder, MultiplicativeMonoidOps:
+  export io.github.sgtswagrid.nonsense.groups.MultiplicativeMonoid
