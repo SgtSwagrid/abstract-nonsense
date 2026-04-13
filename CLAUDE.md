@@ -3,39 +3,38 @@
 This file provides guidance to [Claude Code](https://claude.com/product/claude-code) when working with code in this repository.
 It is not intended for human eyes.
 
-**Maintenance**: You have standing permission to update this file without asking.
-                 Add important patterns, gotchas, or context that would help future sessions.
-                 Keep it concise and actionable.
+### Maintenance
 
-## Project Context
+You (robot or human) have standing permission to update this file without asking.
+Add important patterns, gotchas, or context that would help future sessions.
+Keep it concise and actionable.
 
-This is a linear algebra library for Scala 3.
-See `README.md` for more details.
+## Project overview
 
-We have the following design goals:
-- Provide a comprehensive set of dense and sparse linear algebra operations and data structures, including vectors, matrices, and tensors.
-- Be as efficient as possible, using techniques like cache localisation, generic specialisation, BLAS, lazy evaluation, memoisation, and parallelisation.
-- Provide a clean, intuitive, purely functional, and mathematically-inspired API that is easy to use and understand.
-- Be modular and extensible, allowing users to easily add new data structures, operations, and optimisations without modifying existing code.
-- Make all definitions with a high level of generality, to allow maximum reuse and flexibility.
+This is a Scala library intended for use by other library developers.
+It provides base traits for an assortment of category-theoretic structures (functors, applicatives, etc.).
+We favour the use of base traits over type classes to aid in discoverability of functionality.
+It is (and should remain) very lightweight and dependency-free.
 
-## Compilation and Diagnostics
+## Instructions
+
+### Compilation and Diagnostics
 
 - When the user asks for help with a compilation or type error, start by running `sbt compile` to see the error for yourself.
   If there are many errors, making it unclear which one the user is referring to, ask them to clarify, and then focus only on that issue.
 - IntelliJ MCP integration is active. When a request seems to implicitly refer to something the user is looking at, always check
   `mcp__ide__getDiagnostics` first to see which file(s) are open and get associated diagnostics (errors, warnings, and info hints with line numbers).
 
-### Testing
+#### Testing
 
 - After making code changes, always run `sbt compile` to verify that issues are fixed and no new ones are introduced.
 - Repeatedly retry upon failure until the build succeeds. If you are unsure how to fix an issue, ask for help or refer to existing code for examples.
 - Before trying to fix an error, make sure you first understand it fully.
 - You should never report that a feature is complete without testing it first.
 
-## Code Style
+### Code Style
 
-### Structure and design
+#### Structure and design
 
 - Write purely-functional, immutable code without side effects.
 - Never use local / multiple returns; instead, use `if` expressions or pattern matching to return values.
@@ -48,7 +47,7 @@ We have the following design goals:
   The user may which to find a different solution that preserves these semantics.
 - Prefer inheritance with `-Ops`-style traits and F-bounded polymorphism, rather than type classes, when possible.
 
-### Syntax
+#### Syntax
 
 - Use new Scala 3 syntax in general, including significant indentation (no braces).
 - Use `[X: {A as a, B, C}]` instead of `[X : B : C](using a: A[X])` for context bounds.
@@ -57,7 +56,7 @@ We have the following design goals:
 - Format with `sbt scalafmtAll` before committing. In general, match your style to that defined in `.scalafmt.conf`.
 - When in doubt, follow the style of existing code in the repository.
 
-### Naming conventions
+#### Naming conventions
 
 - Use Australian English spelling in comments and variable names.
 - Use `camelCase` for variable and method names.
@@ -65,7 +64,7 @@ We have the following design goals:
 - Exceptionally, `lowercase` names are allowed for short-scoped type arguments in type lambdas to avoid shadowing.
 - Use short yet descriptive variable names. For example, `transform: X => Y` in `map` is better than `f: X => Y`, but `x` is better than `x1` and `start` is better than `startIndex`.
 
-### Comments
+#### Comments
 
 - Add Scaladoc comments to all public members (classes, traits, objects, methods, and vals) that are not self-explanatory.
 - All variable/object references in Scaladoc comments should use `[[name]]` links, not backticks.
@@ -76,7 +75,7 @@ We have the following design goals:
 - Return value descriptions (i.e. with `@return`) use indefinite articles (e.g. "a", "an").
 - Start all sentences with a capital letter and end with a period. This includes `@param` tags, etc.
 
-## Pull Requests
+### Pull Requests
 
 When asked to publish the code changes, your task is to open one or more pull requests (PRs) to merge the changes into `main` on GitHub:
 
