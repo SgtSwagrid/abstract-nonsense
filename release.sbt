@@ -1,6 +1,4 @@
-ThisBuild / name           := "Abstract Nonsense"
-ThisBuild / normalizedName := "abstract-nonsense"
-ThisBuild / description    := "A collection of category-theoretic base traits. "
+ThisBuild / description := "A collection of category-theoretic base traits. "
 
 ThisBuild / homepage :=
   Some(url("https://github.com/SgtSwagrid/abstract-nonsense"))
