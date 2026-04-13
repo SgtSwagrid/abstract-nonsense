@@ -3,9 +3,11 @@
 This file provides guidance to [Claude Code](https://claude.com/product/claude-code) when working with code in this repository.
 It is not intended for human eyes.
 
-**Maintenance**: You (robot or human) have standing permission to update this file without asking.
-                 Add important patterns, gotchas, or context that would help future sessions.
-                 Keep it concise and actionable.
+### Maintenance
+
+You (robot or human) have standing permission to update this file without asking.
+Add important patterns, gotchas, or context that would help future sessions.
+Keep it concise and actionable.
 
 ## Project overview
 
