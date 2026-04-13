@@ -34,10 +34,25 @@ class ContextBifunctorRightView[
   -RightContext[_],
   +Left,
   +Right,
-](
-  base: ContextBifunctor[Self, LeftContext, RightContext, Left, Right]
-)(using LeftContext[Left @uncheckedVariance])
-  extends BoundedContextBifunctorRightView[Self, Any, LeftContext, RightContext, Left, Right](base),
+]
+  (
+    base: ContextBifunctor[
+      Self,
+      LeftContext,
+      RightContext,
+      Left,
+      Right,
+    ],
+  )
+  (using LeftContext[Left @uncheckedVariance])
+  extends BoundedContextBifunctorRightView[
+    Self,
+    Any,
+    LeftContext,
+    RightContext,
+    Left,
+    Right,
+  ](base),
           ContextFunctor[[X] =>> Self[Left, X], RightContext, Right]:
 
   override def map[RightPost : RightContext]

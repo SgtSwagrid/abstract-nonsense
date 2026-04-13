@@ -1,9 +1,9 @@
 package io.github.sgtswagrid.nonsense
 package interval
 
+import io.github.sgtswagrid.nonsense.algebra.ordered.OrderedRing
+import io.github.sgtswagrid.nonsense.algebra.ordered.OrderedRing.{*, given}
 import io.github.sgtswagrid.nonsense.functors.covariant.ContextFunctor
-import io.github.sgtswagrid.nonsense.groups.ordered.OrderedRing
-import io.github.sgtswagrid.nonsense.groups.ordered.OrderedRing.{*, given}
 import io.github.sgtswagrid.nonsense.interval.Endpoint.*
 import io.github.sgtswagrid.nonsense.misc.Conjunction.&&
 import io.github.sgtswagrid.nonsense.misc.OrderOps

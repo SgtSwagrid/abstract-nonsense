@@ -43,13 +43,25 @@ trait ContextBifunctor[
     Right,
   ]:
 
-  override def left(using RightContext[Right @uncheckedVariance])
-    : ContextBifunctorLeftView[Self, LeftContext, RightContext, Left, Right] =
-    ContextBifunctorLeftView(this)
+  override def left
+    (using RightContext[Right @uncheckedVariance])
+    : ContextBifunctorLeftView[
+      Self,
+      LeftContext,
+      RightContext,
+      Left,
+      Right,
+    ] = ContextBifunctorLeftView(this)
 
-  override def right(using LeftContext[Left @uncheckedVariance])
-    : ContextBifunctorRightView[Self, LeftContext, RightContext, Left, Right] =
-    ContextBifunctorRightView(this)
+  override def right
+    (using LeftContext[Left @uncheckedVariance])
+    : ContextBifunctorRightView[
+      Self,
+      LeftContext,
+      RightContext,
+      Left,
+      Right,
+    ] = ContextBifunctorRightView(this)
 
 object ContextBifunctor:
 
@@ -75,9 +87,22 @@ object ContextBifunctor:
     *   The context bound required on the right output of all
     *   [[ContextBifunctor.bimap]]-like operations.
     */
-  trait Empty[+Self : ValueOf, -LeftContext[_], -RightContext[_]]
-    extends ContextBifunctor[[_, _] =>> Self, LeftContext, RightContext, Nothing, Nothing]:
-    override def bimap[LeftPost : LeftContext, RightPost : RightContext]
+  trait Empty[
+    +Self : ValueOf,
+    -LeftContext[_],
+    -RightContext[_],
+  ] extends ContextBifunctor[
+      [_, _] =>> Self,
+      LeftContext,
+      RightContext,
+      Nothing,
+      Nothing,
+    ]:
+
+    override def bimap[
+      LeftPost : LeftContext,
+      RightPost : RightContext,
+    ]
       (transformLeft: Nothing => LeftPost)
       (transformRight: Nothing => RightPost)
       : Self = valueOf[Self]

@@ -1,8 +1,8 @@
 package io.github.sgtswagrid.nonsense
 package interval
 
+import io.github.sgtswagrid.nonsense.algebra.ordered.OrderedRing.{*, given}
 import io.github.sgtswagrid.nonsense.functors.bifunctor.ContextBifunctor
-import io.github.sgtswagrid.nonsense.groups.ordered.OrderedRing.{*, given}
 import scala.reflect.ClassTag
 
 sealed trait Interval[+Start, +End]

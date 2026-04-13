@@ -68,7 +68,7 @@ object Test extends App:
 
   object HHmmm:
 
-    import io.github.sgtswagrid.nonsense.groups.AdditiveSemigroup
+    import io.github.sgtswagrid.nonsense.algebra.AdditiveSemigroup
     def f[X : AdditiveSemigroup](x: X): Unit = println("Hello, World!")
 
   HHmmm.f(3)

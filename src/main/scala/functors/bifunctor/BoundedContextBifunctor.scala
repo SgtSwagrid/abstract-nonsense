@@ -61,7 +61,8 @@ trait BoundedContextBifunctor[
     *   structure will be returned to its original form. The projection will
     *   thereafter be forgotten.
     */
-  def left(using RightContext[Right @uncheckedVariance])
+  def left
+    (using RightContext[Right @uncheckedVariance])
     : BoundedContextBifunctorLeftView[
       Self,
       LeftCodomain,
@@ -79,7 +80,8 @@ trait BoundedContextBifunctor[
     *   structure will be returned to its original form. The projection will
     *   thereafter be forgotten.
     */
-  def right(using LeftContext[Left @uncheckedVariance])
+  def right
+    (using LeftContext[Left @uncheckedVariance])
     : BoundedContextBifunctorRightView[
       Self,
       RightCodomain,
@@ -149,9 +151,11 @@ object BoundedContextBifunctor:
       Nothing,
       Nothing,
     ]:
+
     override def bimap[
       LeftPost <: LeftCodomain : LeftContext,
       RightPost <: RightCodomain : RightContext,
-    ](transformLeft: Nothing => LeftPost)
+    ]
+      (transformLeft: Nothing => LeftPost)
       (transformRight: Nothing => RightPost)
       : Self = valueOf[Self]

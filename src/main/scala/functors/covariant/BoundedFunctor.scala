@@ -61,6 +61,7 @@ object BoundedFunctor:
     */
   trait Empty[+Self : ValueOf, -Codomain]
     extends BoundedFunctor[[_] =>> Self, Codomain, Nothing]:
+
     override protected inline def mapImpl[Post <: Codomain]
       (transform: Nothing => Post)
       : Self = valueOf[Self]

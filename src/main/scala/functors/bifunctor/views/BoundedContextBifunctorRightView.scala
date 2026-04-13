@@ -38,18 +38,25 @@ class BoundedContextBifunctorRightView[
   -RightContext[_],
   +Left,
   +Right <: RightCodomain,
-](
-  base: BoundedContextBifunctor[
-    Self,
-    ? >: Left,
+]
+  (
+    base: BoundedContextBifunctor[
+      Self,
+      ? >: Left,
+      RightCodomain,
+      LeftContext,
+      RightContext,
+      Left,
+      Right,
+    ],
+  )
+  (using LeftContext[Left @uncheckedVariance])
+  extends BoundedContextFunctor[
+    [X] =>> Self[Left, X],
     RightCodomain,
-    LeftContext,
     RightContext,
-    Left,
     Right,
-  ]
-)(using LeftContext[Left @uncheckedVariance])
-  extends BoundedContextFunctor[[X] =>> Self[Left, X], RightCodomain, RightContext, Right]:
+  ]:
 
   override def map[RightPost <: RightCodomain : RightContext]
     (transform: Right => RightPost)

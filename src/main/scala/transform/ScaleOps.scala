@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package transform
 
-import io.github.sgtswagrid.nonsense.groups.ordered.OrderedRing
+import io.github.sgtswagrid.nonsense.algebra.ordered.OrderedRing
 import scala.reflect.ClassTag
 
 trait ScaleOps[+Self[_], +X]:

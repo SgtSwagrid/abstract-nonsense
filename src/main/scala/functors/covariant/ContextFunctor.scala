@@ -34,4 +34,6 @@ object ContextFunctor:
     */
   trait Empty[+Self : ValueOf, -Context[_]]
     extends ContextFunctor[[_] =>> Self, Context, Nothing]:
-    override def map[Post : Context](transform: Nothing => Post): Self = valueOf[Self]
+
+    override def map[Post : Context](transform: Nothing => Post): Self =
+      valueOf[Self]

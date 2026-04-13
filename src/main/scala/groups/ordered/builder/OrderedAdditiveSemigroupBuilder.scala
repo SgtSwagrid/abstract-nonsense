@@ -1,4 +1,0 @@
-package io.github.sgtswagrid.nonsense
-package groups.ordered.builder
-
-trait OrderedAdditiveSemigroupBuilder extends OrderedAdditiveMonoidBuilder

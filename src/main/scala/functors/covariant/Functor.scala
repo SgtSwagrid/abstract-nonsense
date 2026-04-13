@@ -40,6 +40,7 @@ object Functor:
     *   The singleton produced by all [[Functor.map]]-like operations.
     */
   trait Empty[+Self : ValueOf] extends Functor[[_] =>> Self, Nothing]:
+
     override protected inline def mapImpl[Post]
       (transform: Nothing => Post)
       : Self = valueOf[Self]

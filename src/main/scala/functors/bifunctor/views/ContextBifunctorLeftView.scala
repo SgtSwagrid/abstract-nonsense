@@ -6,8 +6,8 @@ import io.github.sgtswagrid.nonsense.functors.covariant.ContextFunctor
 import scala.annotation.unchecked.uncheckedVariance
 
 /**
-  * A view of a context bifunctor that only maps values on the left. Obtained
-  * by calling [[ContextBifunctor.left]].
+  * A view of a context bifunctor that only maps values on the left. Obtained by
+  * calling [[ContextBifunctor.left]].
   *
   * @param base
   *   The underlying structure.
@@ -34,10 +34,25 @@ class ContextBifunctorLeftView[
   -RightContext[_],
   +Left,
   +Right,
-](
-  base: ContextBifunctor[Self, LeftContext, RightContext, Left, Right]
-)(using RightContext[Right @uncheckedVariance])
-  extends BoundedContextBifunctorLeftView[Self, Any, LeftContext, RightContext, Left, Right](base),
+]
+  (
+    base: ContextBifunctor[
+      Self,
+      LeftContext,
+      RightContext,
+      Left,
+      Right,
+    ],
+  )
+  (using RightContext[Right @uncheckedVariance])
+  extends BoundedContextBifunctorLeftView[
+    Self,
+    Any,
+    LeftContext,
+    RightContext,
+    Left,
+    Right,
+  ](base),
           ContextFunctor[[X] =>> Self[X, Right], LeftContext, Left]:
 
   override def map[LeftPost : LeftContext]

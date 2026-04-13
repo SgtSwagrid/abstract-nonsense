@@ -109,9 +109,22 @@ object BoundedBifunctor:
     *   The upper bound on the right output of all
     *   [[BoundedBifunctor.bimap]]-like operations.
     */
-  trait Empty[+Self : ValueOf, -LeftCodomain, -RightCodomain]
-    extends BoundedBifunctor[[_, _] =>> Self, LeftCodomain, RightCodomain, Nothing, Nothing]:
-    override protected def bimapImpl[LeftPost <: LeftCodomain, RightPost <: RightCodomain]
+  trait Empty[
+    +Self : ValueOf,
+    -LeftCodomain,
+    -RightCodomain,
+  ] extends BoundedBifunctor[
+      [_, _] =>> Self,
+      LeftCodomain,
+      RightCodomain,
+      Nothing,
+      Nothing,
+    ]:
+
+    override protected def bimapImpl[
+      LeftPost <: LeftCodomain,
+      RightPost <: RightCodomain,
+    ]
       (transformLeft: Nothing => LeftPost)
       (transformRight: Nothing => RightPost)
       : Self = valueOf[Self]

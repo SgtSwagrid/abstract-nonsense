@@ -45,7 +45,13 @@ object LeftBoundedBifunctor:
     *   [[LeftBoundedBifunctor.bimap]]-like operations.
     */
   trait Empty[+Self : ValueOf, -LeftCodomain]
-    extends LeftBoundedBifunctor[[_, _] =>> Self, LeftCodomain, Nothing, Nothing]:
+    extends LeftBoundedBifunctor[
+      [_, _] =>> Self,
+      LeftCodomain,
+      Nothing,
+      Nothing,
+    ]:
+
     override protected def bimapImpl[LeftPost <: LeftCodomain, RightPost]
       (transformLeft: Nothing => LeftPost)
       (transformRight: Nothing => RightPost)

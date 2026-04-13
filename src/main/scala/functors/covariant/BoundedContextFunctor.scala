@@ -46,6 +46,7 @@ object BoundedContextFunctor:
     */
   trait Empty[+Self : ValueOf, -Codomain, -Context[_]]
     extends BoundedContextFunctor[[_] =>> Self, Codomain, Context, Nothing]:
+
     override def map[Post <: Codomain : Context]
       (transform: Nothing => Post)
       : Self = valueOf[Self]

@@ -44,7 +44,9 @@ object Bifunctor:
     * @tparam Self
     *   The singleton produced by all [[Bifunctor.bimap]]-like operations.
     */
-  trait Empty[+Self : ValueOf] extends Bifunctor[[_, _] =>> Self, Nothing, Nothing]:
+  trait Empty[+Self : ValueOf]
+    extends Bifunctor[[_, _] =>> Self, Nothing, Nothing]:
+
     override protected def bimapImpl[LeftPost, RightPost]
       (transformLeft: Nothing => LeftPost)
       (transformRight: Nothing => RightPost)
