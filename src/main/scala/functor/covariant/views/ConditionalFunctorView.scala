@@ -1,11 +1,11 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.views
 
-import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+import io.github.sgtswagrid.nonsense.util.NoContext
 
 /** A functor that only maps values that satisfy a given condition. */
-final class ConditionalFunctorView[
+class ConditionalFunctorView[
   +Self[+_ <: Codomain],
   -Codomain,
   +X <: Codomain,

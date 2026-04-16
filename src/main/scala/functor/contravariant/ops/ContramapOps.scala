@@ -3,7 +3,10 @@ package functor.contravariant.ops
 
 import io.github.sgtswagrid.nonsense.caching.Cache
 
-/** The [[contramap]] operator for [[BoundedContravariant]], and its derivatives. */
+/**
+  * The [[contramap]] operator for [[BoundedContravariant]], and its
+  * derivatives.
+  */
 trait ContramapOps[
   +Self[-_],
   +Domain,
@@ -67,4 +70,3 @@ trait ContramapOps[
   final inline def contramapWithCache[Y >: Domain : Context]
     (transform: Y => X)
     : Self[Y] = contramap(Cache.memoise(transform))
-

@@ -31,6 +31,18 @@ trait ContextContravariant[+Self[-_], -Context[_], -X]
 
 object ContextContravariant:
 
+  /** A [[ContextContravariant]] with a [[Numeric]] context bound. */
+  type NumericContravariant[+Self[-_], -X] =
+    ContextContravariant[Self, Numeric, X]
+
+  /** A [[ContextContravariant]] with an [[Integral]] context bound. */
+  type IntegralContravariant[+Self[-_], -X] =
+    ContextContravariant[Self, Integral, X]
+
+  /** A [[ContextContravariant]] with a [[Fractional]] context bound. */
+  type FractionalContravariant[+Self[-_], -X] =
+    ContextContravariant[Self, Fractional, X]
+
   /** A [[ContextContravariant]] that never consumes any value. */
   trait Empty[+Self : ValueOf, -Context[_]]
     extends ContextContravariant[[_] =>> Self, Context, Nothing]:

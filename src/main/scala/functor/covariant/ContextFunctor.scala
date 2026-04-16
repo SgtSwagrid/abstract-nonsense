@@ -31,6 +31,15 @@ trait ContextFunctor[+Self[+_], -Context[_], +X]
 
 object ContextFunctor:
 
+  /** A [[ContextFunctor]] with a [[Numeric]] context bound. */
+  type NumericFunctor[+Self[+_], +X] = ContextFunctor[Self, Numeric, X]
+
+  /** A [[ContextFunctor]] with an [[Integral]] context bound. */
+  type IntegralFunctor[+Self[+_], +X] = ContextFunctor[Self, Integral, X]
+
+  /** A [[ContextFunctor]] with a [[Fractional]] context bound. */
+  type FractionalFunctor[+Self[+_], +X] = ContextFunctor[Self, Fractional, X]
+
   /** A [[ContextFunctor]] that never contains any value. */
   trait Empty[+Self : ValueOf, -Context[_]]
     extends ContextFunctor[[_] =>> Self, Context, Nothing]:

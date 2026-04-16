@@ -1,9 +1,13 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant
 
-import io.github.sgtswagrid.nonsense.util.NoContext
-import io.github.sgtswagrid.nonsense.functor.covariant.ops.DeepOps
-import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
+import io.github.sgtswagrid.nonsense.functor.covariant.ops.{DeepOps, WhenOps}
+import io.github.sgtswagrid.nonsense.functor.covariant.views.{
+  DeepFunctorView, FunctorConditionalView, FunctorNegatedTypeView,
+  FunctorTypeView,
+}
+import io.github.sgtswagrid.nonsense.util.{anyTop, NoContext}
+import scala.reflect.ClassTag
 
 /**
   * ## Functors
@@ -37,12 +41,37 @@ import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
 trait Functor[+Self[+_], +X]
   extends BoundedFunctor[Self, Any, X],
           ContextFunctor[Self, NoContext, X],
+          WhenOps[
+            Self,
+            Any,
+            FunctorConditionalView[Self, X],
+            X,
+          ],
           DeepOps[Self, X]:
 
+  override final inline def when
+    (condition: X => Boolean)
+    : FunctorConditionalView[Self, X] = FunctorConditionalView(this, condition)
+
+  override final inline def when[Active : ClassTag]
+    : FunctorTypeView[Self, X, Active] =
+    new FunctorTypeView[Self, X, Active](this)
+
+  override final inline def unless[Inactive : ClassTag]
+    : FunctorNegatedTypeView[Self, X, Inactive] =
+    new FunctorNegatedTypeView[Self, X, Inactive](this)
+
   override final inline def deep[Inner[+_ <: C], C, Ctx[_ <: C], Y <: C]
-    (using X <:< PartialFunctor[Inner, C, Ctx, Y])
-    : DeepFunctorView[Self, Inner, C, Ctx, Y] =
-    DeepFunctorView(asInstanceOf[Functor[Self, PartialFunctor[Inner, C, Ctx, Y]]])
+    (
+      using X <:< PartialFunctor[Inner, C, Ctx, Y],
+      (Inner[C] | PartialFunctor[Inner, C, Ctx, Y]) <:< Any,
+    )
+    : DeepFunctorView[Inner, C, Ctx, Y, Self, Any] =
+    DeepFunctorView(asInstanceOf[BoundedFunctor[
+      Self,
+      Any,
+      PartialFunctor[Inner, C, Ctx, Y],
+    ]])
 
 object Functor:
 

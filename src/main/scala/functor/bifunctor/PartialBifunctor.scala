@@ -1,10 +1,11 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
-import io.github.sgtswagrid.nonsense.functor.bifunctor.views.{
+import io.github.sgtswagrid.nonsense.functor.bifunctor.ops.BimapOps
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.projection.{
   PartialBifunctorLeftView, PartialBifunctorRightView,
 }
-import io.github.sgtswagrid.nonsense.functor.covariant.Functor
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.swap.PartialSwappedBifunctorView
 
 /**
   * ## Partial Bifunctors
@@ -36,45 +37,41 @@ trait PartialBifunctor[
   +Self[+_, +_],
   -LeftCodomain,
   -RightCodomain,
-  -Context[_],
+  -Context[_, _],
   +L <: LeftCodomain,
   +R <: RightCodomain,
-]:
+] extends BimapOps[
+    Self,
+    LeftCodomain,
+    RightCodomain,
+    Context,
+    L,
+    R,
+  ]:
 
   /**
-    * ## `bimap` (from [[Bifunctor]])
+    * Provides a view of this structure with the left and right sides swapped.
     *
-    * [[bimap]] combines two separate [[Functor.map]] implementations into a
-    * single operator.
-    *
-    * Used to simultaneously transform both the left-hand and right-hand parts
-    * of this structure.
-    *
-    * @param left
-    *   An arbitrary mapping applied to each value on the left.
-    *
-    * @param right
-    *   An arbitrary mapping applied to each value on the right.
-    *
-    * @return
-    *   A projected version of this structure, leaving this original unchanged.
-    *
-    * @see
-    *   [[left]] or [[right]] for projections that operate on only one side.
+    * @note
+    *   Following any [[bimap]]-like operation, the structure will be returned
+    *   to its original form. The projection will thereafter be forgotten.
     */
-  def bimap[l <: LeftCodomain, r <: RightCodomain]
-    (using Context[l | r])
-    (left: L => l)
-    (right: R => r)
-    : Self[l, r]
+  def swap
+    : PartialSwappedBifunctorView[
+      Self,
+      RightCodomain,
+      LeftCodomain,
+      [l, r] =>> Context[r, l],
+      R,
+      L,
+    ] = PartialSwappedBifunctorView(this)
 
   /**
     * Provides a view of this structure that only maps over the left-hand side.
     *
     * @note
-    *   Following any [[BoundedContextFunctor.map]]-like operation, the
-    *   structure will be returned to its original form. The projection will
-    *   thereafter be forgotten.
+    *   Following any [[bimap]]-like operation, the structure will be returned
+    *   to its original form. The projection will thereafter be forgotten.
     */
   def left: PartialBifunctorLeftView[Self, LeftCodomain, Context, L, R] =
     PartialBifunctorLeftView(this)
@@ -83,12 +80,10 @@ trait PartialBifunctor[
     * Provides a view of this structure that only maps over the right-hand side.
     *
     * @note
-    *   Following any [[BoundedContextFunctor.map]]-like operation, the
-    *   structure will be returned to its original form. The projection will
-    *   thereafter be forgotten.
+    *   Following any [[bimap]]-like operation, the structure will be returned
+    *   to its original form. The projection will thereafter be forgotten.
     */
-  def right
-    : PartialBifunctorRightView[Self, RightCodomain, Context, L, R] =
+  def right: PartialBifunctorRightView[Self, RightCodomain, Context, L, R] =
     PartialBifunctorRightView(this)
 
 object PartialBifunctor:
@@ -100,7 +95,7 @@ object PartialBifunctor:
   type Symmetric[
     +Self[+_, +_],
     -Codomain,
-    -Context[_],
+    -Context[_, _],
     +Left <: Codomain,
     +Right <: Codomain,
   ] = PartialBifunctor[
@@ -112,12 +107,24 @@ object PartialBifunctor:
     Right,
   ]
 
+  /**
+    * A context where both sides must satisfy a shared constraint via their
+    * union type. That is, `Context[L, R]` holds iff `C[L | R]` holds.
+    */
+  type Union[C[_]] = [l, r] =>> C[l | r]
+
+  /**
+    * A context where each side must independently satisfy its own constraint.
+    * That is, `Context[L, R]` holds iff both `C1[L]` and `C2[R]` hold.
+    */
+  type Independent[C1[_], C2[_]] = [l, r] =>> (C1[l], C2[r])
+
   /** A [[PartialBifunctor]] that never contains any value. */
   trait Empty[
     +Self : ValueOf,
     -LeftCodomain,
     -RightCodomain,
-    -Context[_],
+    -Context[_, _],
   ] extends PartialBifunctor[
       [_, _] =>> Self,
       LeftCodomain,
@@ -128,7 +135,7 @@ object PartialBifunctor:
     ]:
 
     override final def bimap[l <: LeftCodomain, r <: RightCodomain]
-      (using Context[l | r])
+      (using Context[l, r])
       (left: Nothing => l)
       (right: Nothing => r)
       : Self = valueOf[Self]

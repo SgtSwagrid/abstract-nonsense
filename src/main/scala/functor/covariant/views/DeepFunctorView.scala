@@ -1,7 +1,9 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.views
 
-import io.github.sgtswagrid.nonsense.functor.covariant.{Functor, PartialFunctor}
+import io.github.sgtswagrid.nonsense.functor.covariant.{
+  BoundedFunctor, PartialFunctor,
+}
 
 /**
   * A [[PartialFunctor]] that maps over two layers of a structure at once.
@@ -10,9 +12,6 @@ import io.github.sgtswagrid.nonsense.functor.covariant.{Functor, PartialFunctor}
   *
   * @param base
   *   The underlying structure.
-  *
-  * @tparam Outer
-  *   The outer layer of the structure.
   *
   * @tparam Inner
   *   The inner layer of the structure.
@@ -25,18 +24,54 @@ import io.github.sgtswagrid.nonsense.functor.covariant.{Functor, PartialFunctor}
   *
   * @tparam Output
   *   The type of value contained within the inner layer of the structure.
+  *
+  * @tparam Outer
+  *   The outer layer of the structure.
+  *
+  * @tparam OuterCodomain
+  *   The upper bound on [[Outer]]'s element type. Must accommodate all possible
+  *   inner types, i.e. it must be a supertype of both
+  *   [[Inner]]`[InnerCodomain]` and
+  *   [[PartialFunctor]]`[Inner, InnerCodomain, InnerContext, Output]`.
   */
 final class DeepFunctorView[
-  +Outer[+_],
   +Inner[+_ <: InnerCodomain],
   -InnerCodomain,
   -InnerContext[_ <: InnerCodomain],
   +Output <: InnerCodomain,
-](base: Functor[Outer, PartialFunctor[Inner, InnerCodomain, InnerContext, Output]])
-  extends PartialFunctor[[X <: InnerCodomain] =>> Outer[Inner[X]], InnerCodomain, InnerContext, Output]:
+  +Outer[+_ <: OuterCodomain],
+  -OuterCodomain
+    >: Inner[InnerCodomain] |
+      PartialFunctor[
+        Inner,
+        InnerCodomain,
+        InnerContext,
+        Output,
+      ],
+]
+  (
+    base: BoundedFunctor[
+      Outer,
+      OuterCodomain,
+      PartialFunctor[
+        Inner,
+        InnerCodomain,
+        InnerContext,
+        Output,
+      ],
+    ],
+  )
+  extends PartialFunctor[
+    [X <: InnerCodomain] =>> Outer[Inner[X]],
+    InnerCodomain,
+    InnerContext,
+    Output,
+  ]:
 
   override inline def map[Post <: InnerCodomain : InnerContext]
     (transform: Output => Post)
-    : Outer[Inner[Post]] = base.map(_.map(transform))
+    : Outer[Inner[Post]] = base
+    .map(_.map(transform).asInstanceOf[OuterCodomain])
+    .asInstanceOf[Outer[Inner[Post]]]
 
   override def toString = base.toString

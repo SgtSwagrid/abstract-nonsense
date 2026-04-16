@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor.bifunctor.views
+package functor.bifunctor.views.projection
 
 import io.github.sgtswagrid.nonsense.functor.bifunctor.ContextBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.ContextFunctor
@@ -8,7 +8,9 @@ import scala.annotation.unchecked.uncheckedVariance
 /** A view of a [[ContextBifunctor]] that only maps values on the right. */
 class ContextBifunctorRightView[+Self[+_, +_], -Context[_], +L, +R]
   (base: ContextBifunctor[Self, Context, L, R])
-  extends PartialBifunctorRightView[Self, Any, Context, L, R](base),
+  extends PartialBifunctorRightView[Self, Any, [l, r] =>> Context[l | r], L, R](
+    base,
+  ),
           ContextFunctor[
             [X] =>> Self[L, X],
             [X] =>> Context[(L @uncheckedVariance) | X],

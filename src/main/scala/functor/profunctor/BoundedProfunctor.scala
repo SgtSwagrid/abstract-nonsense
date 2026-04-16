@@ -1,11 +1,12 @@
 package io.github.sgtswagrid.nonsense
 package functor.profunctor
 
-import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.contravariant.BoundedContravariant
 import io.github.sgtswagrid.nonsense.functor.covariant.{
   BoundedFunctor, ContextFunctor, Functor, PartialFunctor,
 }
+import io.github.sgtswagrid.nonsense.functor.profunctor.ops.DimapOps
+import io.github.sgtswagrid.nonsense.util.NoContext
 
 /**
   * ## Bounded Profunctors
@@ -41,34 +42,9 @@ trait BoundedProfunctor[
   -Codomain,
   -I >: Domain,
   +O <: Codomain,
-] extends BoundedFunctor[[o] =>> Self[I, o], Codomain, O],
+] extends DimapOps[Self, Domain, Codomain, I, O],
+          BoundedFunctor[[o] =>> Self[I, o], Codomain, O],
           BoundedContravariant[[i] =>> Self[i, O], Domain, I]:
-
-  /**
-    * ## `dimap` (from [[Profunctor]])
-    *
-    * [[dimap]] combines both [[map]] (from [[Functor]]) and [[contramap]] (from
-    * [[Contravariant]]) into a single operator.
-    *
-    * Used to simultaneously map both the input to and output from this
-    * pipeline.
-    *
-    * @param pre
-    *   The input transformation (to [[I]]).
-    *
-    * @param post
-    *   The output transformation (from [[O]]).
-    *
-    * @tparam i
-    *   The new input type to replace [[I]].
-    *
-    * @tparam o
-    *   The new output type to replace [[O]].
-    *
-    * @return
-    *   An extended version of this pipeline, leaving this original unchanged.
-    */
-  def dimap[i >: Domain, o <: Codomain](pre: i => I)(post: O => o): Self[i, o]
 
   override final inline def map[o <: Codomain : NoContext]
     (transform: O => o)

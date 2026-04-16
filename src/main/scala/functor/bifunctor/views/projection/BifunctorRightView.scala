@@ -1,9 +1,9 @@
 package io.github.sgtswagrid.nonsense
-package functor.bifunctor.views
+package functor.bifunctor.views.projection
 
-import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.bifunctor.LeftBoundedBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.Functor
+import io.github.sgtswagrid.nonsense.util.NoContext
 
 /** A view of a [[Bifunctor]] that only maps values on the right. */
 class BifunctorRightView[+Self[+_, +_], +L, +R]

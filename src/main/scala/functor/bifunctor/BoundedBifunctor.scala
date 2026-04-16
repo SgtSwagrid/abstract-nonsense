@@ -1,10 +1,10 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
-import io.github.sgtswagrid.nonsense.util.NoContext
-import io.github.sgtswagrid.nonsense.functor.bifunctor.views.{
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.projection.{
   BoundedBifunctorLeftView, BoundedBifunctorRightView,
 }
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.swap.BoundedSwappedBifunctorView
 
 /**
   * ## Bounded Bifunctors
@@ -44,10 +44,14 @@ trait BoundedBifunctor[
     Self,
     LeftCodomain,
     RightCodomain,
-    NoContext,
+    [l, r] =>> DummyImplicit,
     L,
     R,
   ]:
+
+  override def swap
+    : BoundedSwappedBifunctorView[Self, RightCodomain, LeftCodomain, R, L] =
+    BoundedSwappedBifunctorView(this)
 
   /**
     * Provides a view of this structure that only maps over the left-hand side.

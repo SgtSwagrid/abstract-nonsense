@@ -1,9 +1,9 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant
 
-import io.github.sgtswagrid.nonsense.util.NoContext
-import io.github.sgtswagrid.nonsense.functor.covariant.ops.*
+import io.github.sgtswagrid.nonsense.functor.covariant.ops.WhenOps
 import io.github.sgtswagrid.nonsense.functor.covariant.views.*
+import io.github.sgtswagrid.nonsense.util.NoContext
 import scala.reflect.ClassTag
 
 /**
@@ -36,19 +36,23 @@ trait BoundedFunctor[
   -Codomain,
   +X <: Codomain,
 ] extends PartialFunctor[Self, Codomain, NoContext, X],
-          WhenOps[Self, Codomain, X],
-          WhenTypeOps[Self, Codomain, X]:
+          WhenOps[
+            Self,
+            Codomain,
+            ConditionalFunctorView[Self, Codomain, X],
+            X,
+          ]:
 
-  override final inline def when
+  override def when
     (condition: X => Boolean)
     : ConditionalFunctorView[Self, Codomain, X] =
     ConditionalFunctorView(this, condition)
 
-  override final inline def when[Active <: Codomain : ClassTag]
+  override def when[Active <: Codomain : ClassTag]
     : TypeFunctorView[Self, Codomain, X, Active] =
     new TypeFunctorView[Self, Codomain, X, Active](this)
 
-  override final inline def unless[Inactive <: Codomain : ClassTag]
+  override def unless[Inactive <: Codomain : ClassTag]
     : NegatedTypeFunctorView[Self, Codomain, X, Inactive] =
     new NegatedTypeFunctorView[Self, Codomain, X, Inactive](this)
 

@@ -1,9 +1,10 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
-import io.github.sgtswagrid.nonsense.util.NoContext
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.swap.SwappedBifunctorView
 import io.github.sgtswagrid.nonsense.functor.covariant.{BoundedFunctor, Functor}
 import io.github.sgtswagrid.nonsense.functor.profunctor.Profunctor
+import io.github.sgtswagrid.nonsense.util.NoContext
 
 /**
   * ## Bifunctor
@@ -35,7 +36,10 @@ import io.github.sgtswagrid.nonsense.functor.profunctor.Profunctor
 trait Bifunctor[+Self[+_, +_], +L, +R]
   extends LeftBoundedBifunctor[Self, Any, L, R],
           RightBoundedBifunctor[Self, Any, L, R],
-          ContextBifunctor[Self, NoContext, L, R]
+          ContextBifunctor[Self, NoContext, L, R]:
+
+  override def swap: SwappedBifunctorView[Self, R, L] =
+    SwappedBifunctorView(this)
 
 object Bifunctor:
 

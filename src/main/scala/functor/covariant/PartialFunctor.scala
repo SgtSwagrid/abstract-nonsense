@@ -47,4 +47,3 @@ object PartialFunctor:
 
     override def map[Y <: Codomain : Context](transform: Nothing => Y): Self =
       valueOf[Self]
-

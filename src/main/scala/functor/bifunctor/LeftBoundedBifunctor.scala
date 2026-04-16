@@ -1,7 +1,8 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
-import io.github.sgtswagrid.nonsense.functor.bifunctor.views.BifunctorRightView
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.projection.BifunctorRightView
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.swap.LeftSwappedBifunctorView
 
 /**
   * ## Left-Bounded Bifunctors
@@ -33,6 +34,9 @@ trait LeftBoundedBifunctor[
   +L <: LeftCodomain,
   +R,
 ] extends BoundedBifunctor[Self, LeftCodomain, Any, L, R]:
+
+  override def swap: LeftSwappedBifunctorView[Self, LeftCodomain, R, L] =
+    LeftSwappedBifunctorView(this)
 
   override final inline def right: BifunctorRightView[Self, L, R] =
     BifunctorRightView(this)

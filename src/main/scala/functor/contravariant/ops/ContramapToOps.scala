@@ -1,7 +1,10 @@
 package io.github.sgtswagrid.nonsense
 package functor.contravariant.ops
 
-/** The [[contramapTo]] operator for [[PartialContravariant]], and its derivatives. */
+/**
+  * The [[contramapTo]] operator for [[PartialContravariant]], and its
+  * derivatives.
+  */
 trait ContramapToOps[
   +Self[-_],
   +Domain,

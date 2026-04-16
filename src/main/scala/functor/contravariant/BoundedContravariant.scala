@@ -1,7 +1,14 @@
 package io.github.sgtswagrid.nonsense
 package functor.contravariant
 
+import io.github.sgtswagrid.nonsense.functor.contravariant.ops.ContravariantWhenOps
+import io.github.sgtswagrid.nonsense.functor.contravariant.views.{
+  ConditionalContravariantView, NegatedTypeContravariantView,
+  TypeContravariantView,
+}
 import io.github.sgtswagrid.nonsense.util.NoContext
+import scala.annotation.unchecked.uncheckedVariance
+import scala.reflect.ClassTag
 
 /**
   * ## Bounded Contravariant Functors
@@ -29,7 +36,21 @@ import io.github.sgtswagrid.nonsense.util.NoContext
   *   [[PartialContravariant]] instead.
   */
 trait BoundedContravariant[+Self[-_], +Domain, -X >: Domain]
-  extends PartialContravariant[Self, Domain, NoContext, X]
+  extends PartialContravariant[Self, Domain, NoContext, X],
+          ContravariantWhenOps[Self, Domain, X]:
+
+  override final inline def contrawhen
+    (condition: (X @uncheckedVariance) => Boolean)
+    : ConditionalContravariantView[Self, Domain, X] =
+    ConditionalContravariantView(this, condition)
+
+  override final inline def contrawhen[Active >: Domain : ClassTag]
+    : TypeContravariantView[Self, Domain, X, Active] =
+    new TypeContravariantView[Self, Domain, X, Active](this)
+
+  override final inline def contraunless[Inactive >: Domain : ClassTag]
+    : NegatedTypeContravariantView[Self, Domain, X, Inactive] =
+    new NegatedTypeContravariantView[Self, Domain, X, Inactive](this)
 
 object BoundedContravariant:
 

@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.contravariant
 
-import io.github.sgtswagrid.nonsense.functor.contravariant.ops.ContramapToOps
+import io.github.sgtswagrid.nonsense.functor.contravariant.ops.ContramapToXOps
 
 /**
   * ## Partial Contravariant Functors
@@ -32,8 +32,12 @@ import io.github.sgtswagrid.nonsense.functor.contravariant.ops.ContramapToOps
   *   If only one of the above constraints is needed, instead use
   *   [[BoundedContravariant]] or [[ContextContravariant]] respectively.
   */
-trait PartialContravariant[+Self[-_], +Domain, -Context[_], -X >: Domain]
-  extends ContramapToOps[Self, Domain, Context, X]
+trait PartialContravariant[
+  +Self[-_],
+  +Domain,
+  -Context[_],
+  -X >: Domain,
+] extends ContramapToXOps[Self, Domain, Context, X]
 
 object PartialContravariant:
 
@@ -41,6 +45,5 @@ object PartialContravariant:
   trait Empty[+Self : ValueOf, -Context[_]]
     extends PartialContravariant[[_] =>> Self, Nothing, Context, Nothing]:
 
-    override def contramap[Y : Context]
-      (transform: Y => Nothing)
-      : Self = valueOf[Self]
+    override def contramap[Y : Context](transform: Y => Nothing): Self =
+      valueOf[Self]

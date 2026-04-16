@@ -1,12 +1,12 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.views
 
-import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+import io.github.sgtswagrid.nonsense.util.NoContext
 import scala.reflect.ClassTag
 
 /** A functor that only maps values that have a certain type. */
-final class TypeFunctorView[
+class TypeFunctorView[
   +Self[+_ <: Codomain],
   -Codomain,
   +X <: Codomain,

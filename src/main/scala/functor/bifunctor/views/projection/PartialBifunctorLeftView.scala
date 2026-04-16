@@ -1,5 +1,5 @@
 package io.github.sgtswagrid.nonsense
-package functor.bifunctor.views
+package functor.bifunctor.views.projection
 
 import io.github.sgtswagrid.nonsense.functor.bifunctor.PartialBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor
@@ -9,7 +9,7 @@ import scala.annotation.unchecked.uncheckedVariance
 class PartialBifunctorLeftView[
   +Self[+_, +_],
   -LeftCodomain,
-  -Context[_],
+  -Context[_, _],
   +L <: LeftCodomain,
   +R,
 ]
@@ -26,11 +26,10 @@ class PartialBifunctorLeftView[
   extends PartialFunctor[
     [X] =>> Self[X, R],
     LeftCodomain,
-    [X] =>> Context[X | (R @uncheckedVariance)],
+    [X] =>> Context[X, R @uncheckedVariance],
     L,
   ]:
 
-  override def map[
-    l <: LeftCodomain : [X] =>> Context[X | (R @uncheckedVariance)],
-  ](transform: L => l): Self[l, R] =
-    base.bimap[l, R @uncheckedVariance](transform)(identity)
+  override def map[l <: LeftCodomain : [X] =>> Context[X, R @uncheckedVariance]]
+    (transform: L => l)
+    : Self[l, R] = base.bimap[l, R @uncheckedVariance](transform)(identity)

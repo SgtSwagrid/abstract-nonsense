@@ -1,6 +1,8 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
+import io.github.sgtswagrid.nonsense.functor.bifunctor.views.swap.ContextSwappedBifunctorView
+
 /**
   * ## Context Bifunctors
   *
@@ -26,7 +28,10 @@ package functor.bifunctor
   *   The type of value contained on the right-hand side (e.g. [[Int]]).
   */
 trait ContextBifunctor[+Self[+_, +_], -Context[_], +L, +R]
-  extends PartialBifunctor[Self, Any, Any, Context, L, R]
+  extends PartialBifunctor[Self, Any, Any, [l, r] =>> Context[l | r], L, R]:
+
+  override def swap: ContextSwappedBifunctorView[Self, Context, R, L] =
+    ContextSwappedBifunctorView(this)
 
 object ContextBifunctor:
 
