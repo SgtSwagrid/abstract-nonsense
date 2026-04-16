@@ -2,7 +2,7 @@ package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
 import io.github.sgtswagrid.nonsense.functor.covariant.ContextFunctor
-import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.views.ConditionalFunctorView
 
 /** The [[when]] operator for [[ContextFunctor]], and its derivatives. */

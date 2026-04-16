@@ -1,6 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.profunctor
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.contravariant.BoundedContravariant
 import io.github.sgtswagrid.nonsense.functor.covariant.{
   BoundedFunctor, ContextFunctor, Functor, PartialFunctor,
@@ -69,10 +70,10 @@ trait BoundedProfunctor[
     */
   def dimap[i >: Domain, o <: Codomain](pre: i => I)(post: O => o): Self[i, o]
 
-  override protected final inline def mapImpl[o <: Codomain]
+  override final inline def map[o <: Codomain : NoContext]
     (transform: O => o)
     : Self[I, o] = dimap[I, o](identity)(transform)
 
-  override final inline def contramap[i >: Domain]
+  override final inline def contramap[i >: Domain : NoContext]
     (transform: i => I)
     : Self[i, O] = dimap[i, O](transform)(identity)

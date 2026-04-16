@@ -48,5 +48,3 @@ object PartialFunctor:
     override def map[Y <: Codomain : Context](transform: Nothing => Y): Self =
       valueOf[Self]
 
-  /** A context bound which indicates that no context is required. */
-  type NoContext[_] = DummyImplicit

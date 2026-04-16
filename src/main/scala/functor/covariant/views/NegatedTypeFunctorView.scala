@@ -1,6 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.views
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 import scala.reflect.ClassTag
 
@@ -18,7 +19,7 @@ final class NegatedTypeFunctorView[
     X,
   ]:
 
-  override protected inline def mapImpl[Post <: Codomain]
+  override inline def map[Post <: Codomain : NoContext]
     (transform: X => Post)
     : Self[Post | Inactive] = base.map:
     case value: Inactive => value.asInstanceOf[Post | (Inactive & Codomain)]

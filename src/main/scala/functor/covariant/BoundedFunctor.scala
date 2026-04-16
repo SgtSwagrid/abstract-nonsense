@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant
 
-import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.ops.*
 import io.github.sgtswagrid.nonsense.functor.covariant.views.*
 import scala.reflect.ClassTag
@@ -39,12 +39,6 @@ trait BoundedFunctor[
           WhenOps[Self, Codomain, X],
           WhenTypeOps[Self, Codomain, X]:
 
-  override final inline def map[Y <: Codomain : NoContext]
-    (transform: X => Y)
-    : Self[Y] = mapImpl[Y](transform)
-
-  protected def mapImpl[Y <: Codomain](transform: X => Y): Self[Y]
-
   override final inline def when
     (condition: X => Boolean)
     : ConditionalFunctorView[Self, Codomain, X] =
@@ -64,6 +58,6 @@ object BoundedFunctor:
   trait Empty[+Self : ValueOf, -Codomain]
     extends BoundedFunctor[[_] =>> Self, Codomain, Nothing]:
 
-    override protected inline def mapImpl[Y <: Codomain]
+    override inline def map[Y <: Codomain : NoContext]
       (transform: Nothing => Y)
       : Self = valueOf[Self]

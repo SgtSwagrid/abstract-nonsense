@@ -1,6 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor.views
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.bifunctor.LeftBoundedBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 
@@ -10,5 +11,5 @@ class BifunctorRightView[+Self[+_, +_], +L, +R]
   extends BoundedBifunctorRightView[Self, Any, L, R](base),
           Functor[[X] =>> Self[L, X], R]:
 
-  override protected inline def mapImpl[r](transform: R => r): Self[L, r] = base
+  override inline def map[r : NoContext](transform: R => r): Self[L, r] = base
     .bimap(identity)(transform)

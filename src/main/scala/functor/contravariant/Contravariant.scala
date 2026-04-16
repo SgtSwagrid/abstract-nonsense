@@ -1,6 +1,8 @@
 package io.github.sgtswagrid.nonsense
 package functor.contravariant
 
+import io.github.sgtswagrid.nonsense.util.NoContext
+
 /**
   * ## Contravariant Functors
   *
@@ -31,4 +33,13 @@ package functor.contravariant
   *   The type of value consumed (e.g. `Event`).
   */
 trait Contravariant[+Self[-_], -X]
-  extends BoundedContravariant[Self, Nothing, X]
+  extends BoundedContravariant[Self, Nothing, X],
+          ContextContravariant[Self, NoContext, X]
+
+object Contravariant:
+
+  /** A [[Contravariant]] that never consumes any value. */
+  trait Empty[+Self : ValueOf] extends Contravariant[[_] =>> Self, Nothing]:
+
+    override def contramap[Y : NoContext](transform: Y => Nothing): Self =
+      valueOf[Self]

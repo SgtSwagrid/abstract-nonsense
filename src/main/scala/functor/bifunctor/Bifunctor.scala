@@ -1,8 +1,8 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.{BoundedFunctor, Functor}
-import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
 import io.github.sgtswagrid.nonsense.functor.profunctor.Profunctor
 
 /**
@@ -43,7 +43,8 @@ object Bifunctor:
   trait Empty[+Self : ValueOf]
     extends Bifunctor[[_, _] =>> Self, Nothing, Nothing]:
 
-    override protected final def bimapImpl[l, r]
+    override def bimap[l, r]
+      (using DummyImplicit)
       (left: Nothing => l)
       (right: Nothing => r)
       : Self = valueOf[Self]

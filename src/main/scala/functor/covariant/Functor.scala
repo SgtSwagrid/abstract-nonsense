@@ -1,7 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant
 
-import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.ops.DeepOps
 import io.github.sgtswagrid.nonsense.functor.covariant.views.DeepFunctorView
 
@@ -39,15 +39,15 @@ trait Functor[+Self[+_], +X]
           ContextFunctor[Self, NoContext, X],
           DeepOps[Self, X]:
 
-  override final inline def deep[Inner[+_], Y]
-    (using X <:< Functor[Inner, Y])
-    : DeepFunctorView[Self, Inner, Y] =
-    DeepFunctorView(asInstanceOf[Functor[Self, Functor[Inner, Y]]])
+  override final inline def deep[Inner[+_ <: C], C, Ctx[_ <: C], Y <: C]
+    (using X <:< PartialFunctor[Inner, C, Ctx, Y])
+    : DeepFunctorView[Self, Inner, C, Ctx, Y] =
+    DeepFunctorView(asInstanceOf[Functor[Self, PartialFunctor[Inner, C, Ctx, Y]]])
 
 object Functor:
 
   /** A [[Functor]] that never contains any value. */
   trait Empty[+Self : ValueOf] extends Functor[[_] =>> Self, Nothing]:
 
-    override protected inline def mapImpl[Y](transform: Nothing => Y): Self =
+    override inline def map[Y : NoContext](transform: Nothing => Y): Self =
       valueOf[Self]

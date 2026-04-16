@@ -1,6 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.views
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 import scala.reflect.ClassTag
 
@@ -18,7 +19,7 @@ final class TypeFunctorView[
     Active,
   ]:
 
-  override inline def mapImpl[Y <: Codomain]
+  override inline def map[Y <: Codomain : NoContext]
     (transform: Active => Y)
     : Self[Y | X] = base.map:
     case value: Active => transform(value)

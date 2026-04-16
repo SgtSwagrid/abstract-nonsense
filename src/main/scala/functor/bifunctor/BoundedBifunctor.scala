@@ -1,10 +1,10 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.bifunctor.views.{
   BoundedBifunctorLeftView, BoundedBifunctorRightView,
 }
-import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
 
 /**
   * ## Bounded Bifunctors
@@ -48,21 +48,6 @@ trait BoundedBifunctor[
     L,
     R,
   ]:
-
-  override final inline def bimap[
-    LeftPost <: LeftCodomain,
-    RightPost <: RightCodomain,
-  ]
-    (using DummyImplicit)
-    (transformLeft: L => LeftPost)
-    (transformRight: R => RightPost)
-    : Self[LeftPost, RightPost] = bimapImpl(transformLeft)(transformRight)
-
-  /** The internal implementation of [[bimap]]. */
-  protected def bimapImpl[l <: LeftCodomain, r <: RightCodomain]
-    (left: L => l)
-    (right: R => r)
-    : Self[l, r]
 
   /**
     * Provides a view of this structure that only maps over the left-hand side.
@@ -109,8 +94,8 @@ object BoundedBifunctor:
       Nothing,
     ]:
 
-    override protected final def bimapImpl[
-      l <: LeftCodomain,
-      r <: RightCodomain,
-    ](transformLeft: Nothing => l)(transformRight: Nothing => r): Self =
-      valueOf[Self]
+    override def bimap[l <: LeftCodomain, r <: RightCodomain]
+      (using DummyImplicit)
+      (transformLeft: Nothing => l)
+      (transformRight: Nothing => r)
+      : Self = valueOf[Self]

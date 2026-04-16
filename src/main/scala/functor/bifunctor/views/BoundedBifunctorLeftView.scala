@@ -1,9 +1,9 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor.views
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.bifunctor.BoundedBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
-import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
 
 /** A view of a [[BoundedBifunctor]] that only maps values on the left. */
 class BoundedBifunctorLeftView[
@@ -16,6 +16,6 @@ class BoundedBifunctorLeftView[
   extends PartialBifunctorLeftView[Self, LeftCodomain, NoContext, L, R](base),
           BoundedFunctor[[X] =>> Self[X, R], LeftCodomain, L]:
 
-  override protected def mapImpl[l <: LeftCodomain]
+  override def map[l <: LeftCodomain : NoContext]
     (transform: L => l)
     : Self[l, R] = base.bimap(transform)(identity)

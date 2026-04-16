@@ -1,8 +1,10 @@
 package io.github.sgtswagrid.nonsense
 package functor.contravariant
 
+import io.github.sgtswagrid.nonsense.util.NoContext
+
 /**
-  * ## Bounded Contravariant Functor
+  * ## Bounded Contravariant Functors
   *
   * A bounded contravariant functor is a restricted [[Contravariant]] that can
   * only consume values with certain properties.
@@ -21,41 +23,19 @@ package functor.contravariant
   *
   * @tparam X
   *   The type of value consumed (e.g. `Event`).
+  *
+  * @see
+  *   If a context bound is needed, use [[ContextContravariant]] or
+  *   [[PartialContravariant]] instead.
   */
-trait BoundedContravariant[+Self[-_], +Domain, -X]:
+trait BoundedContravariant[+Self[-_], +Domain, -X >: Domain]
+  extends PartialContravariant[Self, Domain, NoContext, X]
 
-  /**
-    * ## `contramap` (from [[Contravariant]])
-    *
-    * Transforms the input to this consumer in advance.
-    *
-    * @param transform
-    *   An arbitrary mapping applied to each input value.
-    *
-    * @tparam Y
-    *   The new input type to replace [[X]].
-    *
-    * @return
-    *   A projected version of this consumer, leaving this original unchanged.
-    *
-    * @example
-    *   ```scala
-    *   trait Eater[-X](???) extends Contravariant[Eater, X]:
-    *
-    *     def eat(food: X): Eater[X] =
-    *       println(s"Yummy $food!")
-    *       ???
-    *
-    *     override def contramap[Y](f: Y => X): Eater[Y] = ???
-    *
-    *   val carnivore: Eater[Meat] = ???
-    *
-    *   type Meal = List[Food]
-    *
-    *   val omnivore: Eater[Meal] =
-    *     carnivore.contramap(_.filter(_.isInstanceOf[Meat]))
-    *
-    *   omnivore.eat(Seq(Steak, Salad)) // "Yummy List(steak)!"
-    *   ```
-    */
-  def contramap[Y >: Domain](transform: Y => X): Self[Y]
+object BoundedContravariant:
+
+  /** A [[BoundedContravariant]] that never consumes any value. */
+  trait Empty[+Self : ValueOf]
+    extends BoundedContravariant[[_] =>> Self, Nothing, Nothing]:
+
+    override def contramap[Y : NoContext](transform: Y => Nothing): Self =
+      valueOf[Self]

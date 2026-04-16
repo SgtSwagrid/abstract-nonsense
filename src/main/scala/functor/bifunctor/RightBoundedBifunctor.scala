@@ -49,7 +49,8 @@ object RightBoundedBifunctor:
       Nothing,
     ]:
 
-    override protected final def bimapImpl[l, r <: RightCodomain]
+    override def bimap[l, r <: RightCodomain]
+      (using DummyImplicit)
       (left: Nothing => l)
       (right: Nothing => r)
       : Self = valueOf[Self]

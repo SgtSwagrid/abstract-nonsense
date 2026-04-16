@@ -1,6 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.covariant.views
 
+import io.github.sgtswagrid.nonsense.util.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 
 /** A functor that only maps values that satisfy a given condition. */
@@ -15,7 +16,7 @@ final class ConditionalFunctorView[
   )
   extends BoundedFunctor[[Y <: Codomain] =>> Self[Y | X], Codomain, X]:
 
-  override protected inline def mapImpl[Y <: Codomain]
+  override inline def map[Y <: Codomain : NoContext]
     (transform: X => Y)
     : Self[Y | X] = base.map:
     case value if condition(value) => transform(value)
