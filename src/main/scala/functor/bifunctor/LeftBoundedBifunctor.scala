@@ -4,46 +4,42 @@ package functor.bifunctor
 import io.github.sgtswagrid.nonsense.functor.bifunctor.views.BifunctorRightView
 
 /**
-  * A restricted [[Bifunctor]] that can only contain particular values on the
-  * left, but any value on the right.
+  * ## Left-Bounded Bifunctors
+  *
+  * A left-bounded bifunctor is a restricted [[Bifunctor]] that can only contain
+  * values with certain properties on the left, but any value on the right.
+  *
+  * ### Constraints
+  *
+  *   1. An upper bound [[LeftCodomain]] on the type [[L]].
+  *
+  * ### Signature
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[Either]]).
   *
   * @tparam LeftCodomain
-  *   The upper bound on [[Left]] following any [[map]]-like operation.
+  *   The upper bound on [[L]] (e.g. [[Any]]).
   *
-  * @tparam Left
-  *   The type of value contained on the left-hand side of this structure (e.g.
-  *   [[Int]]).
+  * @tparam L
+  *   The type of value contained on the left-hand side (e.g. [[Int]]).
   *
-  * @tparam Right
-  *   The type of value contained on the right-hand side of this structure (e.g.
-  *   [[Int]]).
+  * @tparam R
+  *   The type of value contained on the right-hand side (e.g. [[Int]]).
   */
 trait LeftBoundedBifunctor[
   +Self[+_, +_],
   -LeftCodomain,
-  +Left <: LeftCodomain,
-  +Right,
-] extends BoundedBifunctor[Self, LeftCodomain, Any, Left, Right]:
+  +L <: LeftCodomain,
+  +R,
+] extends BoundedBifunctor[Self, LeftCodomain, Any, L, R]:
 
-  override final inline def right: BifunctorRightView[Self, Left, Right] =
+  override final inline def right: BifunctorRightView[Self, L, R] =
     BifunctorRightView(this)
 
 object LeftBoundedBifunctor:
 
-  /**
-    * A [[LeftBoundedBifunctor]] that contains no values.
-    *
-    * @tparam Self
-    *   The singleton produced by all [[LeftBoundedBifunctor.bimap]]-like
-    *   operations.
-    *
-    * @tparam LeftCodomain
-    *   The upper bound on the left output of all
-    *   [[LeftBoundedBifunctor.bimap]]-like operations.
-    */
+  /** A [[LeftBoundedBifunctor]] that never contains any value. */
   trait Empty[+Self : ValueOf, -LeftCodomain]
     extends LeftBoundedBifunctor[
       [_, _] =>> Self,
@@ -52,7 +48,7 @@ object LeftBoundedBifunctor:
       Nothing,
     ]:
 
-    override protected def bimapImpl[LeftPost <: LeftCodomain, RightPost]
-      (transformLeft: Nothing => LeftPost)
-      (transformRight: Nothing => RightPost)
+    override protected final def bimapImpl[l <: LeftCodomain, r]
+      (transformLeft: Nothing => l)
+      (transformRight: Nothing => r)
       : Self = valueOf[Self]

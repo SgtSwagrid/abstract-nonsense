@@ -31,8 +31,11 @@ import scala.reflect.ClassTag
   *   If a context bound is needed, use [[ContextFunctor]] or [[PartialFunctor]]
   *   instead.
   */
-trait BoundedFunctor[+Self[+_], -Codomain, +X <: Codomain]
-  extends PartialFunctor[Self, Codomain, NoContext, X],
+trait BoundedFunctor[
+  +Self[+_ <: Codomain],
+  -Codomain,
+  +X <: Codomain,
+] extends PartialFunctor[Self, Codomain, NoContext, X],
           WhenOps[Self, Codomain, X],
           WhenTypeOps[Self, Codomain, X]:
 
@@ -51,7 +54,7 @@ trait BoundedFunctor[+Self[+_], -Codomain, +X <: Codomain]
     : TypeFunctorView[Self, Codomain, X, Active] =
     new TypeFunctorView[Self, Codomain, X, Active](this)
 
-  override final inline def whenNot[Inactive <: Codomain : ClassTag]
+  override final inline def unless[Inactive <: Codomain : ClassTag]
     : NegatedTypeFunctorView[Self, Codomain, X, Inactive] =
     new NegatedTypeFunctorView[Self, Codomain, X, Inactive](this)
 

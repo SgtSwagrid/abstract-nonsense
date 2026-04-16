@@ -2,16 +2,15 @@ package io.github.sgtswagrid.nonsense
 package functor.covariant.ops
 
 import io.github.sgtswagrid.nonsense.functor.covariant.ContextFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
 import io.github.sgtswagrid.nonsense.functor.covariant.views.ConditionalFunctorView
 
 /** The [[when]] operator for [[ContextFunctor]], and its derivatives. */
-trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
-  extends MapOps[
-    Self,
-    Codomain,
-    [_] =>> DummyImplicit,
-    Output,
-  ]:
+trait WhenOps[
+  +Self[+_ <: Codomain],
+  -Codomain,
+  +X <: Codomain,
+] extends MapOps[Self, Codomain, NoContext, X]:
 
   /**
     * Provides a view of this structure that only allows elements matching a
@@ -29,16 +28,15 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     *   elements to be modified when they match all of them.
     *
     * @example
-    *   {{{
-    * val a = List(1, 2, 3, 4)
-    * val b = a.when(_ % 2 == 0).map(_ + 10)
-    * // a == List(1, 12, 3, 14)
-    * val c = b.map(_ + 100)
-    * // c == List(101, 112, 103, 114)
-    *   }}}
+    *   ```scala
+    *   val a = List(1, 2, 3, 4)
+    *   val b = a.when(_ % 2 == 0).map(_ + 10)
+    *   // a == List(1, 12, 3, 14)
+    *   val c = b.map(_ + 100)
+    *   // c == List(101, 112, 103, 114)
+    *   ```
     */
-  def when(condition: Output => Boolean)
-    : ConditionalFunctorView[Self, Codomain, Output]
+  def when(condition: X => Boolean): ConditionalFunctorView[Self, Codomain, X]
 
   /**
     * A version of [[when]] where the input to [[condition]] is provided
@@ -46,8 +44,8 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * [context](https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html).
     */
   final inline def whenCtx
-    (condition: Output ?=> Boolean)
-    : ConditionalFunctorView[Self, Codomain, Output] =
+    (condition: X ?=> Boolean)
+    : ConditionalFunctorView[Self, Codomain, X] =
     when(value => condition(using value))
 
   /**
@@ -56,20 +54,9 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * @see
     *   [[when]]
     */
-  final inline def whenEqualTo
+  final inline def whenEquals
     (value: Codomain)
-    : ConditionalFunctorView[Self, Codomain, Output] = when(_ == value)
-
-  /**
-    * Alias for `this.when(condition).map(transform)`.
-    *
-    * @see
-    *   [[when]]
-    */
-  final def mapWhen[Post >: Output <: Codomain]
-    (condition: Output => Boolean)
-    (transform: Output => Post)
-    : Self[Post] = when(condition).map(transform)
+    : ConditionalFunctorView[Self, Codomain, X] = when(_ == value)
 
   /**
     * Alias for `this.when(transform.isDefinedAt).map(transform)`.
@@ -77,8 +64,8 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * @see
     *   [[when]]
     */
-  final inline def mapPartial[Post >: Output <: Codomain]
-    (transform: PartialFunction[Output, Post])
+  final inline def mapPartial[Post >: X <: Codomain]
+    (transform: PartialFunction[X, Post])
     : Self[Post] = when(transform.isDefinedAt).map(transform)
 
   /**
@@ -88,8 +75,8 @@ trait WhenOps[+Self[+_], -Codomain, +Output <: Codomain]
     * @see
     *   [[when]]
     */
-  final inline def mapPartial[Post >: Output <: Codomain]
-    (transform: Output => Option[Post])
+  final inline def mapPartial[Post >: X <: Codomain]
+    (transform: X => Option[Post])
     : Self[Post] = map: value =>
     transform(value) match
       case Some(transformed) => transformed

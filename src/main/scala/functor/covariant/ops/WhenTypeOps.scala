@@ -7,7 +7,11 @@ import io.github.sgtswagrid.nonsense.functor.covariant.views.{
 import scala.reflect.ClassTag
 
 /** The [[when]] operator for [[BoundedFunctor]], and its derivatives. */
-trait WhenTypeOps[+Self[+_], -Codomain, +Output <: Codomain]:
+trait WhenTypeOps[
+  +Self[+_ <: Codomain],
+  -Codomain,
+  +Output <: Codomain,
+]:
 
   /**
     * Provides a view of this structure that only allows elements of a certain
@@ -26,17 +30,5 @@ trait WhenTypeOps[+Self[+_], -Codomain, +Output <: Codomain]:
     * @tparam Inactive
     *   The subtype of [[Output]] that is left unmodified.
     */
-  def whenNot[Inactive <: Codomain : ClassTag]
+  def unless[Inactive <: Codomain : ClassTag]
     : NegatedTypeFunctorView[Self, Codomain, Output, Inactive]
-
-  /**
-    * Alias for `this.whenType[Active].map(transform)`.
-    *
-    * @see
-    *   [[when]]
-    */
-  final inline def mapType[
-    Active <: Codomain : ClassTag,
-    Post <: Codomain,
-  ](using Output <:< Codomain)(transform: Active => Post): Self[Post | Output] =
-    when[Active].map(transform)

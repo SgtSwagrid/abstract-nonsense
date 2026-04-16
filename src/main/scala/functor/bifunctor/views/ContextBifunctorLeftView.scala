@@ -5,22 +5,16 @@ import io.github.sgtswagrid.nonsense.functor.bifunctor.ContextBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.ContextFunctor
 import scala.annotation.unchecked.uncheckedVariance
 
-/**
-  * A view of a [[ContextBifunctor]] that only maps values on the left.
-  *
-  * Obtainable with [[ContextBifunctor.left]].
-  */
-class ContextBifunctorLeftView[+Self[+_, +_], -Context[_], +Left, +Right]
-  (base: ContextBifunctor[Self, Context, Left, Right])
-  extends BoundedContextBifunctorLeftView[Self, Any, Context, Left, Right](
-    base,
-  ),
+/** A view of a [[ContextBifunctor]] that only maps values on the left. */
+class ContextBifunctorLeftView[+Self[+_, +_], -Context[_], +L, +R]
+  (base: ContextBifunctor[Self, Context, L, R])
+  extends PartialBifunctorLeftView[Self, Any, Context, L, R](base),
           ContextFunctor[
-            [X] =>> Self[X, Right],
-            [X] =>> Context[X | (Right @uncheckedVariance)],
-            Left,
+            [X] =>> Self[X, R],
+            [X] =>> Context[X | (R @uncheckedVariance)],
+            L,
           ]:
 
-  override def map[LeftPost : [X] =>> Context[X | (Right @uncheckedVariance)]]
-    (transform: Left => LeftPost)
-    : Self[LeftPost, Right] = base.bimap[LeftPost, Right](transform)(identity)
+  override def map[l : [X] =>> Context[X | (R @uncheckedVariance)]]
+    (transform: L => l)
+    : Self[l, R] = base.bimap[l, R](transform)(identity)

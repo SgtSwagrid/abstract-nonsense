@@ -4,38 +4,24 @@ package functor.covariant.views
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 import scala.reflect.ClassTag
 
-/**
-  * A functor that only maps values that have a certain type. Obtained by
-  * calling [[when]].
-  *
-  * @param base
-  *   The underlying structure.
-  *
-  * @tparam Self
-  *   The kind of structure that this is (e.g. [[List]]).
-  *
-  * @tparam Codomain
-  *   The upper bound on [[Output]] following any [[map]]-like operation.
-  *
-  * @tparam Output
-  *   The type of value contained in this structure (e.g. [[Int]]).
-  *
-  * @tparam Active
-  *   The subtype of [[Output]] that is being modified.
-  */
+/** A functor that only maps values that have a certain type. */
 final class TypeFunctorView[
-  +Self[+_],
+  +Self[+_ <: Codomain],
   -Codomain,
-  +Output <: Codomain,
+  +X <: Codomain,
   +Active <: Codomain : ClassTag,
 ]
-  (base: BoundedFunctor[Self, Codomain, Output])
-  extends BoundedFunctor[[X] =>> Self[X | Output], Codomain, Active]:
+  (base: BoundedFunctor[Self, Codomain, X])
+  extends BoundedFunctor[
+    [Y <: Codomain] =>> Self[Y | X],
+    Codomain,
+    Active,
+  ]:
 
-  override inline def mapImpl[Post <: Codomain]
-    (transform: Active => Post)
-    : Self[Post | Output] = base.map:
+  override inline def mapImpl[Y <: Codomain]
+    (transform: Active => Y)
+    : Self[Y | X] = base.map:
     case value: Active => transform(value)
-    case value         => value.asInstanceOf[Output & Codomain]
+    case value         => value.asInstanceOf[X & Codomain]
 
   override def toString = base.toString

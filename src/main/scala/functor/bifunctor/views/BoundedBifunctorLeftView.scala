@@ -3,24 +3,19 @@ package functor.bifunctor.views
 
 import io.github.sgtswagrid.nonsense.functor.bifunctor.BoundedBifunctor
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
+import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
 
-/**
-  * A view of a [[BoundedBifunctor]] that only maps values on the left.
-  *
-  * Obtainable with [[BoundedBifunctor.left]].
-  */
+/** A view of a [[BoundedBifunctor]] that only maps values on the left. */
 class BoundedBifunctorLeftView[
   +Self[+_, +_],
   -LeftCodomain,
-  +Left <: LeftCodomain,
-  +Right,
+  +L <: LeftCodomain,
+  +R,
 ]
-  (base: BoundedBifunctor[Self, LeftCodomain, ? >: Right, Left, Right])
-  extends BoundedContextBifunctorLeftView[
-    Self, LeftCodomain, [_] =>> DummyImplicit, Left, Right
-  ](base),
-          BoundedFunctor[[X] =>> Self[X, Right], LeftCodomain, Left]:
+  (base: BoundedBifunctor[Self, LeftCodomain, ? >: R, L, R])
+  extends PartialBifunctorLeftView[Self, LeftCodomain, NoContext, L, R](base),
+          BoundedFunctor[[X] =>> Self[X, R], LeftCodomain, L]:
 
-  override protected def mapImpl[LeftPost <: LeftCodomain]
-    (transform: Left => LeftPost)
-    : Self[LeftPost, Right] = base.bimap(transform)(identity)
+  override protected def mapImpl[l <: LeftCodomain]
+    (transform: L => l)
+    : Self[l, R] = base.bimap(transform)(identity)

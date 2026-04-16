@@ -1,47 +1,49 @@
 package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
+import io.github.sgtswagrid.nonsense.functor.covariant.{BoundedFunctor, Functor}
+import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
+import io.github.sgtswagrid.nonsense.functor.profunctor.Profunctor
+
 /**
-  * A bifunctor is something that can be mapped over in two different ways.
+  * ## Bifunctor
   *
-  * Any implementation need only define [[bimap]], and everything else will be
-  * derived from it.
+  * A Bifunctor is an object with a [[bimap]] operator.
+  *
+  * They typically represent structures that contain or produce two distinct
+  * kinds of value.
+  *
+  * ### Bifunctor Laws
+  *
+  * Please see the corresponding covariant functor laws for [[Functor]]. They
+  * should hold here too.
+  *
+  * ### Signature
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[Either]]).
   *
-  * @tparam Left
-  *   The type of value contained on the left-hand side of this structure (e.g.
-  *   [[Int]]).
+  * @tparam L
+  *   The type of value contained on the left-hand side (e.g. [[Int]]).
   *
-  * @tparam Right
-  *   The type of value contained on the right-hand side of this structure (e.g.
-  *   [[Int]]).
+  * @tparam R
+  *   The type of value contained on the right-hand side (e.g. [[Int]]).
   *
   * @see
-  *   [[io.github.sgtswagrid.nonsense.functor.bivariant.Profunctor]] for a
-  *   variant that is contravariant in one of the type parameters.
-  *
-  * Any implementation need only define [[bimapImpl]], and everything else will
-  * be derived from it.
+  *   [[Profunctor]] is contravariant in one of the type parameters.
   */
-trait Bifunctor[+Self[+_, +_], +Left, +Right]
-  extends LeftBoundedBifunctor[Self, Any, Left, Right],
-          RightBoundedBifunctor[Self, Any, Left, Right],
-          ContextBifunctor[Self, [_] =>> DummyImplicit, Left, Right]
+trait Bifunctor[+Self[+_, +_], +L, +R]
+  extends LeftBoundedBifunctor[Self, Any, L, R],
+          RightBoundedBifunctor[Self, Any, L, R],
+          ContextBifunctor[Self, NoContext, L, R]
 
 object Bifunctor:
 
-  /**
-    * A [[Bifunctor]] that contains no values.
-    *
-    * @tparam Self
-    *   The singleton produced by all [[Bifunctor.bimap]]-like operations.
-    */
+  /** A [[Bifunctor]] that never contains any value. */
   trait Empty[+Self : ValueOf]
     extends Bifunctor[[_, _] =>> Self, Nothing, Nothing]:
 
-    override protected def bimapImpl[LeftPost, RightPost]
-      (transformLeft: Nothing => LeftPost)
-      (transformRight: Nothing => RightPost)
+    override protected final def bimapImpl[l, r]
+      (left: Nothing => l)
+      (right: Nothing => r)
       : Self = valueOf[Self]

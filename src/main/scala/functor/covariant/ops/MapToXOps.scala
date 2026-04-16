@@ -6,7 +6,7 @@ import scala.util.{Failure, Success}
 
 /** Type-specific variants of [[mapTo]]. */
 trait MapToXOps[
-  +Self[+_],
+  +Self[+_ <: Codomain],
   -Codomain,
   -Context[_ <: Codomain],
   +X <: Codomain,

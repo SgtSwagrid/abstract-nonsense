@@ -4,43 +4,49 @@ package functor.bifunctor
 import io.github.sgtswagrid.nonsense.functor.bifunctor.views.{
   BoundedBifunctorLeftView, BoundedBifunctorRightView,
 }
+import io.github.sgtswagrid.nonsense.functor.covariant.PartialFunctor.NoContext
 
 /**
-  * A doubly-restricted [[Bifunctor]] that can only contain particular values on
-  * both sides, constrained by type bounds.
+  * ## Bounded Bifunctors
+  *
+  * A bounded bifunctor is a doubly-restricted [[Bifunctor]] that can only
+  * contain values with certain properties on both sides.
+  *
+  * ### Constraints
+  *
+  *   1. An upper bound [[LeftCodomain]] on the type [[L]].
+  *   2. An upper bound [[RightCodomain]] on the type [[R]].
+  *
+  * ### Signature
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[Either]]).
   *
   * @tparam LeftCodomain
-  *   The upper bound on [[Left]] following any
-  *   [[BoundedBifunctorLeftView.map]]-like operation.
+  *   The upper bound on [[L]] (e.g. [[Any]]).
   *
   * @tparam RightCodomain
-  *   The upper bound on [[Right]] following any
-  *   [[BoundedBifunctorRightView.map]]-like operation.
+  *   The upper bound on [[R]] (e.g. [[Any]]).
   *
-  * @tparam Left
-  *   The type of value contained on the left-hand side of this structure (e.g.
-  *   [[Int]]).
+  * @tparam L
+  *   The type of value contained on the left-hand side (e.g. [[Int]]).
   *
-  * @tparam Right
-  *   The type of value contained on the right-hand side of this structure (e.g.
-  *   [[Int]]).
+  * @tparam R
+  *   The type of value contained on the right-hand side (e.g. [[Int]]).
   */
 trait BoundedBifunctor[
   +Self[+_, +_],
   -LeftCodomain,
   -RightCodomain,
-  +Left <: LeftCodomain,
-  +Right <: RightCodomain,
-] extends BoundedContextBifunctor[
+  +L <: LeftCodomain,
+  +R <: RightCodomain,
+] extends PartialBifunctor[
     Self,
     LeftCodomain,
     RightCodomain,
-    [_] =>> DummyImplicit,
-    Left,
-    Right,
+    NoContext,
+    L,
+    R,
   ]:
 
   override final inline def bimap[
@@ -48,16 +54,15 @@ trait BoundedBifunctor[
     RightPost <: RightCodomain,
   ]
     (using DummyImplicit)
-    (transformLeft: Left => LeftPost)
-    (transformRight: Right => RightPost)
+    (transformLeft: L => LeftPost)
+    (transformRight: R => RightPost)
     : Self[LeftPost, RightPost] = bimapImpl(transformLeft)(transformRight)
 
   /** The internal implementation of [[bimap]]. */
-  protected def bimapImpl[
-    LeftPost <: LeftCodomain,
-    RightPost <: RightCodomain,
-  ](transformLeft: Left => LeftPost)(transformRight: Right => RightPost)
-    : Self[LeftPost, RightPost]
+  protected def bimapImpl[l <: LeftCodomain, r <: RightCodomain]
+    (left: L => l)
+    (right: R => r)
+    : Self[l, r]
 
   /**
     * Provides a view of this structure that only maps over the left-hand side.
@@ -67,7 +72,7 @@ trait BoundedBifunctor[
     *   be returned to its original form. The projection will thereafter be
     *   forgotten.
     */
-  override def left: BoundedBifunctorLeftView[Self, LeftCodomain, Left, Right] =
+  override def left: BoundedBifunctorLeftView[Self, LeftCodomain, L, R] =
     BoundedBifunctorLeftView(this)
 
   /**
@@ -78,37 +83,20 @@ trait BoundedBifunctor[
     *   be returned to its original form. The projection will thereafter be
     *   forgotten.
     */
-  override def right: BoundedBifunctorRightView[Self, RightCodomain, Left, Right] =
+  override def right: BoundedBifunctorRightView[Self, RightCodomain, L, R] =
     BoundedBifunctorRightView(this)
 
 object BoundedBifunctor:
 
-  /**
-    * A [[BoundedBifunctor]] with symmetric constraints. That is, both sides
-    * have the same requirements.
-    */
+  /** A [[BoundedBifunctor]] with symmetric upper bounds. */
   type Symmetric[
     +Self[+_, +_],
     -Codomain,
-    +Left <: Codomain,
-    +Right <: Codomain,
-  ] = BoundedBifunctor[Self, Codomain, Codomain, Left, Right]
+    +L <: Codomain,
+    +R <: Codomain,
+  ] = BoundedBifunctor[Self, Codomain, Codomain, L, R]
 
-  /**
-    * A [[BoundedBifunctor]] that contains no values.
-    *
-    * @tparam Self
-    *   The singleton produced by all [[BoundedBifunctor.bimap]]-like
-    *   operations.
-    *
-    * @tparam LeftCodomain
-    *   The upper bound on the left output of all
-    *   [[BoundedBifunctor.bimap]]-like operations.
-    *
-    * @tparam RightCodomain
-    *   The upper bound on the right output of all
-    *   [[BoundedBifunctor.bimap]]-like operations.
-    */
+  /** A [[BoundedBifunctor]] that never contains any value. */
   trait Empty[
     +Self : ValueOf,
     -LeftCodomain,
@@ -121,10 +109,8 @@ object BoundedBifunctor:
       Nothing,
     ]:
 
-    override protected def bimapImpl[
-      LeftPost <: LeftCodomain,
-      RightPost <: RightCodomain,
-    ]
-      (transformLeft: Nothing => LeftPost)
-      (transformRight: Nothing => RightPost)
-      : Self = valueOf[Self]
+    override protected final def bimapImpl[
+      l <: LeftCodomain,
+      r <: RightCodomain,
+    ](transformLeft: Nothing => l)(transformRight: Nothing => r): Self =
+      valueOf[Self]

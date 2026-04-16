@@ -5,7 +5,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.ContextFunctor
 
 /** The [[mapTo]] operator for [[ContextFunctor]], and its derivatives. */
 trait MapToOps[
-  +Self[+_],
+  +Self[+_ <: Codomain],
   -Codomain,
   -Context[_ <: Codomain],
   +X <: Codomain,

@@ -4,40 +4,22 @@ package functor.covariant.views
 import io.github.sgtswagrid.nonsense.functor.covariant.BoundedFunctor
 import scala.reflect.ClassTag
 
-/**
-  * A functor that only maps values that don't have a certain type. Obtained by
-  * calling [[when]].
-  *
-  * @param base
-  *   The underlying structure.
-  *
-  * @tparam Self
-  *   The kind of structure that this is (e.g. [[List]]).
-  *
-  * @tparam Codomain
-  *   The upper bound on [[Output]] following any [[map]]-like * operation.
-  *
-  * @tparam Output
-  *   The type of value contained in this structure (e.g. [[Int]]).
-  *
-  * @tparam Inactive
-  *   The subtype of [[Output]] that is left unmodified.
-  */
+/** A functor that only maps values that don't have a certain type. */
 final class NegatedTypeFunctorView[
-  +Self[+_],
+  +Self[+_ <: Codomain],
   -Codomain,
-  +Output <: Codomain,
+  +X <: Codomain,
   +Inactive <: Codomain : ClassTag,
 ]
-  (base: BoundedFunctor[Self, Codomain, Output])
+  (base: BoundedFunctor[Self, Codomain, X])
   extends BoundedFunctor[
-    [X] =>> Self[X | Inactive],
+    [Y <: Codomain] =>> Self[Y | Inactive],
     Codomain,
-    Output,
+    X,
   ]:
 
   override protected inline def mapImpl[Post <: Codomain]
-    (transform: Output => Post)
+    (transform: X => Post)
     : Self[Post | Inactive] = base.map:
     case value: Inactive => value.asInstanceOf[Post | (Inactive & Codomain)]
     case value           => transform(value)

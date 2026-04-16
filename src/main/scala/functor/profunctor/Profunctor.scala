@@ -1,6 +1,7 @@
 package io.github.sgtswagrid.nonsense
 package functor.profunctor
 
+import io.github.sgtswagrid.nonsense.functor.bifunctor.Bifunctor
 import io.github.sgtswagrid.nonsense.functor.contravariant.Contravariant
 import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 

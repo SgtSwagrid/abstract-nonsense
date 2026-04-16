@@ -6,7 +6,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.Functor
 
 /** The [[map]] operator for [[BoundedFunctor]], and its derivatives. */
 trait MapOps[
-  +Self[+_],
+  +Self[+_ <: Codomain],
   -Codomain,
   -Context[_ <: Codomain],
   +X <: Codomain,
@@ -37,7 +37,7 @@ trait MapOps[
     * implicitly as
     * [context](https://docs.scala-lang.org/scala3/reference/contextual/context-functions.html).
     */
-  final inline def mapCtx[Y <: Codomain : Context]
+  final inline def mapWithContext[Y <: Codomain : Context]
     (transform: X ?=> Y)
     : Self[Y] = map(value => transform(using value))
 

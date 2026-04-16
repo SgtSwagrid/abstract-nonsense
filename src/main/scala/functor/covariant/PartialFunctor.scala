@@ -33,7 +33,7 @@ import io.github.sgtswagrid.nonsense.functor.covariant.ops.MapToXOps
   *   [[BoundedFunctor]] or [[ContextFunctor]] respectively.
   */
 trait PartialFunctor[
-  +Self[+_],
+  +Self[+_ <: Codomain],
   -Codomain,
   -Context[_ <: Codomain],
   +X <: Codomain,

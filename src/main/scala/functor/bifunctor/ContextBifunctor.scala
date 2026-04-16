@@ -2,50 +2,40 @@ package io.github.sgtswagrid.nonsense
 package functor.bifunctor
 
 /**
-  * A restricted [[Bifunctor]] that can only contain particular values on both
-  * sides, constrained by context bounds.
+  * ## Context Bifunctors
+  *
+  * A context bifunctor is a restricted [[Bifunctor]] that can only contain
+  * values with certain properties.
+  *
+  * ### Constraints
+  *
+  *   1. A joint context bound [[Context]] on the types [[L]] and [[R]].
+  *
+  * ### Signature
   *
   * @tparam Self
   *   The kind of structure that this is (e.g. [[Either]]).
   *
   * @tparam Context
-  *   The joint context bound on [[Left]] and [[Right]] that must be present
-  *   following any [[bimap]]-like operation.
+  *   The joint context bound on [[L]] and [[R]].
   *
-  * @tparam Left
-  *   The type of value contained on the left-hand side of this structure.
+  * @tparam L
+  *   The type of value contained on the left-hand side (e.g. [[Int]]).
   *
-  * @tparam Right
-  *   The type of value contained on the right-hand side of this structure.
+  * @tparam R
+  *   The type of value contained on the right-hand side (e.g. [[Int]]).
   */
-trait ContextBifunctor[+Self[+_, +_], -Context[_], +Left, +Right]
-  extends BoundedContextBifunctor[Self, Any, Any, Context, Left, Right]
+trait ContextBifunctor[+Self[+_, +_], -Context[_], +L, +R]
+  extends PartialBifunctor[Self, Any, Any, Context, L, R]
 
 object ContextBifunctor:
 
-  /**
-    * A [[ContextBifunctor]] with symmetric constraints. That is, both sides
-    * have the same requirements.
-    */
-  type Symmetric[+Self[+_, +_], -Context[_], +Left, +Right] =
-    ContextBifunctor[Self, Context, Left, Right]
-
-  /**
-    * A [[ContextBifunctor]] that contains no values.
-    *
-    * @tparam Self
-    *   The singleton produced by all [[ContextBifunctor.bimap]]-like
-    *   operations.
-    *
-    * @tparam Context
-    *   The joint context bound required on the outputs of all
-    *   [[ContextBifunctor.bimap]]-like operations.
-    */
+  /** A [[ContextBifunctor]] that never contains any value. */
   trait Empty[+Self : ValueOf, -Context[_]]
     extends ContextBifunctor[[_, _] =>> Self, Context, Nothing, Nothing]:
 
-    override def bimap[LeftPost, RightPost]
-      (using Context[LeftPost | RightPost])
-      (transformLeft: Nothing => LeftPost)
-      (transformRight: Nothing => RightPost)
+    override final def bimap[l, r]
+      (using Context[l | r])
+      (transformLeft: Nothing => l)
+      (transformRight: Nothing => r)
       : Self = valueOf[Self]
