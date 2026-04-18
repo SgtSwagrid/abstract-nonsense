@@ -13,4 +13,4 @@ addSbtPlugin("org.jetbrains.scala" % "sbt-ide-settings" % "1.1.4")
 
 // For automatic code reformatting.
 // https://scalameta.org/scalafmt/
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.6")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.6.0")
