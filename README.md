@@ -8,6 +8,12 @@
   </span>
 </div>
 
+<br/><br/>
+
+> "The map is not the territory." — Alfred Korzybski.
+
+<br/>
+
 ## 🙋🏻‍♂️ Who's this for?
 
 _Abstract Nonsense_ is intended primarily for library design purposes.
