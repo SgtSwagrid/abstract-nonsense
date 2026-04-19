@@ -93,5 +93,5 @@ Note the inclusion of `v` in the GitHub release name but not the resulting Maven
 
 ## 👁️ See also
 
-- Check out [Not Enough Structures](https://github.com/SgtSwagrid/not-enough-structures) for some different abstractions with a focus on abstract algebra.
+- Check out [Scalgebra](https://github.com/SgtSwagrid/scalgebra) for some different abstractions with a focus on abstract algebra.
 - This library was made using [Scala Library Template](https://github.com/SgtSwagrid/scala-library-template).
