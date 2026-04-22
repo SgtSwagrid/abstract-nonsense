@@ -1,7 +1,7 @@
 ThisBuild / description := "A collection of category-theoretic base traits. "
 
 ThisBuild / homepage :=
-  Some(url("https://github.com/SgtSwagrid/abstract-nonsense"))
+  Some(url("https://alecdorrington.com/abstract-nonsense"))
 
 ThisBuild / organization         := "com.alecdorrington"
 ThisBuild / organizationName     := "Alec Dorrington"
