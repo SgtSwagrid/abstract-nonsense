@@ -3,11 +3,10 @@ ThisBuild / description := "A collection of category-theoretic base traits. "
 ThisBuild / homepage :=
   Some(url("https://github.com/SgtSwagrid/abstract-nonsense"))
 
-ThisBuild / organization         := "io.github.sgtswagrid"
-ThisBuild / organizationName     := "SgtSwagrid"
-ThisBuild / organizationHomepage := Some(url("https://github.com/SgtSwagrid"))
+ThisBuild / organization         := "com.alecdorrington"
+ThisBuild / organizationName     := "Alec Dorrington"
+ThisBuild / organizationHomepage := Some(url("https://alecdorrington.com"))
 
-ThisBuild / scalaVersion  := "3.8.3"
 ThisBuild / versionScheme := Some("strict")
 
 ThisBuild / licenses :=
