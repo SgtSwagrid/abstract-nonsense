@@ -2,7 +2,7 @@ import IdeSettings.packagePrefix
 import sbt._
 import sbt.Keys._
 
-ThisBuild / scalaVersion := "3.8.3"
+ThisBuild / scalaVersion := "3.8.4"
 
 scalacOptions ++= Seq(
   "-explain",
