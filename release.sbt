@@ -1,4 +1,4 @@
-ThisBuild / description := "A collection of category-theoretic base traits. "
+ThisBuild / description := "A collection of category-theoretic base traits in Scala."
 
 ThisBuild / homepage :=
   Some(url("https://alecdorrington.com/abstract-nonsense"))
