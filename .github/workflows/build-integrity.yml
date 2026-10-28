@@ -7,7 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-    # Cancel in-progress runs when starting a new one.
+# Cancel in-progress runs when starting a new one.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -17,14 +17,45 @@ jobs:
   build-integrity:
     name: Build Integrity
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+
+    # Warnings fail the build, of the tests as much as of the code, wherever
+    # sbt is started in this job (see `project/Werror.scala`).
+    env:
+      WERROR: "true"
 
     steps:
 
+      # A pull request's own branch rather than its merge, so that a formatting
+      # fix can be committed to it. The personal token lets that commit start
+      # CI again, which one made with the job's own token would not.
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      # Scalafmt Revolver checks the formatting with Scalafmt's native image,
+      # before anything is installed for the build, and fixes it if need be:
+      # by a commit to a pull request, or else by a pull request of its own.
+      - name: Check formatting
+        id: format
+        uses: SgtSwagrid/scalafmt-revolver@main
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      # The fixed code is built by the run its commit starts, not by this one.
+      - name: Stop after fixing
+        if: steps.format.outputs.formatted != 'true'
+        run: |
+          echo "::error::The code was not formatted, so a commit fixing it was made, which CI builds instead."
+          exit 1
 
       - name: Install Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: "21"
           distribution: "temurin"
@@ -32,12 +63,59 @@ jobs:
 
       - name: Install SBT
         uses: sbt/setup-sbt@v1
+        with:
+          disk-cache: false
 
-      - name: Linter
-        run: sbt scalafmtCheckAll
+      # sbt's disk cache keeps what each task made, such as compiled classes and
+      # linked JavaScript, under a hash of its inputs, so whatever is unchanged
+      # since the run that saved it is reused rather than made again. Every run
+      # saves its own and restores the newest: the pull request's, or else
+      # main's. It only ever grows, so it is begun afresh each week.
+      - name: Name build cache
+        id: cache
+        run: echo "prefix=sbt-${{ runner.os }}-$(date -u +%G-W%V)-" >> "$GITHUB_OUTPUT"
 
+      - name: Restore build cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.cache/sbt
+          key: ${{ steps.cache.outputs.prefix }}${{ github.run_id }}
+          restore-keys: ${{ steps.cache.outputs.prefix }}
+
+      # Every sbt command from here on goes to the one server the first starts,
+      # so the build is loaded once, however many steps use it.
       - name: Build
-        run: sbt 'set ThisBuild / scalacOptions += "-Werror"' compile
+        id: build
+        run: sbt --client Test/compile
 
+      # Every test runs: sbt's `test` would skip those it has results for, and
+      # takes no account of a change to the resources they read.
       - name: Test
-        run: sbt test
+        run: sbt --client testFull
+
+      # A repository that deploys itself says in `deploy/package.sh` how it is
+      # packaged. Main is packaged here, from the build just tested, for the
+      # Deploy workflow to ship rather than build again.
+      - name: Package
+        if: github.event_name == 'push' && hashFiles('deploy/package.sh') != '' && !endsWith(github.event.repository.name, '-config')
+        run: bash deploy/package.sh
+
+      - name: Upload package
+        if: github.event_name == 'push' && hashFiles('deploy/package.sh') != '' && !endsWith(github.event.repository.name, '-config')
+        uses: actions/upload-artifact@v7
+        with:
+          name: package
+          path: dist
+          retention-days: 1
+
+      # Only once started, as `sbt --client` would otherwise start a server.
+      - name: Stop sbt
+        if: always() && steps.build.outcome != 'skipped'
+        run: sbt --client shutdown || true
+
+      - name: Save build cache
+        if: ${{ !cancelled() && steps.format.outputs.formatted == 'true' }}
+        uses: actions/cache/save@v6
+        with:
+          path: ~/.cache/sbt
+          key: ${{ steps.cache.outputs.prefix }}${{ github.run_id }}
