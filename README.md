@@ -76,7 +76,7 @@ Add the following dependency to your `build.sbt`:
 libraryDependencies += "io.github.sgtswagrid" %% "abstract-nonsense" % "0.1.4"
 ```
 
-Compiled with Scala `3.8.3`, with no intention to explicitly support older versions.
+Compiled with Scala `3.9.0`, with no intention to explicitly support older versions.
 
 ## ⚠️ Nomenclature
 
